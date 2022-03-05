@@ -1,0 +1,53 @@
+{% extends "myapp/layout.html" %}
+{% block title %}
+HOME
+{% load static %}
+{% endblock %}
+
+
+{% block content %}
+
+  <h1>Total Book(s) : {{totalrecord}}</h1>  
+
+  {% comment %} PAGING {% endcomment %}
+   <div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+       
+        <li class="page-item"><a class="page-link" href="../pagingitem/{{previousPage}}">Previous</a></li>
+        {% for i in totalpage %}
+        <li class="page-item"><a class="page-link" href="../pagingitem/{{i}}">{{i}}</a></li>
+        {% endfor %}  
+        <li class="page-item"><a class="page-link" href="../pagingitem/{{nextPage}}">Next</a></li>
+      </ul>
+    </nav>
+  </div>
+
+    <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+      {% for book in books %}
+      <div class="col">
+        <div class="p-3 border bg-light">
+          <img src="../static/myapp/images/book/icon/{{book.filename}}" class="card-img-top book" alt="...">
+          <p class='price-home'>ราคา : {{book.price}}</p> 
+          <p class='price-home'>id : {{book.id}}</p>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+  {% comment %} PAGING {% endcomment %}
+  <div style="float: right;position: relative;">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+       
+        <li class="page-item"><a class="page-link" href="../pagingitem/{{previousPage}}">Previous</a></li>
+        {% for i in totalpage %}
+        <li class="page-item"><a class="page-link" href="../pagingitem/{{i}}">{{i}}</a></li>
+        {% endfor %}  
+        <li class="page-item"><a class="page-link" href="../pagingitem/{{nextPage}}">Next</a></li>
+      </ul>
+    </nav>
+  </div>
+
+{% endblock %}
