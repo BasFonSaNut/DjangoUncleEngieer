@@ -1,56 +1,55 @@
-import os
 from os import listdir
 from os.path import isfile, join
-# from django.conf import settings
 import json
 import random
 import string
 
-# -------------------------------------------------------
-# work with only file name use this one
-# mypath ='../static/myapp/images/book/icon/'
-# onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+# STEP 1-------------------------------------------------------
+# จับไฟล์ทั้งหมด มายัดใส่ อะเรย์รายชื่อไฟล์
+mypath ='../static/myapp/images/book/icon/'
+onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
 # for row in onlyfiles:
 #     print(row)
 
-# ------------------------------------------------------- 
-#gen random characters for Book's Author and random number for price
-# def random_author_price():
-#     list1 = [6,7,8,9,10,11]
-#     length = random.choice(list1)
-#     price = random.randint(1000,3000)
+# STEP 2------------------------------------------------------- 
+# เตรียมฟังก์ชั่นไว้ random ชื่อผู้เขียน และราคา 
+def random_author_price():
+    list1 = [6,7,8,9,10,11]
+    length = random.choice(list1)
+    price = random.randint(1000,3000)
     
-#     letters = string.ascii_lowercase
-#     author = string.capwords(''.join(random.choice(letters) for i in range(length)))
-#     return (author,price)
+    letters = string.ascii_lowercase
+    author = string.capwords(''.join(random.choice(letters) for i in range(length)))
+    return (author,price)
 
-# -------------------------------------------------------
-#generate json file according with number of picture
-# with open('../static/myapp/data/books.json', "w", encoding="utf-8") as file:
-#     file.write('[ \n')
-#     i=1
-#     for row in onlyfiles:
-#         (author,price) = random_author_price()
-#         textline = '{"id":"'+str(i)+'","filename":"'+row+'","filepath":"myapp/images/book/icon/'+row+'","author":"' \
-#             +author+'","price":"'+str(price)+'"},\n'
-#         file.write(textline)
-#         i+=1
-#         # print(textline) # it print all records in the database
-#     file.write(']')
-                
-# with open('../static/myapp/data/books.json') as f:
-#     data = json.load(f)
+# STEP 3-------------------------------------------------------
+#สร้างไฟล์ ิ books.json จำนวน row เท่าจำนวน array ของภาพ จ่าก step แรก
+with open('../static/myapp/data/books.json', "w", encoding="utf-8") as file:
+    file.write('[ \n')
+    i=1
+    for row in onlyfiles:
+        (author,price) = random_author_price()
+        textline = '{"id":"'+str(i)+'","filename":"'+row+'","filepath":"myapp/images/book/icon/'+row+'","author":"' \
+            +author+'","price":"'+str(price)+'"},\n'
+        file.write(textline)
+        i+=1
+    file.write(']')
 
-# -------------------------------------------------------
+# STEP 4-------------------------------------------------------
+# เช็คดูว่า ไฟล์ ไปวางใน folder ที่ต้องการหรือยัง
+with open('../static/myapp/data/books.json') as f:
+    data = json.load(f)
+    # เช็คดูว่า object เป็น dict สมตั้งใจหรือไม่
+    print(type(data)) 
 
-#test json filtering, fetch record 10 per page
-#dict
-# dm = data[:10]
-# # dm = data[10:20]
-# for dx in dm: 
-#     print(dx)
-#     print(type(dx))
+# STEP 5-------------------------------------------------------
+# ทดสอบการ เรียกใช้งาน  json object filtering, fetch record 10 per page
+dm = data[:10]
+dm = data[10:20]
+for dx in dm: 
+    print(dx)
+    print(type(dx))
 
 # -------------------------------------------------------
 #test range to generate how many page(s), to display 10 record per page        
