@@ -11,21 +11,23 @@
     <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/site.css' %}"/>
     {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/bootstrap@5.1.3min.css' %}"/> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="{% static 'myapp/assets/dist/css/bootstrap.min.css' %}"/>
-    
-    
-    <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/carousel.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'myapp/assets/dist/css/footers.css' %}"/>
+
     <script src="https://kit.fontawesome.com/2a69a913e5.js" crossorigin="anonymous"></script>
     <script src="{% static 'myapp/js/bootstrap@5.1.3min.js' %}"></script>
+
+    
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
 <body>
   <div class="container">    
           <header>
-            <div class="pricing-header p-0 pb-md-4 mx-auto text-center">
-              <h1 class="display-4 fw-normal">ร้าน "พี่ต้น" (PYTHON)</h1>
-              <p class="fs-5 text-muted">ใดๆ ในโลกนี้ พี่ต้น ทำให้ได้</p>
+              <div class="pricing-header p-0 pb-md-4 mx-auto text-center">
+                <h1 class="display-4 fw-normal">ร้าน "พี่ต้น" (PYTHON)</h1>
+                <p class="fs-5 text-muted">ใดๆ ในโลกนี้ พี่ต้น ทำให้ได้</p>
               <div>
                 <nav class="d-inline-flex mt-3 mt-md-0 ms-md-auto">
                   <a href="{% url 'home' %}" class="me-3 py-2 text-dark text-decoration-none">HOME</a>

@@ -1,9 +1,17 @@
+@font-face {
+  font-family: "Kanit";
+  src: url("../font/Kanit-Regular.ttf");
+}
+
+
 body {
     background-image: linear-gradient(180deg, #eee, #fff 100px, #fff);
+    font-family: "Kanit";
   }
   
   .container {
     max-width: 960px;
+    font-family: "Kanit";
   }
   
   .pricing-header {
@@ -12,7 +20,7 @@ body {
 .navbar {
     background-color: lightslategray;
     font-size: 1em;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: "Kanit";
     color: white;
     padding: 8px 5px 8px 5px;
 }
@@ -34,7 +42,7 @@ body {
 
 .body-content {
     padding: 5px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Kanit";
 }
 
 .message {
@@ -71,13 +79,14 @@ input[name=message] {
   @media (min-width: 768px) {
     .bd-placeholder-img-lg {
       font-size: 3.5rem;
+      font-family: "Kanit";
     }
   }
 
   .price-home{ 
     color: white;
     background-color:#d9d9d9;
-    font-family: 'Helvetica Neue', sans-serif; 
+    font-family: "Kanit";
     font-size: 14px; 
     font-weight: bolder;
     line-height: 24px;
@@ -87,3 +96,12 @@ input[name=message] {
     
   }
 
+p{
+  font-family: "Kanit";
+}
+span{
+  font-family: "Kanit";
+}
+input{
+  font-family: "Kanit";
+}
