@@ -45,7 +45,22 @@ class Allproduct(models.Model):
     def __self__(self):
         return self.name
     
-
+    
+class BookProduct(models.Model):
+    name=models.CharField(max_length=100)
+    price=models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+    description = models.CharField(max_length=500,null=True,blank = True)
+    imageurl = models.CharField(max_length=500,null=True,blank=True)
+    imagefilename = models.CharField(max_length=500,null=True,blank=True)
+    instock = models.BooleanField(default=True)
+    unit = models.CharField(max_length=200,default='-')
+    quantity = models.IntegerField(default=1)
+    image = models.ImageField(upload_to="products",null=True,blank=True)
+    
+    def __self__(self):
+        return self.name
+    
 class Employee(models.Model):
     name = models.CharField(max_length=50)
     emp_image = models.ImageField(upload_to='upload/')
