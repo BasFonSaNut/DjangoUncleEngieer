@@ -5,7 +5,7 @@
 - Software Design : frontend ว่าด้วยเรื่อง data ให้ใช้ json ทั้งหมด การเข้าถึง database MYSQL ใช้สำหรบ create,update,delete เท่านั้น
 - 
 - Editor Vscode , database SQLITE3,MYSQL, ภาษา Python Django
-- ajaxjson.pythonanywhere.com
+- Project url output : ajaxjson.pythonanywhere.com
 - learning url
 - YOUTUBE:
 
