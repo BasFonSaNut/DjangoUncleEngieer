@@ -22,6 +22,8 @@ urlpatterns = [
     
     path("register/", views.register, name="register"),
     path("pagingitem/<int:pageno>",views.pagingitem,name="pagingitem"),
+    path("addproductpaging/<int:pageno>",views.addproductpaging,name="addproductpaging"),
+    
     path('addfriend', views.indexView,name="indexView"),
     path('post/ajax/friend', views.postFriend, name = "post_friend"),
     path('get/ajax/validate/nickname', views.checkNickName, name = "validate_nickname"),

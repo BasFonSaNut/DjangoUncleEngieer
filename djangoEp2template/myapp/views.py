@@ -64,7 +64,29 @@ def checkNickName(request):
     return JsonResponse({}, status = 400)
 
 def productpage(request):
-    return render(request, "myapp/productpage.html")
+    Books = BookProduct.objects.all().order_by('id').reverse() #get all
+    top10 = BookProduct.objects.all().order_by('id').reverse()[:10]
+    totalrecord = len(Books)
+    totalpage = ceil(totalrecord/10)
+    currentpage = 1
+    previousPage = totalpage
+    nextPage = 2
+    
+    
+    return render(
+        request,
+        'myapp/addproductpaging.html',
+        {
+            'Books':top10,
+            'totalrecord':totalrecord,
+            'totalpage':range(1,(totalpage+1)),
+            'currentpage':currentpage,
+            'previousPage':previousPage,
+            'nextPage' : nextPage
+        }
+    )
+    
+
 
 def indexView(request):
     form = FriendForm()
@@ -112,7 +134,51 @@ def home(request):
             }     
     return render(request,"myapp/home.html",context)
 
+def addproductpaging(request, pageno=None):
+    
+    # input last ,show first
+    # .order_by('id').reverse()
+    Books = BookProduct.objects.all().order_by('id').reverse() #get all
+    top10 = BookProduct.objects.all().order_by('id').reverse()[:10]
+    totalrecord = len(Books)
+    totalpage = ceil(totalrecord/10)
+    currentpage = pageno
+    previousPage = 1
+    nextPage = 1
+    startrecord = 1
+    endrecord = 10
+    
+    if(pageno == 1):
+        top10 = BookProduct.objects.all().order_by('id').reverse()[:10]
+    else:
+        startrecord = (pageno-1) * 10
+        endrecord = startrecord+10
+        top10 = BookProduct.objects.all().order_by('id').reverse()[startrecord:endrecord]   
+                    
+    if(pageno>1):
+        previousPage = pageno-1
+    else:
+        previousPage = totalpage
+        
+    if(pageno<totalpage):
+        nextPage = pageno+1
+    else:
+        nextPage = 1    
 
+    # context ={'books':top10,'totalrecord':totalrecord,'totalpage':range(1,(totalpage+1)),'currentpage':currentpage}     
+    return render(
+        request,
+        'myapp/addproductpaging.html',
+        {
+            'Books':top10,
+            'totalrecord':totalrecord,
+            'totalpage':range(1,(totalpage+1)),
+            'currentpage':currentpage,
+            'previousPage':previousPage,
+            'nextPage' : nextPage
+        }
+    )
+    
 def pagingitem(request, pageno=None):
     with open('static/myapp/data/books.json') as f:
         jsondata = json.load(f)
