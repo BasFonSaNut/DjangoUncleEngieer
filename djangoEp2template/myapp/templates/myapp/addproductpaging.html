@@ -187,60 +187,57 @@ ADD PRODUCT
 
 {% block javascript %}
   <script>
-  function addBook()
-  {  
-      $("#addproduct-form").submit(function (e) {
-        e.preventDefault();
-        var formData = new FormData($("#addproduct-form")[0]); 
-        $('#notify').html("<img src='../static/myapp/images/animate/pleasewait3.gif' width='50%>")
-        $.ajax({
-            type: 'POST',
-            url: "{% url 'addproduct' %}",
-            data: formData,
-            async: false, 
-            cache: false, 
-            contentType: false, 
-            processData: false, 
-            success: function (response) {
-                // on successfull creating object
-                // 1. clear the form.
-                $("#addproduct-form").trigger('reset');
-                // 2. focus to nickname input 
-                $("#name").focus();
+    function addBook()
+    {  
+        $("#addproduct-form").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($("#addproduct-form")[0]); 
+            //$('#notify').html("<img src='../static/myapp/images/animate/pleasewait3.gif' width='50%>")
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addproduct' %}",
+                data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false, 
+                success: function (response) {
+                    // on successfull creating object
+                    // 1. clear the form.
+                    $("#addproduct-form").trigger('reset');
+                    // 2. focus to nickname input 
+                    $("#name").focus();
 
-                // display the newly friend to table.
-                var instance = JSON.parse(response["instance"]);
-                
-                //alert(instance["id"])
-                /*
-                var fields = instance[0]["fields"];
-                console.log(fields)
-                */
-                $("#tb_product tbody").prepend(
-                    `<tr>
-                    <td>${instance["id"]}</td>
-                    <td>${instance["name"]}</td>
-                    <td>${instance["author"]}</td>
-                    <td>${instance["price"]}</td>
-                    <td>${instance["quantity"]}</td>
-                    <td>${instance["unit"]}</td>
+                    // display the newly friend to table.
+                    var instance = JSON.parse(response["instance"]);
                     
-                    <td> 
-                        <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
-                        <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
-                     </td>
-
-                    </tr>`
-                )
-                
-                
-            },
-            error: function (response) {
-                // alert the error if any error occured
-                alert(response["responseJSON"]["error"]);
-            }
+                    //alert(instance["id"])
+                    /*
+                    var fields = instance[0]["fields"];
+                    console.log(fields)
+                    */
+                    $("#tb_product tbody").prepend(
+                        `<tr>
+                        <td>${instance["id"]}</td>
+                        <td>${instance["name"]}</td>
+                        <td>${instance["author"]}</td>
+                        <td>${instance["price"]}</td>
+                        <td>${instance["quantity"]}</td>
+                        <td>${instance["unit"]}</td>
+                        
+                        <td> 
+                            <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
+                            <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+                        </td>
+                        </tr>`
+                    )
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
         })
-    })
   }
   </script>
 {% endblock javascript%}

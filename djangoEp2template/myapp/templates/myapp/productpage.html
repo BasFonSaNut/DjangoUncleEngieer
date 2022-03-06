@@ -192,7 +192,7 @@ ADD PRODUCT
       $("#addproduct-form").submit(function (e) {
         e.preventDefault();
         var formData = new FormData($("#addproduct-form")[0]); 
-        $('#notify').html("<img src='../static/myapp/images/animate/pleasewait3.gif' width='50%>")
+       // $('#notify').html("<img src='../static/myapp/images/animate/pleasewait3.gif' width='50%>")
         $.ajax({
             type: 'POST',
             url: "{% url 'addproduct' %}",
@@ -205,10 +205,10 @@ ADD PRODUCT
                 // on successfull creating object
                 // 1. clear the form.
                 $("#addproduct-form").trigger('reset');
-                // 2. focus to nickname input 
+                // 2. focus to name input 
                 $("#name").focus();
 
-                // display the newly friend to table.
+                // display the newly book to table.
                 var instance = JSON.parse(response["instance"]);
                 
                 //alert(instance["id"])

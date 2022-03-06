@@ -321,7 +321,8 @@ def addproduct(request):
         new.save()
         result = BookProduct.objects.all().order_by('id').reverse()[:1] #get one
         
-        items = []
+        # items = [] use later in case multiple record
+        # convert list to dict
         for item in result.iterator():
             id = item.id
             name = item.name
@@ -339,12 +340,11 @@ def addproduct(request):
             'quantity': quantity,
             'unit' : unit
             }
-            # items.append(data)
-            
+        # items.append(data) use later in case multiple records
+        
+        #convert dict to json    
         json_format = json.dumps(data)
         # print(json_format)
-       
-       
         return JsonResponse({"instance": json_format}, status=200)
        
     # except:
