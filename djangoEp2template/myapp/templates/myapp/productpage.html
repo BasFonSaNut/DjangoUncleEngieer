@@ -212,15 +212,18 @@ ADD PRODUCT
                 var instance = JSON.parse(response["instance"]);
                 
                 //alert(instance["id"])
-                /*
+                /*in case more than 1 row use below
                 var fields = instance[0]["fields"];
                 console.log(fields)
                 */
                 $("#tb_product tbody").prepend(
-                    `<tr>
+                  `<tr>
                     <td>${instance["id"]}</td>
                     <td>${instance["name"]}</td>
+                    <td>${instance["author"]}</td>
                     <td>${instance["price"]}</td>
+                    <td>${instance["quantity"]}</td>
+                    <td>${instance["unit"]}</td>
                   
                     </tr>`
                 )

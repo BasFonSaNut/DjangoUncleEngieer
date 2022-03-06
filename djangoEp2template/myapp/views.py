@@ -3,6 +3,7 @@ from math import ceil
 # from itertools import product
 from multiprocessing import context
 from pickle import FALSE, TRUE
+from statistics import quantiles
 from django.forms import JSONField
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -324,18 +325,24 @@ def addproduct(request):
         for item in result.iterator():
             id = item.id
             name = item.name
+            author = item.author
             price = item.price
+            quantity = item.quantity
+            unit = item.unit
             # print(id,name,price)
         
             data =  {
             'id': id, 
             'name': name, 
-            'price': price
+            'author':author,
+            'price': price,
+            'quantity': quantity,
+            'unit' : unit
             }
             # items.append(data)
             
         json_format = json.dumps(data)
-        print(json_format)
+        # print(json_format)
        
        
         return JsonResponse({"instance": json_format}, status=200)
