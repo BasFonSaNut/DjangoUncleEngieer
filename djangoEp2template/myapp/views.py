@@ -2,6 +2,7 @@ import datetime
 from math import ceil
 # from itertools import product
 from multiprocessing import context
+from django.forms import JSONField
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -18,6 +19,17 @@ from django.shortcuts import HttpResponse
 from django.http import JsonResponse,HttpRequest
 
 from django.core import serializers
+
+class create_dict(dict): 
+  
+    # __init__ function 
+    def __init__(self): 
+        self = dict() 
+          
+    # Function to add key:value 
+    def add(self, key, value): 
+        self[key] = value
+        
 # Create your views here.
 # def home(request):
 #     return HttpResponse("Hello, Django!")
@@ -183,10 +195,6 @@ def register(request):
     return render(request, "myapp/register.html",context)
 
 def addproduct(request):
-    # if 'is_private' in request.POST:
-    #     is_private = request.POST['is_private']
-    # else:
-    #     is_private = False
     if request.method == 'POST' and request.FILES['imageupload']:
         # print(data)
         data = request.POST.copy()
@@ -197,7 +205,6 @@ def addproduct(request):
         new.description = data.get('description')
         new.quantity = data.get('quantity')
         new.unit = data.get('unit')
-        new.imageurl = data.get('imageurl')
         # new.image = data.get('image')
         if(data.get('instock') =='checked'):
             new.instock = 1
@@ -206,20 +213,34 @@ def addproduct(request):
         # #################image management ##########################
         file_image = request.FILES['imageupload']
         file_image_name = request.FILES['imageupload'].name.replace(' ','')
-        print('file_image :',file_image)
-        print('filename :',file_image_name)
+        # print('file_image :',file_image)
+        # print('filename :',file_image_name)
         fs = FileSystemStorage()
         filename = fs.save(file_image_name,file_image)
         upload_file_url = fs.url(filename)
-        upload_file_url = fs.url(filename)
         print('upload_file_url :',upload_file_url)
         new.image = upload_file_url[6:]
+        
         # #################end image management ##########################
         new.save()
-        ser_instance = BookProduct.objects.first().order_by('id').reverse() #get one
-        # return JsonResponse({"instance": ser_instance}, status=200)
-        return JsonResponse({"instance": ser_instance}, status=200)
-        # return JsonResponse({"error": ''}, status=200)
+        # result = BookProduct.objects.all().order_by('id').reverse() #get one
+        # mydict = create_dict()
+        # for row in result:
+        #     mydict.add(row['id'],({"name":row['name'],"author":row['author'],"price":row['price']}))
+        
+        # stud_json = json.dumps(mydict, indent=2, sort_keys=True)
+
+        # for row in toprow:
+        #     print(row['id'])
+        # print('id':toprow['id'],'name':toprow['name'],'author':toprow['author'],'price':toprow['price'],'quantity':toprow['quantity'],'unit':toprow['unit'])
+        
+        # print(jsonreturn) 
+        
+        jsontmp = {'id':"2",'name':data.get('name'),'author':data.get('author'), \
+         'price':data.get('price'),'quantity':data.get('quantity'),'unit':data.get('unit')}
+       
+        return JsonResponse({"instance": jsontmp}, status=200)
+       
     # except:
     #     return JsonResponse({"error": 'Error'}, status=400)
         

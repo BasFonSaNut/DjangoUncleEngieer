@@ -82,3 +82,4 @@ for dx in dm:
 # -------------------------------------------------------
 # json member for template
 # {{book.id}},{{book.price}},{{book.author}},{{book.filename}},{{book.filepath}}
+
