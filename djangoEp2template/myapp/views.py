@@ -268,6 +268,7 @@ def addproduct(request):
         json_format = json.dumps(items)
         # print(json_format)
        
+       
         return JsonResponse({"instance": json_format}, status=200)
        
     # except:
