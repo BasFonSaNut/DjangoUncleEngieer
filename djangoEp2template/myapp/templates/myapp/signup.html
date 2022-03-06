@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% block title %}
+SIGN UP
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $("#id_username").change(function () {
+      var form = $(this).closest("form");
+      $.ajax({
+        url: form.attr("data-validate-username-url"),
+        data: form.serialize(),
+        dataType: 'json',
+        success: function (data) {
+          if (data.is_taken) {
+            alert(data.error_message);
+          }
+        }
+      });
+
+    });
+  </script>
+  
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% comment %} 
+    //If validate all form put this at form tag
+    data-validate-username-url="{% url 'validate_username' %}" 
+    {% endcomment %}
+    <input type="text" name="username" id="id_username" class="js-validate-username">
+    <button type="submit">Sign up</button>
+  </form>
+{% endblock %}

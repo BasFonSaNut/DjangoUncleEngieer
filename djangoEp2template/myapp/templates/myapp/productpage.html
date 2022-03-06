@@ -1,13 +1,17 @@
 {% extends "myapp/layout.html" %}
+{% load static %}
 {% block title %}
-Add product
+ADD PRODUCT
 {% endblock %}
+
+
 
 {% block content %}
 
 <div class="container mt-2">
   <div>
-        <form method="POST" enctype="multipart/form-data">
+        <form id="addproduct-form">
+          {% comment %} enctype="multipart/form-data" {% endcomment %}
           {% csrf_token %}
          
           <div class="row g-2 mb-3">
@@ -87,10 +91,10 @@ Add product
         
         <div class="row g-2  mb-3">    
             <div class="col">
-             
-              <button type="submit" class="btn-secondary btn-group-sm">ADD</button>
-              <button type="submit" class="btn-secondary btn-group-sm">UPDATE</button>
-              <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+              <input type="submit" class="btn btn-primary" value="ADD" />
+              {% comment %} <button class="btn-secondary btn-group-sm" onclick="onaddcustomer()">ADD</button>
+              <button class="btn-secondary btn-group-sm">UPDATE</button>
+              <button class="btn-secondary btn-group-sm">DELETE</button> {% endcomment %}
 
             </div>
 
@@ -103,6 +107,13 @@ Add product
               </div>
 
             </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col" id="notify">
+                
+                <img src="{% static 'myapp/images/animate/pleasewait3.gif' %}" width="50%">
+              </col>  
+            </div>  
         </div>
 
       </form>
@@ -116,7 +127,7 @@ Add product
 <!-- display after add   -->
 <h3>สินค้าทั้งหมดในร้าน</h3>
 <div class="container mt-5">
-  <table class="table table-striped table-hover">
+  <table class="table table-striped table-hover" id="tb_product">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -161,5 +172,54 @@ Add product
 </div>
 
 {% endblock %}
+
+
+{% block javascript %}
+  <script>
+    $("#addproduct-form").submit(function (e) {
+      // preventing from page reload and default actions
+      e.preventDefault();
+      // serialize the data for sending the form data.
+      //var serializedData = $(this).serialize();
+      //console.log(serializedData)
+      // make POST ajax call
+      var formData = new FormData($("#addproduct-form")[0]); 
+      $.ajax({
+          type: 'POST',
+          url: "{% url 'addproduct' %}",
+          data: formData,
+          async: false, 
+          cache: false, 
+          contentType: false, 
+          processData: false, 
+          success: function (response) {
+              // on successfull creating object
+              // 1. clear the form.
+              $("#addproduct-form").trigger('reset');
+              // 2. focus to nickname input 
+              $("#name").focus();
+
+              // display the newly friend to table.
+              var instance = JSON.parse(response["instance"]);
+              var fields = instance[0]["fields"];
+              $("#tb_product tbody").prepend(
+                  `<tr>
+                  <td>${fields["name"]||""}</td>
+                  <td>${fields["author"]||""}</td>
+                  <td>${fields["price"]||""}</td>
+                  <td>${fields["quantity"]||""}</td>
+                  <td>${fields["unit"]||""}</td>
+                  </tr>`
+              )
+          },
+          error: function (response) {
+              // alert the error if any error occured
+              alert(response["responseJSON"]["error"]);
+          }
+      })
+  })
+
+  </script>
+{% endblock javascript%}
 
 
