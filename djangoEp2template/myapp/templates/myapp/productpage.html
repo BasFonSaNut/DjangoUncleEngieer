@@ -64,7 +64,7 @@ ADD PRODUCT
                 <div class="input-group mb-3">
                   <span class="input-group-text">มีในสต็อก</span>
                   <div class="input-group-text">
-                    <input class="form-check-input mt-0" type="checkbox" value="" id="instock" name="instock">
+                    <input class="form-check-input mt-0" type="checkbox"  id="instock" name="instock">
                   </div>
                  
                 </div>
@@ -91,10 +91,10 @@ ADD PRODUCT
         
         <div class="row g-2  mb-3">    
             <div class="col">
-              <input type="submit" class="btn btn-primary" value="ADD" />
-              {% comment %} <button class="btn-secondary btn-group-sm" onclick="onaddcustomer()">ADD</button>
-              <button class="btn-secondary btn-group-sm">UPDATE</button>
-              <button class="btn-secondary btn-group-sm">DELETE</button> {% endcomment %}
+              {% comment %} <input type="submit" class="btn btn-primary" value="ADD" /> {% endcomment %}
+              <button class="btn-secondary btn-group-sm" onclick="addclick()">ADD</button>
+              {% comment %} <button class="btn-secondary btn-group-sm">UPDATE</button>
+              <button class="btn-secondary btn-group-sm">DELETE</button>  {% endcomment %}
 
             </div>
 
@@ -119,10 +119,6 @@ ADD PRODUCT
       </form>
   </div>
 
-  
-    
-    
-   
 
 <!-- display after add   -->
 <h3>สินค้าทั้งหมดในร้าน</h3>
@@ -176,47 +172,52 @@ ADD PRODUCT
 
 {% block javascript %}
   <script>
-    $("#addproduct-form").submit(function (e) {
-      e.preventDefault();
-      var formData = new FormData($("#addproduct-form")[0]); 
-      $.ajax({
-          type: 'POST',
-          url: "{% url 'addproduct' %}",
-          data: formData,
-          async: false, 
-          cache: false, 
-          contentType: false, 
-          processData: false, 
-          success: function (response) {
-              // on successfull creating object
-              // 1. clear the form.
-              $("#addproduct-form").trigger('reset');
-              // 2. focus to nickname input 
-              $("#name").focus();
+  function addclick()
+  {  
+      $("#addproduct-form").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData($("#addproduct-form")[0]); 
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'addproduct' %}",
+            data: formData,
+            async: false, 
+            cache: false, 
+            contentType: false, 
+            processData: false, 
+            success: function (response) {
+                // on successfull creating object
+                // 1. clear the form.
+                $("#addproduct-form").trigger('reset');
+                // 2. focus to nickname input 
+                $("#name").focus();
 
-              // display the newly friend to table.
-              var instance = JSON.parse(response["instance"]);
-              
-              var fields = instance[0]["fields"];
-              console.log(fields["name"])
-              
-              $("#tb_product tbody").prepend(
-                  `<tr>
-                  <td>${fields["name"]||""}</td>
-                  <td>${fields["author"]||""}</td>
-                  <td>${fields["price"]||""}</td>
-                 
-                  </tr>`
-              )
-              
-          },
-          error: function (response) {
-              // alert the error if any error occured
-              alert(response["responseJSON"]["error"]);
-          }
-      })
-  })
-
+                // display the newly friend to table.
+                var instance = JSON.parse(response["instance"]);
+                
+                //alert(instance["id"])
+                /*
+                var fields = instance[0]["fields"];
+                console.log(fields)
+                */
+                $("#tb_product tbody").prepend(
+                    `<tr>
+                    <td>${instance["id"]}</td>
+                    <td>${instance["name"]}</td>
+                    <td>${instance["price"]}</td>
+                  
+                    </tr>`
+                )
+                
+                
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+    })
+  }
   </script>
 {% endblock javascript%}
 

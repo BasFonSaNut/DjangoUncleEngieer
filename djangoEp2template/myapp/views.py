@@ -2,6 +2,7 @@ import datetime
 from math import ceil
 # from itertools import product
 from multiprocessing import context
+from pickle import FALSE, TRUE
 from django.forms import JSONField
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -231,20 +232,22 @@ def addproduct(request):
         new.description = data.get('description')
         new.quantity = data.get('quantity')
         new.unit = data.get('unit')
-        # new.image = data.get('image')
-        if(data.get('instock') =='checked'):
+        
+        if data.get('instock') != None:
             new.instock = 1
-        else:
-            new.instock = 0    
+        else:  
+            new.instock = 0         
         # #################image management ##########################
         file_image = request.FILES['imageupload']
         file_image_name = request.FILES['imageupload'].name.replace(' ','')
+        new.imagefilename = file_image_name
+        new.imageurl = '../static/myapp/images/book/icon/'+file_image_name
         # print('file_image :',file_image)
         # print('filename :',file_image_name)
         fs = FileSystemStorage()
         filename = fs.save(file_image_name,file_image)
         upload_file_url = fs.url(filename)
-        print('upload_file_url :',upload_file_url)
+        # print('upload_file_url :',upload_file_url)
         new.image = upload_file_url[6:]
         
         # #################end image management ##########################
@@ -263,10 +266,10 @@ def addproduct(request):
             'name': name, 
             'price': price
             }
-            items.append(data)
+            # items.append(data)
             
-        json_format = json.dumps(items)
-        # print(json_format)
+        json_format = json.dumps(data)
+        print(json_format)
        
        
         return JsonResponse({"instance": json_format}, status=200)
@@ -274,7 +277,7 @@ def addproduct(request):
     # except:
     #     return JsonResponse({"error": 'Error'}, status=400)
         
-    # return JsonResponse({"error": ""}, status=400)
+    return JsonResponse({"error": ""}, status=400)
   
     # product = BookProduct.objects.all().order_by('id').reverse() #get all
     
