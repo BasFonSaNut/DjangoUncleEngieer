@@ -27,7 +27,8 @@ urlpatterns = [
     path('get/ajax/validate/nickname', views.checkNickName, name = "validate_nickname"),
     
     path("productpage/", views.productpage, name="productpage"),
-    path("post/ajax/addproduct/", views.addproduct, name="addproduct")
+    path("post/ajax/addproduct/", views.addproduct, name="addproduct"),
+    path("testconvert/",views.testconvert,name='testconvert')
     # re_path(r'^signup/$', views.SignUpView.as_view(), name='signup'),
     # re_path(r'^ajax/validate_username/$', views.validate_username, name='validate_username')
     # path("log/", views.log_message, name="log"),

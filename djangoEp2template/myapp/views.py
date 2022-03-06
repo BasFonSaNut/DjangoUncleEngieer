@@ -20,15 +20,13 @@ from django.http import JsonResponse,HttpRequest
 
 from django.core import serializers
 
-class create_dict(dict): 
-  
-    # __init__ function 
-    def __init__(self): 
-        self = dict() 
-          
-    # Function to add key:value 
-    def add(self, key, value): 
-        self[key] = value
+class Needed(object):
+    def __init__(self, name, number):
+      self.name = name
+      self.number = number
+
+    def to_dict(self):
+      return {"name": self.name, "number": self.number}
         
 # Create your views here.
 # def home(request):
@@ -194,6 +192,34 @@ def register(request):
     context ={'users':users} 
     return render(request, "myapp/register.html",context)
 
+def testconvert(request):
+    result = BookProduct.objects.all().order_by('id').reverse()[:1] 
+    # print(type(result))
+    for item in result.iterator():
+        id = item.id
+        name = item.name
+        price = item.price
+        # print(id,name,price)
+    items = []
+    data =  {
+        'id': id, 
+        'name': name, 
+        'price': price
+        }
+    items.append(data)
+    json_format = json.dumps(items)
+    print(json_format)
+    # print(type(items))
+    
+    
+    # results = [obj.to_dict() for obj in items]
+    # results.sort(key=lambda obj: obj["id"])
+    # jsdata = json.dumps({"results": results})
+    # print(jsdata)
+    
+    context={'data' : items }    
+    return render(request, "myapp/testconvert.html",context)    
+        
 def addproduct(request):
     if request.method == 'POST' and request.FILES['imageupload']:
         # print(data)
@@ -223,23 +249,26 @@ def addproduct(request):
         
         # #################end image management ##########################
         new.save()
-        # result = BookProduct.objects.all().order_by('id').reverse() #get one
-        # mydict = create_dict()
-        # for row in result:
-        #     mydict.add(row['id'],({"name":row['name'],"author":row['author'],"price":row['price']}))
+        result = BookProduct.objects.all().order_by('id').reverse()[:1] #get one
         
-        # stud_json = json.dumps(mydict, indent=2, sort_keys=True)
-
-        # for row in toprow:
-        #     print(row['id'])
-        # print('id':toprow['id'],'name':toprow['name'],'author':toprow['author'],'price':toprow['price'],'quantity':toprow['quantity'],'unit':toprow['unit'])
+        items = []
+        for item in result.iterator():
+            id = item.id
+            name = item.name
+            price = item.price
+            # print(id,name,price)
         
-        # print(jsonreturn) 
-        
-        jsontmp = {'id':"2",'name':data.get('name'),'author':data.get('author'), \
-         'price':data.get('price'),'quantity':data.get('quantity'),'unit':data.get('unit')}
+            data =  {
+            'id': id, 
+            'name': name, 
+            'price': price
+            }
+            items.append(data)
+            
+        json_format = json.dumps(items)
+        # print(json_format)
        
-        return JsonResponse({"instance": jsontmp}, status=200)
+        return JsonResponse({"instance": json_format}, status=200)
        
     # except:
     #     return JsonResponse({"error": 'Error'}, status=400)

@@ -1,0 +1,16 @@
+{% extends "myapp/layout.html" %}
+{% block title %}
+test
+{% endblock %}
+
+{% block content %}
+
+{% for item in data %}
+     <div>
+        <p>{{ item.id }}</p>
+        <p>{{ item.name }}</p>
+        <p>{{ item.price }}</p>
+
+     </div>
+  {% endfor %}
+{% endblock %}
