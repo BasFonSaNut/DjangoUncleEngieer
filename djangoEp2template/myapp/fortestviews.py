@@ -11,7 +11,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import ListView
 from .forms import LogMessageForm,GeeksForm,FriendForm
-from .models import Allproduct,LogMessage,Friend,BookProduct
+from .models import LogMessage,Friend,BookProduct
 from django.contrib.auth.models import User
 
 from django.core.files.storage import FileSystemStorage
@@ -46,13 +46,13 @@ def testconvert(request):
     # print(type(result))
     for item in result.iterator():
         id = item.id
-        name = item.name
+        bookname = item.bookname
         price = item.price
         # print(id,name,price)
     items = []
     data =  {
         'id': id, 
-        'name': name, 
+        'bookname': bookname, 
         'price': price
         }
     items.append(data)
@@ -131,11 +131,6 @@ def about(request):
 def contact(request):
     return render(request, "myapp/contact.html")   
 
-
-def getAllproduct(request):
-    product = Allproduct.objects.all() #get all
-    context ={'product':product} #dictionary
-    return render(request,'myapp/allproduct.html',context)
 
 
 def displaylog(request):

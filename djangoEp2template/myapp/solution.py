@@ -30,7 +30,7 @@ with open('../static/myapp/data/books.json', "w", encoding="utf-8") as file:
     i=1
     for row in onlyfiles:
         (author,price) = random_author_price()
-        textline = '{"id":"'+str(i)+'","filename":"'+row+'","filepath":"myapp/images/book/icon/'+row+'","author":"' \
+        textline = '{"id":"'+str(i)+'","imagefilename":"'+row+'","imageurl":"myapp/images/book/icon/'+row+'","author":"' \
             +author+'","price":"'+str(price)+'"},\n'
         file.write(textline)
         i+=1

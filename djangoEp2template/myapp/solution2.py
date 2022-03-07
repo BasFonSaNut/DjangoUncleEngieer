@@ -75,4 +75,3 @@ conn.close()
 with open('../static/myapp/data/books.json',"w", encoding="utf-8") as f:
     f.write(jsontext)
 f.close()
-

@@ -30,24 +30,11 @@ class Alluser(models.Model):
     password = models.CharField(max_length=500,null=True,blank=True)
 
     def __self__(self):
-        return self.name
-    
-class Allproduct(models.Model):
-    name=models.CharField(max_length=100)
-    price=models.CharField(max_length=100)
-    description = models.CharField(max_length=500,null=True,blank = True)
-    imageurl = models.CharField(max_length=500,null=True,blank=True)
-    instock = models.BooleanField(default=True)
-    unit = models.CharField(max_length=200,default='-')
-    quantity = models.IntegerField(default=1)
-    image = models.ImageField(upload_to="products",null=True,blank=True)
-    
-    def __self__(self):
-        return self.name
-    
+        return self.firstname
+
     
 class BookProduct(models.Model):
-    name=models.CharField(max_length=100)
+    bookname=models.CharField(max_length=100)
     price=models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     description = models.CharField(max_length=500,null=True,blank = True)
@@ -59,10 +46,10 @@ class BookProduct(models.Model):
     image = models.ImageField(upload_to="products",null=True,blank=True)
     
     def __self__(self):
-        return self.name
+        return self.bookname
     
 class Employee(models.Model):
-    name = models.CharField(max_length=50)
+    bookname = models.CharField(max_length=50)
     emp_image = models.ImageField(upload_to='upload/')
 
 class Userregister(models.Model):

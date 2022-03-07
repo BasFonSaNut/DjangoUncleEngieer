@@ -170,7 +170,7 @@ def addproduct(request):
         # print(data)
         data = request.POST.copy()
         new = BookProduct()
-        new.name = data.get('name')
+        new.bookname = data.get('bookname')
         new.author = data.get('author')
         new.price = data.get('price')
         new.description = data.get('description')
@@ -185,7 +185,7 @@ def addproduct(request):
         file_image = request.FILES['imageupload']
         file_image_name = request.FILES['imageupload'].name.replace(' ','')
         new.imagefilename = file_image_name
-        new.imageurl = '../static/myapp/images/book/icon/'+file_image_name
+        new.imageurl = 'myapp/images/book/icon/'+file_image_name
         # print('file_image :',file_image)
         # print('filename :',file_image_name)
         fs = FileSystemStorage()
@@ -202,7 +202,7 @@ def addproduct(request):
         # convert list to dict
         for item in result.iterator():
             id = item.id
-            name = item.name
+            bookname = item.bookname
             author = item.author
             price = item.price
             quantity = item.quantity
@@ -211,7 +211,7 @@ def addproduct(request):
         
             data =  {
             'id': id, 
-            'name': name, 
+            'bookname': bookname, 
             'author':author,
             'price': price,
             'quantity': quantity,

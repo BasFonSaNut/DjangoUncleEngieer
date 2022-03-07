@@ -1,15 +1,11 @@
 from django import forms
-from .models import LogMessage,Employee,Allproduct,BookProduct,GeeksModel,Userregister,Friend
+from .models import LogMessage,Employee,BookProduct,GeeksModel,Userregister,Friend
 import datetime
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Allproduct
-        fields = ['name', 'price','description','imageurl','instock','unit','quantity','image']  # NOTE: the trailing comma is required
         
 class BookProductForm(forms.ModelForm):
     class Meta:
         model = BookProduct
-        fields = ['name', 'price','author','description','imageurl','imagefilename','instock','unit','quantity','image']  # NOTE: the trailing comma is required
+        fields = ['bookname', 'price','author','description','imageurl','imagefilename','instock','unit','quantity','image']  # NOTE: the trailing comma is required
     
 class LogMessageForm(forms.ModelForm):
     class Meta:

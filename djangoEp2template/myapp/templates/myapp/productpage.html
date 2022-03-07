@@ -19,7 +19,7 @@ ADD PRODUCT
               
               <div class="input-group mb-1">
                 <span class="input-group-text">ชื่อหนังสือ</span>
-                <input type="text" class="form-control" placeholder="book name" id="name" name="name">
+                <input type="text" class="form-control" placeholder="book name" id="bookname" name="bookname">
               </div>
 
             </div>
@@ -153,7 +153,7 @@ ADD PRODUCT
       {% for book in Books %}
       <tr>
         <th scope="row">{{book.id}}</th>
-        <td>{{book.name}}</td>
+        <td>{{book.bookname}}</td>
         <td>{{book.author}}</td>
         <td>{{book.price}}</td>
         <td>{{book.quantity}}</td>
@@ -219,7 +219,7 @@ ADD PRODUCT
                 $("#tb_product tbody").prepend(
                   `<tr>
                     <td>${instance["id"]}</td>
-                    <td>${instance["name"]}</td>
+                    <td>${instance["bookname"]}</td>
                     <td>${instance["author"]}</td>
                     <td>${instance["price"]}</td>
                     <td>${instance["quantity"]}</td>

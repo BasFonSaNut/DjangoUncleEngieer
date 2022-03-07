@@ -27,9 +27,11 @@ HOME
       {% for book in books %}
       <div class="col">
         <div class="p-3 border bg-light">
-          <img src="../static/myapp/images/book/icon/{{book.filename}}" class="card-img-top book" alt="...">
-          <p class='price-home'>ราคา : {{book.price}}</p> 
-          <p class='price-home'>id : {{book.id}}</p>
+          <img src="../static/{{book.imageurl}}" class="card-img-top book" alt="...">
+          <p class='btn-secondary'>
+          ชื่อหนังสือ : {{book.bookname}} <br>
+          ราคา : {{book.price}}
+        </p> 
         </div>
       </div>
       {% endfor %}
