@@ -186,6 +186,7 @@ def addproduct(request):
         file_image_name = request.FILES['imageupload'].name.replace(' ','')
         new.imagefilename = file_image_name
         new.imageurl = 'myapp/images/book/icon/'+file_image_name
+        #  ขึ้น server ../static/myapp/images/book/icon/
         # print('file_image :',file_image)
         # print('filename :',file_image_name)
         fs = FileSystemStorage()
