@@ -118,6 +118,7 @@ def postFriend(request):
         
 def home(request):
     with open('static/myapp/data/books.json') as f:
+        # ขึ้นระบบจริงใช้ real path '/home/ajaxjson/djangoEp2template/static/myapp/data/books.json
         jsondata = json.load(f)
         top10 = jsondata[:10]
         totalrecord = len(jsondata)
@@ -182,6 +183,7 @@ def addproductpaging(request, pageno=None):
     
 def pagingitem(request, pageno=None):
     with open('static/myapp/data/books.json') as f:
+        # '/home/ajaxjson/djangoEp2template/static/myapp/data/books.json
         jsondata = json.load(f)
         top10 = jsondata[:10]
         totalrecord = len(jsondata)
