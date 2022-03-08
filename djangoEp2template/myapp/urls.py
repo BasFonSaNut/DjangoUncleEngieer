@@ -9,23 +9,18 @@ from myapp import views
 #     postFriend, 
 # )
     
-# home_list_view = views.HomeListView.as_view(
-#     queryset=LogMessage.objects.order_by("-log_date")[:5],  # :5 limits the results to the five most recent
-#     context_object_name="message_list",
-#     template_name="myapp/displaylog.html",
-# )
 
 urlpatterns = [
     path('', views.home, name="home"),
-    path("login/", views.login, name="login"),
     path("register/", views.register, name="register"),
+    
     path("pagingitem/<int:pageno>",views.pagingitem,name="pagingitem"),
     path("addproductpaging/<int:pageno>",views.addproductpaging,name="addproductpaging"),
     path("productpage/", views.productpage, name="productpage"),
     path("post/ajax/addproduct/", views.addproduct, name="addproduct"),
     
-    # path("about/", fortestviews.about, name="about"),
-    # path("contact/", fortestviews.contact, name="contact"),
+    path("aboutus/", views.aboutus, name="aboutus"),
+    path("contact/", views.contact, name="contact"),
     # path('addfriend', fortestviews.indexView,name="indexView"),
     # path('post/ajax/friend', fortestviews.postFriend, name = "post_friend"),
     # path('get/ajax/validate/nickname', fortestviews.checkNickName, name = "validate_nickname"),

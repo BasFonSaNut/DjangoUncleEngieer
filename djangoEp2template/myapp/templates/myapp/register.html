@@ -4,54 +4,59 @@ Add product
 {% endblock %}
 
 {% block content %}
-
-<div class="container mt-3">
-    <h2>เพิ่มรายชื่อสมาชิก</h2>
+<h2>สมัครสมาชิก</h2>
+<div class="container mt-2">
+  <div>
     
     <form method="POST">
         {% csrf_token %}
-      <div class="mb-3 mt-3">
-        <label for="first_name">first name:</label>
-        <input type="text" class="form-control" id="first_name" placeholder="Enter firstname" name="first_name">
-      </div>
-
-      <div class="mb-3">
-        <label for="last_name">lastname:</label>
-        <input type="text" class="form-control" id="last_name" placeholder="Enter lastname" name="last_name">
-      </div>
-
-      <div class="mb-3">
-        <label for="email">email:</label>
-        <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
-      </div>
-
-      <div class="mb-3">
-        <label for="password">password:</label>
-        <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-  </div>
-
-<!-- display after add   -->
-<h3>USER</h3>
-<div class="container mt-5">
-    <div class="row">
-     
-    {% for user in users %}
-    <div class="col-sm-4">
-    <div class="card">
-        <div class="card-body">
-          <h4 class="card-title"><h1>{{user.first_name}}</h1></h4>
-          <p class="card-text">{{user.last_name}}</p>
-          <p class="card-text">{{user.email}}</p>
-          <p class="card-text">{{user.password}}</p>
+        <div class="row g-2 mb-1">
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">Username:</span>
+              <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+            </div>
+          </div>
+  
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">Password:</span>
+              <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+            </div>
         </div>
       </div>
-    </div>
-    {% endfor %}
 
-</div>
+        <div class="row g-2 mb-1">
+            <div class="col">
+              <div class="input-group mb-1">
+                <span class="input-group-text">Firstname:</span>
+                <input type="text" class="form-control" id="first_name" placeholder="Enter firstname" name="first_name">
+              </div>
+            </div>
+
+            <div class="col">
+                <div class="input-group mb-1">
+                  <span class="input-group-text">Lastname:</span>
+                    <input type="text" class="form-control" id="last_name" placeholder="Enter lastname" name="last_name">
+                </div>
+            </div>
+      </div>
+
+     
+
+      <div class="row g-2 mb-1">
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">Email:</span>
+              <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
+            </div>
+          </div>
+
+          <div class="col">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+      </div>
+  </form>
 </div>
 
 {% endblock %}

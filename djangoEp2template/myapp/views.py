@@ -1,17 +1,19 @@
 from math import ceil
-from multiprocessing import context
-from pickle import FALSE, TRUE
-from django.forms import JSONField
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import BookProduct
+from .models import BookProduct,Profile
 from django.contrib.auth.models import User
-from django.core.files.storage import FileSystemStorage
-import json
-from django.shortcuts import HttpResponse
-from django.http import JsonResponse,HttpRequest
+from django.contrib.auth import authenticate,login
 
+from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
+import json
+def aboutus(request):
+    return render(request,'myapp/aboutus.html')
+
+def contact(request):
+    return render(request,'myapp/contact.html')
+    
 def productpage(request):
     Books = BookProduct.objects.all().order_by('id').reverse() #get all
     top10 = BookProduct.objects.all().order_by('id').reverse()[:10]
@@ -24,7 +26,7 @@ def productpage(request):
     
     return render(
         request,
-        'myapp/addproductpaging.html',
+        'myapp/productpage.html',
         {
             'Books':top10,
             'totalrecord':totalrecord,
@@ -57,6 +59,8 @@ def home(request):
     return render(request,"myapp/home.html",context)
 
 def addproductpaging(request, pageno=None):
+    if request.user.profile.usertype != 'admin':
+        redirect('home')
     # input last ,show first
     # .order_by('id').reverse()
     Books = BookProduct.objects.all().order_by('id').reverse() #get all
@@ -143,29 +147,35 @@ def pagingitem(request, pageno=None):
         }
     )
 
-
-def login(request):
-    return render(request,"myapp/login.html")
-
-
 def register(request):
+    
     if request.method == 'POST':
         data = request.POST.copy()
         newuser = User()
-        newuser.username = data.get('email')
+        newuser.username = data.get('username')
         newuser.email = data.get('email')
         newuser.first_name = data.get('first_name')
         newuser.last_name = data.get('last_name')
         newuser.set_password(data.get('password'))
         newuser.save()
         
-    users = User.objects.all().order_by('id').reverse() #get all
-    # input last ,show first
-    # .order_by('id').reverse()
-    context ={'users':users} 
-    return render(request, "myapp/register.html",context)
+        profile = Profile()
+        profile.user = User.objects.get(username=data.get('username'))
+        profile.save()
+        
+        # from django.contrib.auth import authenticate,login ,for auto login after register
+        user = authenticate(username=data.get('username'),password=data.get('password'))
+        login(request,user)
+        # home(request)
+        # users = User.objects.all().order_by('id').reverse() #get all
+        # input last ,show first
+        # .order_by('id').reverse()
+        # context ={'users':users} 
+    return render(request, "myapp/register.html")
  
 def addproduct(request):
+    if request.user.profile.usertype != 'admin':
+        redirect('home')
     if request.method == 'POST' and request.FILES['imageupload']:
         # print(data)
         data = request.POST.copy()

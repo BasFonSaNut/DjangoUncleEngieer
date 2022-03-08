@@ -29,37 +29,90 @@
                 <h1 class="display-4 fw-normal">ร้าน "พี่ต้น" (PYTHON)</h1>
                 <p class="fs-5 text-muted">ใดๆ ในโลกนี้ พี่ต้น ทำให้ได้</p>
               <div>
-                <nav class="d-inline-flex mt-3 mt-md-0 ms-md-auto">
-                  <a href="{% url 'home' %}" class="me-3 py-2 text-dark text-decoration-none">HOME</a>
-                  {% comment %} <a href="{% url 'indexView' %}" class="me-3 py-2 text-dark text-decoration-none">Addfriend</a> {% endcomment %}
-                  {% comment %} <a href="{% url 'contact' %}" class="me-3 py-2 text-dark text-decoration-none">CONTACT</a> {% endcomment %}
-                  {% comment %} <a href="{% url 'about' %}" class="me-3 py-2 text-dark text-decoration-none">ABOUT</a> {% endcomment %}
-                  {% if user.is_authenticated %}
-                        <a href="{% url 'productpage' %}" class="me-3 py-2 text-dark text-decoration-none">ADD PRODUCT</a>
-                    {% else %}    
-                        <a href="{% url 'register' %}" class="me-3 py-2 text-dark text-decoration-none">REGISTER</a>
-                    {% endif %}   
-                    
-                    <form class="d-flex">
-                      <div class="input-group input-group-sm mb-3">
-                        
-                        <span class="input-group-text" id="basic-addon2">
-                          <button class="btn-secondary btn-group-sm" type="submit">Search</button>
-                          <i class="fa-solid fa-magnifying-glass"></i>
-                          
-                        </span>
-                        <input type="text" class="form-control" placeholder="ยังใช้งานไม่ได้">
-                      </div>
-                      
-                    </form>
-                </nav>
-              </div>  
-            </div>
-
-            {% comment %} <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom"> {% endcomment %}
-              
-            {% comment %} </div> {% endcomment %}
           </header>
+
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Python</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">HOME</a>
+                    
+                  </li>
+                  {% if user.is_authenticated and  user.profile.usertype == 'admin' %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'productpage' %}">ADD PRODUCT</a>
+                  </li>
+                  {% endif %}
+
+
+                  {% if not user.is_authenticated %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'register' %}">REGISTER</a>
+                    </li>
+                  {% endif %} 
+
+
+                  {% if user.is_authenticated %} 
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'logout' %}">LOGOUT</a>
+                    </li>
+                  {% endif %}  
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">CONTACT</a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'aboutus' %}">ABOUT US</a>
+                  </li>
+
+              
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Book Category
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#">Python</a></li>
+                      <li><a class="dropdown-item" href="#">React</a></li>
+                      <li><a class="dropdown-item" href="#">Svelte</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                  </li>
+                </ul>
+                <form class="d-flex">
+                  <div class="input-group input-group-sm mb-3">
+                        
+                    <span class="input-group-text" id="basic-addon2">
+                      <button class="btn-secondary btn-group-sm" type="submit">Search</button>
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                      
+                    </span>
+                    <input type="text" class="form-control" placeholder="ยังใช้งานไม่ได้">
+                  </div>
+                  
+                </form>
+              </div>
+            </div>
+            {% if user.is_authenticated %}
+            <p class='btn-secondary'>สวัสดี {{user.first_name}}[{{user.profile.usertype}}]</p>
+            <img src="{{user.profile.photo.url}}" class="rounded-circle" width="3%">
+            
+           {%endif%}
+          </nav>
      
       {% block content %}
 
