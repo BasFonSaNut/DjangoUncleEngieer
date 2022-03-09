@@ -14,6 +14,7 @@ urlpatterns = [
     
     path("aboutus/", views.aboutus, name="aboutus"),
     path("contact/", views.contact, name="contact"),
+    path('AddtoCart/<int:bid>', AddtoCart, name='addtocart-page')
     # path('addfriend', fortestviews.indexView,name="indexView"),
     # path('post/ajax/friend', fortestviews.postFriend, name = "post_friend"),
     # path('get/ajax/validate/nickname', fortestviews.checkNickName, name = "validate_nickname"),

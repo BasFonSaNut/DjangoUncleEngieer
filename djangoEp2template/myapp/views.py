@@ -1,7 +1,7 @@
 from math import ceil
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import BookProduct,Profile
+from .models import BookProduct,Profile,Cart
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from django.http import JsonResponse
@@ -235,16 +235,24 @@ def addproduct(request):
         json_format = json.dumps(data)
         # print(json_format)
         return JsonResponse({"instance": json_format}, status=200)
-       
-    # except:
-    #     return JsonResponse({"error": 'Error'}, status=400)
         
     return JsonResponse({"error": ""}, status=400)
   
-    # product = BookProduct.objects.all().order_by('id').reverse() #get all
+def AddtoCart(request,bid):
+    username = request.user.username
+    user = User.objects.get(username=username)
+    check = BookProduct.objects.get(id=bid)
+    
+    newCart = Cart()
+    newCart.user = user
+    newCart.bookid = bid
+    newCart.bookname = check.bookname
+    newCart.price = check.price
+    newCart.quantity = 1
+    calculate = check.price * 1
+    newCart.total = calculate
+    newCart.save()
+    return redirect('home')
     
     
-    # input last ,show first
-    # .order_by('id').reverse()
-    # context ={'product':product} 
-    # return render(request, "myapp/addproduct.html",context)
+    

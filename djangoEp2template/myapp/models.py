@@ -55,7 +55,8 @@ class Cart(models.Model):
     total = models.IntegerField(default=0)
     stamp = models.DateTimeField(auto_now_add=True)
     
-    
+    def __self__(self):
+        return self.stamp
     
 class Employee(models.Model):
     bookname = models.CharField(max_length=50)

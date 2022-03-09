@@ -33,7 +33,7 @@ HOME
           ราคา : {{book.price}} <br>
           {% comment %} if json use  if book.instock == '1''{% endcomment %}
           {% if book.instock == True %}
-          <button type="button" class="btn-success btn-sm">Order</button>
+          <a href="{% url 'addtocart-page' pd.id %}" class="btn-success btn-sm">Order</button>
           {% else %}
           <button type="button" class="btn-warning btn-sm">PreOrder</button>
         {% endif %}
