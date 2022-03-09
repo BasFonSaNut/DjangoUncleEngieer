@@ -44,6 +44,18 @@ class BookProduct(models.Model):
             
     def __self__(self):
         return self.bookname
+
+class Cart(models.Model):
+    # who order
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    bookid = models.CharField(max_length=100)
+    bookname = models.CharField(max_length=100)
+    price = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0)
+    total = models.IntegerField(default=0)
+    stamp = models.DateTimeField(auto_now_add=True)
+    
+    
     
 class Employee(models.Model):
     bookname = models.CharField(max_length=50)
