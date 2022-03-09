@@ -37,15 +37,22 @@ def productpage(request):
     
 
 def home(request):
-    with open('static/myapp/data/books.json') as f:
+    # with open('static/myapp/data/books.json') as f:
         # ขึ้นระบบจริงใช้ real path '/home/ajaxjson/djangoEp2template/static/myapp/data/books.json
-        jsondata = json.load(f)
-        top10 = jsondata[:10]
-        totalrecord = len(jsondata)
-        totalpage = ceil(totalrecord/10)
-        currentpage = 1
-        previousPage = 1
-        nextPage = 1
+        # jsondata = json.load(f)
+        # # output_dict = [x for x in jsondata if x['quantity'] > '10']  json filter
+        # top10 = jsondata[:10]
+        # totalrecord = len(jsondata)
+        # totalpage = ceil(totalrecord/10)
+    # top10 = BookProduct.objects.filter(instock=False)
+    # preorder = BookProduct.objects.filter(quantity__lt=0)#less than ,gt greater than
+    # preorder = BookProduct.objects.filter(quantity__lte=0) #less than or equal
+    top10 = BookProduct.objects.all().order_by('id').reverse()[:10]
+    totalrecord = BookProduct.objects.all().count()
+    totalpage = ceil(totalrecord/10)
+    currentpage = 1
+    previousPage = 1
+    nextPage = 1
     context = {
             'books':top10,
             'totalrecord':totalrecord,
@@ -103,34 +110,37 @@ def addproductpaging(request, pageno=None):
     )
     
 def pagingitem(request, pageno=None):
-    with open('static/myapp/data/books.json') as f:
-        # '/home/ajaxjson/djangoEp2template/static/myapp/data/books.json
-        jsondata = json.load(f)
-        top10 = jsondata[:10]
-        totalrecord = len(jsondata)
-        totalpage = ceil(totalrecord/10)
-        currentpage = pageno
-        previousPage = 1
-        nextPage = 1
-        startrecord = 1
-        endrecord = 10
+    # with open('static/myapp/data/books.json') as f:
+    #     # '/home/ajaxjson/djangoEp2template/static/myapp/data/books.json
+    #     jsondata = json.load(f)
+    #     top10 = jsondata[:10]
+    #     totalrecord = len(jsondata)
+    top10 = BookProduct.objects.all().order_by('id').reverse()[:10]
+    totalrecord = BookProduct.objects.all().count()
+    totalpage = ceil(totalrecord/10)
+    currentpage = pageno
+    previousPage = 1
+    nextPage = 1
+    startrecord = 1
+    endrecord = 10
+    
+    if(pageno == 1):
+        # top10 = jsondata[:10]
+        top10 = BookProduct.objects.all().order_by('id').reverse()[:10]
+    else:
+        startrecord = (pageno-1) * 10
+        endrecord = startrecord+10
+        # top10 = jsondata[startrecord:endrecord]   
+        top10 = BookProduct.objects.all().order_by('id').reverse()[startrecord:endrecord]            
+    if(pageno>1):
+        previousPage = pageno-1
+    else:
+        previousPage = totalpage
         
-        if(pageno == 1):
-            top10 = jsondata[:10]
-        else:
-            startrecord = (pageno-1) * 10
-            endrecord = startrecord+10
-            top10 = jsondata[startrecord:endrecord]   
-                     
-        if(pageno>1):
-            previousPage = pageno-1
-        else:
-            previousPage = totalpage
-            
-        if(pageno<totalpage):
-            nextPage = pageno+1
-        else:
-            nextPage = 1    
+    if(pageno<totalpage):
+        nextPage = pageno+1
+    else:
+        nextPage = 1    
    
     return render(
         request,
@@ -185,10 +195,13 @@ def addproduct(request):
         new.quantity = data.get('quantity')
         new.unit = data.get('unit')
         # new.instock = data.get('instock')
+        instockword = ''
         if data.get('instock') != None:
              new.instock = True
+             instockword = 'มีสินค้า'
         else:  
             new.instock = False 
+            instockword = 'สินค้าหมด'
             
         new.image = request.FILES['imageupload']            
         new.save()
@@ -203,6 +216,7 @@ def addproduct(request):
             price = item.price
             quantity = item.quantity
             unit = item.unit
+            
             # print(id,name,price)
         
             data =  {
@@ -211,7 +225,9 @@ def addproduct(request):
             'author':author,
             'price': price,
             'quantity': quantity,
-            'unit' : unit
+            'unit' : unit,
+            'instock' : instockword
+            
             }
         # items.append(data) use later in case multiple records
         

@@ -146,6 +146,7 @@ ADD PRODUCT
         <th scope="col">Price</th>
         <th scope="col">Quantity</th>
         <th scope="col">Unit</th>
+        <th scope="col">Instock</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -158,7 +159,11 @@ ADD PRODUCT
         <td>{{book.price}}</td>
         <td>{{book.quantity}}</td>
         <td>{{book.unit}}</td>
-        
+        {% if book.instock == True %}
+        <td>มีสินค้า</td>
+        {% else %}
+        <td>สินค้าหมด</td>
+        {% endif %}
         <td> 
           <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
           <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
@@ -224,6 +229,7 @@ ADD PRODUCT
                     <td>${instance["price"]}</td>
                     <td>${instance["quantity"]}</td>
                     <td>${instance["unit"]}</td>
+                    <td>${instance["instock"]}</td>
                   
                     <td> 
                       <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>

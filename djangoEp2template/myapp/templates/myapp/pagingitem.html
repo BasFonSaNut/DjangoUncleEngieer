@@ -30,7 +30,13 @@ HOME
           <img src="../media/{{book.image}}" class="card-img-top book" alt="...">
           <p class='btn-secondary'>
             ชื่อหนังสือ : {{book.bookname}} <br>
-            ราคา : {{book.price}}
+            ราคา : {{book.price}}<br>
+             {% comment %} if json use  if book.instock == '1''{% endcomment %}
+            {% if book.instock == True %}
+            <button type="button" class="btn-success btn-sm">Order</button>
+            {% else %}
+            <button type="button" class="btn-sm btn-warning">PreOrder</button>
+          {% endif %}
           </p> 
         </div>
       </div>
