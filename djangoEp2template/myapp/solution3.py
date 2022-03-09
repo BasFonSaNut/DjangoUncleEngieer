@@ -38,6 +38,17 @@ conn = sqlite3.connect("../db.sqlite3") # change to 'sqlite:///your_filename.db'
 cur = conn.cursor()
 with conn:    
     cur = conn.cursor()    
-    cur.execute("UPDATE myapp_bookproduct SET image = 'book/'||imagefilename")        
+    cur.execute("UPDATE myapp_bookproduct SET image = 'books/'||imagefilename")        
     
 conn.close() 
+
+#tip select date range sqlite
+# start_of_day_date = ...
+# now_date ...
+# p = Information.objects.filter(
+#     dat__range=(start_of_day_date, now_date),
+# )
+# for i in p:
+#     print(p)
+
+#cp * /home/ajaxjson/djangoEp2template/media/books

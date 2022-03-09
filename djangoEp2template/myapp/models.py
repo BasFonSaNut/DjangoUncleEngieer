@@ -1,12 +1,7 @@
-from email.policy import default
-from pickle import FALSE
-from pyexpat import model
 from django.db import models
-# Create your models here.
-from django.utils import timezone
 from django.contrib.auth.models import User
-#load image libray PiL to resize uploaded image
 from PIL import Image 
+# import Image
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="photoprofile/",null=True,blank=True,default='default.png')
@@ -54,22 +49,7 @@ class Employee(models.Model):
     bookname = models.CharField(max_length=50)
     emp_image = models.ImageField(upload_to='upload/')
 
-    
-class LogMessage(models.Model):
-    message = models.CharField(max_length=300)
-    # log_date = models.DateTimeField("date logged")
-    log_date = models.CharField(max_length=100,null=FALSE,blank=FALSE)
-    def __str__(self):
-        """Returns a string representation of a message."""
-        date = timezone.localtime(self.log_date)
-        return f"'{self.message}' logged on {date.strftime('%A, %d %B, %Y at %X')}"
         
-class GeeksModel(models.Model):
-    title = models.CharField(max_length = 200)
-    img = models.ImageField(upload_to = "images/")
- 
-    def __str__(self):
-        return self.title    
 
 class Friend(models.Model):
     # NICK NAME should be unique

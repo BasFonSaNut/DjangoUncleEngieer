@@ -4,8 +4,6 @@ from django.http import HttpResponse
 from .models import BookProduct,Profile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
-
-from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 import json
 def aboutus(request):

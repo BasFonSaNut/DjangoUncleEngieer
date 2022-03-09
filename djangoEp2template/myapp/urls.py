@@ -1,14 +1,7 @@
 from django.urls import path
-from . import views
-from .models import LogMessage
-#from .views import home,about,contact,log_message,hello_there,addproduct
+
 from myapp import views
-# from myapp import fortestviews
-# from myapp.views import (
-#     indexView,
-#     postFriend, 
-# )
-    
+   
 
 urlpatterns = [
     path('', views.home, name="home"),
