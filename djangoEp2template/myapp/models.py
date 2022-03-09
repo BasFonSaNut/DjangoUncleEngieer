@@ -5,12 +5,22 @@ from django.db import models
 # Create your models here.
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+#load image libray PiL to resize uploaded image
+from PIL import Image 
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="photoprofile/",null=True,blank=True,default='default.png')
     usertype = models.CharField(max_length=100,default='member')
     
+    def save(self):
+        super().save()  # saving image first
+        img = Image.open(self.photo.path) # Open image using self
+
+        if img.height > 260 or img.width > 171:
+            new_img = (260, 171)
+            img.thumbnail(new_img)
+            img.save(self.photo.path)  # saving image at the same path
+            
     def __str__(self):
         return self.user.first_name
     
@@ -43,8 +53,17 @@ class BookProduct(models.Model):
     instock = models.BooleanField(default=True)
     unit = models.CharField(max_length=200,default='-')
     quantity = models.IntegerField(default=1)
-    image = models.ImageField(upload_to="products/",null=True,blank=True)
+    image = models.ImageField(upload_to="books/",null=True,blank=True)
     
+    def save(self):
+        super().save()  # saving image first
+        img = Image.open(self.image.path) # Open image using self
+
+        if img.height > 260 or img.width > 171:
+            new_img = (171, 260)
+            img.thumbnail(new_img)
+            img.save(self.image.path)  # saving image at the same path
+            
     def __self__(self):
         return self.bookname
     

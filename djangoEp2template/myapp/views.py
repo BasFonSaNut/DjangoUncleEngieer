@@ -186,26 +186,13 @@ def addproduct(request):
         new.description = data.get('description')
         new.quantity = data.get('quantity')
         new.unit = data.get('unit')
-        
+        # new.instock = data.get('instock')
         if data.get('instock') != None:
-            new.instock = 1
+             new.instock = True
         else:  
-            new.instock = 0         
-        # #################image management ##########################
-        file_image = request.FILES['imageupload']
-        file_image_name = request.FILES['imageupload'].name.replace(' ','')
-        new.imagefilename = file_image_name
-        new.imageurl = 'myapp/images/book/icon/'+file_image_name
-        #  ขึ้น server ../static/myapp/images/book/icon/
-        # print('file_image :',file_image)
-        # print('filename :',file_image_name)
-        fs = FileSystemStorage()
-        filename = fs.save(file_image_name,file_image)
-        upload_file_url = fs.url(filename)
-        # print('upload_file_url :',upload_file_url)
-        new.image = upload_file_url[6:]
-        
-        # #################end image management ##########################
+            new.instock = False 
+            
+        new.image = request.FILES['imageupload']            
         new.save()
         result = BookProduct.objects.all().order_by('id').reverse()[:1] #get one
         
