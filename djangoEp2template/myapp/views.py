@@ -245,17 +245,29 @@ def AddtoCart(request,bid):
     user = User.objects.get(username=username)
     check = BookProduct.objects.get(id=bid)
     
-    newCart = Cart()
-    newCart.user = user
-    newCart.bookid = bid
-    newCart.bookname = check.bookname
-    newCart.price = check.price
-    newCart.quantity = 1
-    calculate = check.price * 1
-    newCart.total = calculate
-    newCart.save()
-    return redirect('home-page')
-   
+    try:
+        if Cart.objects.filter(user=user,bookid=bid).exists():
+            #case mycart exist
+            newcart = Cart.objects.get(user=user,bookid=bid)
+            newquan = newcart.quantity+1
+            calculate = newcart.price * newquan
+            newcart.quantity = newquan
+            newcart.total = calculate
+            newcart.save()
+            return redirect('home-page')
+        else:
+            newcart = Cart()
+            newcart.user = user
+            newcart.bookid = bid
+            newcart.bookname = check.bookname
+            newcart.price = check.price
+            calculate = check.price * 1
+            newcart.total = calculate
+            newcart.save()
+            return redirect('home-page')
+    except:
+        print('something error')
+        
 def MyCart(request):
     username = request.user.username
     user = User.objects.get(username=username)
