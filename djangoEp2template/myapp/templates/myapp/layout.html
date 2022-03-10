@@ -76,9 +76,14 @@
                   </li>
 
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'mycart-page' %}">My Cart</a>
-                  </li>
+                    <a class="nav-link secondary position-relative" href="{% url 'mycart-page' %}">MY CART 
+                      <span class="badge bg-secondary bg-danger">{{user.profile.cartquan}}</span>
+                    </span>
+                    
+                  </a>
 
+                  </li>
+                 
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Book Category

@@ -246,31 +246,43 @@ def AddtoCart(request,bid):
     check = BookProduct.objects.get(id=bid)
     
     try:
-        if Cart.objects.filter(user=user,bookid=bid).exists():
+        # if Cart.objects.filter(user=user,bookid=bid).exists():
             #case mycart exist
-            newcart = Cart.objects.get(user=user,bookid=bid)
-            newquan = newcart.quantity+1
-            calculate = newcart.price * newquan
-            newcart.quantity = newquan
-            newcart.total = calculate
-            newcart.save()
+        newcart = Cart.objects.get(user=user,bookid=bid)
+        newquan = newcart.quantity+1
+        calculate = newcart.price * newquan
+        newcart.quantity = newquan
+        newcart.total = calculate
+        newcart.save()
+        
+        count = Cart.objects.filter(user=user)
+        count = sum([c.quantity for c in count]) 
+        
+        updatequan = Profile.objects.get(user=user)
+        updatequan.cartquan = count
+        updatequan.save()
             
-            count = Cart.objects.filter(user=user).count()
-            print(count)
-            
-            return redirect('home-page')
-        else:
-            newcart = Cart()
-            newcart.user = user
-            newcart.bookid = bid
-            newcart.bookname = check.bookname
-            newcart.price = check.price
-            calculate = check.price * 1
-            newcart.total = calculate
-            newcart.save()
-            return redirect('home-page')
+        return redirect('home-page')
+       
+           
     except:
-        print('something error')
+        newcart = Cart()
+        newcart.user = user
+        newcart.bookid = bid
+        newcart.bookname = check.bookname
+        newcart.price = check.price
+        calculate = check.price * 1
+        newcart.total = calculate
+        newcart.save()
+        
+        count = Cart.objects.filter(user=user)
+        count = sum([c.quantity for c in count]) 
+        
+        updatequan = Profile.objects.get(user=user)
+        updatequan.cartquan = count
+        updatequan.save()
+        
+        return redirect('home-page')
         
 def MyCart(request):
     username = request.user.username

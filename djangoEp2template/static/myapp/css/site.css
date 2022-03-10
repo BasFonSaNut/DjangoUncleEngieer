@@ -98,12 +98,6 @@ input[name=message] {
     
   }
 
-p{
-  font-family: "Kanit";
-}
-span{
-  font-family: "Kanit";
-}
-input{
+  input{
   font-family: "Kanit";
 }
