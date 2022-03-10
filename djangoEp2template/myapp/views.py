@@ -1,4 +1,5 @@
 from math import ceil
+from urllib import request
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import BookProduct,Profile,Cart
@@ -37,6 +38,7 @@ def productpage(request):
     
 
 def home(request):
+   
     # with open('static/myapp/data/books.json') as f:
         # ขึ้นระบบจริงใช้ real path '/home/ajaxjson/djangoEp2template/static/myapp/data/books.json
         # jsondata = json.load(f)
@@ -183,7 +185,7 @@ def register(request):
  
 def addproduct(request):
     if request.user.profile.usertype != 'admin':
-        redirect('home')
+        redirect('home-page')
     if request.method == 'POST' and request.FILES['imageupload']:
         # print(data)
         data = request.POST.copy()
@@ -252,7 +254,14 @@ def AddtoCart(request,bid):
     calculate = check.price * 1
     newCart.total = calculate
     newCart.save()
-    return redirect('home')
+    return redirect('home-page')
+   
+def MyCart(request):
+    username = request.user.username
+    user = User.objects.get(username=username)
+    mycart = Cart.objects.filter(user=user)
     
+    context = {'mycart': mycart} 
     
-    
+    return render(request,'myapp/mycart.html',context)
+        

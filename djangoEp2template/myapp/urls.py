@@ -1,10 +1,9 @@
 from django.urls import path
-
 from myapp import views
    
 
-urlpatterns = [
-    path('', views.home, name="home"),
+urlpatterns =[
+    path('', views.home, name="home-page"),
     path("register/", views.register, name="register"),
     
     path("pagingitem/<int:pageno>",views.pagingitem,name="pagingitem"),
@@ -14,7 +13,8 @@ urlpatterns = [
     
     path("aboutus/", views.aboutus, name="aboutus"),
     path("contact/", views.contact, name="contact"),
-    path('AddtoCart/<int:bid>', AddtoCart, name='addtocart-page')
+    path('AddtoCart/<int:bid>', views.AddtoCart , name='addtocart'),
+    path('MyCart/', views.MyCart, name='mycart-page')
     # path('addfriend', fortestviews.indexView,name="indexView"),
     # path('post/ajax/friend', fortestviews.postFriend, name = "post_friend"),
     # path('get/ajax/validate/nickname', fortestviews.checkNickName, name = "validate_nickname"),

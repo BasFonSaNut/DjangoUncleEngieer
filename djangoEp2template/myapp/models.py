@@ -48,15 +48,19 @@ class BookProduct(models.Model):
 class Cart(models.Model):
     # who order
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    bookid = models.CharField(max_length=100)
+    bookid = models.IntegerField(default=0)
     bookname = models.CharField(max_length=100)
     price = models.IntegerField(default=0)
     quantity = models.IntegerField(default=0)
     total = models.IntegerField(default=0)
-    stamp = models.DateTimeField(auto_now_add=True)
+    stamp = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)  # saving image first
+            
     
     def __self__(self):
-        return self.stamp
+        return self.bookid
     
 class Employee(models.Model):
     bookname = models.CharField(max_length=50)
