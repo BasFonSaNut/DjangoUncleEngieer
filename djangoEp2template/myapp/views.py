@@ -254,6 +254,10 @@ def AddtoCart(request,bid):
             newcart.quantity = newquan
             newcart.total = calculate
             newcart.save()
+            
+            count = Cart.objects.filter(user=user).count()
+            print(count)
+            
             return redirect('home-page')
         else:
             newcart = Cart()

@@ -6,6 +6,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="photoprofile/",null=True,blank=True,default='default.png')
     usertype = models.CharField(max_length=100,default='member')
+    cartquan =  models.IntegerField(default=0)
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # saving image first
