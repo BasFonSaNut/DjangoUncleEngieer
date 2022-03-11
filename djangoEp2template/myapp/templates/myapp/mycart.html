@@ -5,15 +5,17 @@ My Card
 {% block content %}
 
 <div class="container mt-5">
-  <h2 class="pb-1 border-bottom">รายการสั่งซื้อของฉัน</h2>
+  <h2 class="pb-1 border-bottom">ตะกร้าของฉัน</h2>
   <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Book</th>
-        <th scope="col">Quantity</th>
+        
         <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
         <th scope="col">Total</th>
+        <th scope="col">Order Time</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -22,16 +24,27 @@ My Card
       <tr>
         <th scope="row">{{cart.id}}</th>
         <td>{{cart.bookname}}</td>
-        <td>{{cart.quantity}}</td>
+        
         <td>{{cart.price}}</td>
+        <td>{{cart.quantity}}</td>
         <td>{{cart.total}}</td>
+        <td>{{cart.stamp}}</td>
         <td> 
-          <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
-          <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+          <button type="submit" class="btn-warning btn-group-sm">EDIT</button>
+          <button type="submit" class="btn-danger btn-group-sm">DELETE</button>
         </td>
       </tr>
-      {% endfor %}  
       
+      {% endfor %}  
+      <tr>
+        <th scope="row">&nbsp;</th>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>{{user.profile.cartquan}}</td>
+        <td>{{user.profile.sumtotal}}</td>
+        <td></td>
+        <td>&nbsp;</td>
+      </tr>
     </tbody>
   </table>
 </div>

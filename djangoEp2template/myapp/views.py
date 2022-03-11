@@ -255,12 +255,18 @@ def AddtoCart(request,bid):
         newcart.total = calculate
         newcart.save()
         
-        count = Cart.objects.filter(user=user)
-        count = sum([c.quantity for c in count]) 
+        sumtotal=0
+        sumquan =0
+        cartRec = Cart.objects.filter(user=user)
+        sumquan = sum([c.quantity for c in cartRec]) 
+        # sumtotal = sum([c.total for c in count]) 
         
-        updatequan = Profile.objects.get(user=user)
-        updatequan.cartquan = count
-        updatequan.save()
+        cartRec = Cart.objects.filter(user=user)
+        sumtotal = sum([c.total for c in cartRec])
+         
+        updateprofile = Profile.objects.get(user=user)
+        updateprofile.cartquan = sumquan
+        updateprofile.sumtotal = sumtotal
             
         return redirect('home-page')
        
@@ -270,17 +276,27 @@ def AddtoCart(request,bid):
         newcart.user = user
         newcart.bookid = bid
         newcart.bookname = check.bookname
+        newcart.quantity = 1
         newcart.price = check.price
         calculate = check.price * 1
         newcart.total = calculate
         newcart.save()
         
-        count = Cart.objects.filter(user=user)
-        count = sum([c.quantity for c in count]) 
+        sumtotal=0
+        sumquan =0
+        cartRec = Cart.objects.filter(user=user)
+        sumquan = sum([c.quantity for c in cartRec]) 
+        # sumtotal = sum([c.total for c in count]) 
         
-        updatequan = Profile.objects.get(user=user)
-        updatequan.cartquan = count
-        updatequan.save()
+        cartRec = Cart.objects.filter(user=user)
+        sumtotal = sum([c.total for c in cartRec])
+         
+        updateprofile = Profile.objects.get(user=user)
+        updateprofile.cartquan = sumquan
+        updateprofile.sumtotal = sumtotal
+
+        updateprofile.save()
+        
         
         return redirect('home-page')
         
