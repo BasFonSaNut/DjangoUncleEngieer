@@ -36,12 +36,15 @@ My Card
         <td>{{cart.stamp}}</td>
         <td> 
           <div  class="d-flex">
-          <button type="submit" class="btn-warning btn-group-sm" id='btnclick'>EDIT</button>
+            
+            <button type="submit" class="btn-warning btn-group-sm" id='btn_edit'>EDIT</button>
+            <button type="submit" class="btn-warning btn-group-sm" id='btn_update' style='display:none'>UPDATE</button>
+
           <form method="POST" id="form{{cart.bookid}}" onsubmit="return confirm('Are you sure to delete?!!');">
             {% comment %} cardid = bookid {% endcomment %}
             {% csrf_token %}
             <input type="hidden" value="{{cart.bookid}}" form="form{{cart.bookid}}" name="bookid" id="bookid">
-            <button typu="button" class="btn-danger btn-group-sm">DELETE</button>
+            <button type="submit" class="btn-danger btn-group-sm">DELETE</button>
         </form>
         </style>
         </td>
@@ -59,47 +62,70 @@ My Card
       </tr>
     </tbody>
   </table>
-  <input type="text" value="" name="quan" id="quan">
+  
  
 </div>
 {% endblock %}
 
 {% block javascript %}
   <script>
-    $(document).ready(function(){
+    $(document).ready(function()
+    {
+      
       $('body').on('click','button',function(event) {
         //var rowindex = $(this).closest('tr').index();
+
         var row = $(this).closest("tr")[0];
-        var quantCol = $(this).closest("tr")[0].cells[3]
-        var totalCol = $(this).closest("tr")[0].cells[4]
+
+        //$(this).closest("td").find(input[button])
+        //$(this).closest("tr")[0].find('#btn_update').attr('display','inline');
+        //$("#" + thisid).html("status changed");
+        //$(this).closest("td").find('#example').removeAttr('display');
+        
         var quantity = row.cells[3].innerHTML;
         var totalprice = row.cells[4].innerHTML;
+        row.cells[3].innerHTML='';
        // alert(row.cells[1].innerHTML);
-       // row.cells[3].append('<input type="text" value="'+row.cells[3].innerHTML+'" name="quan" id="quan">');
-        
-        $('#quan')
-                .clone().val(quantity) 
-                .attr('style', 'margin:3px 0;', 'id', 'quantity')     
-                .appendTo(quantCol);
-                      
-                // GIVE IT AN ID. + cc
-        //var price = row.cells[2].innerHTML;
-        //var quantity = row.cells[3].innerHTML;
-        //var total = row.cells[4].innerHTML;
-        //$('#quantity').val(quantity);
-        //var totalprice  = quantity * quantity;
-        //$('#total').val(10);
-        //$('#tb_mycart tr').removeClass('highlight');
-        //$(this).addClass('highligth');
+       //row.cells[3].innerHTML = '';
+       row.cells[3].innerHTML = '<input type="text" value="" name="quan" id="quan" size="5" style="text-align:center;">';
+       var quantCol = $(this).closest("tr")[0].cells[3]
+     
+       var row = $(this).closest("tr")[0];
+       //var idq = row.cells[6].find('btn_update').id();
+       //alert(idq)
+       //closest("tr").find('input[type=text]').val();
+       //$("elem").closest('tr').find('td:first').text();
+      // $(this).closest("tr")[0].find('#btn_update').attr('display','inline');
 
       });
-     
 
-       // on('click,'#tb_mycart > tbody tr', 
-      //function(){
-      //  var row = $(this).closest("tr")[0];
-      //  alert(row.cells[1].innerHTML);
-     // })
+     
+     
+     
+      
+      $('body').on('keyup','input',function(event) {
+        
+        var quantity = $(this).val()
+        var price = $(this).closest("tr")[0].cells[2].innerHTML
+        var total = parseInt(quantity) * parseInt(price)
+        //alert(total)
+        $(this).closest("tr")[0].cells[4].innerHTML = total
+        //alert($(this).closest("tr")[0].cells[2].innerHTML)
+        //var rowindex = $(this).closest('tr').index();
+        /*
+        var row = $(this).closest("tr")[0];
+        var quantity = row.cells[3].find(button[id='quan']).text();
+        
+        */
+        //var totalprice = row.cells[4].innerHTML;
+
+        //$(this).closest("tr")[0].cells[3].html('dddddd')
+        //$("#" + thisid).html("status changed");
+        //row.cells[3].innerHTML='';
+
+      });
+    
+     
   
     });
   </script>
