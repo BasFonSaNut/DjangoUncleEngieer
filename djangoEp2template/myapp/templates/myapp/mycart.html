@@ -6,6 +6,11 @@ My Card
 
 <div class="container mt-5">
   <h2 class="pb-1 border-bottom">ตะกร้าของฉัน</h2>
+  {% if deletestatus == 'deleted' %}
+  <div class="alert alert-danger">
+    <strong>ลบเรียบร้อยแล้ว</strong> 
+  </div>
+  {% endif %}
   <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
     <thead>
       <tr>
@@ -22,7 +27,7 @@ My Card
     <tbody>
       {% for cart in mycart %}
       <tr>
-        <th scope="row">{{cart.id}}</th>
+        <th scope="row">{{cart.bookid}}</th>
         <td>{{cart.bookname}}</td>
         
         <td>{{cart.price}}</td>
@@ -30,8 +35,15 @@ My Card
         <td>{{cart.total}}</td>
         <td>{{cart.stamp}}</td>
         <td> 
+          <div  class="d-flex">
           <button type="submit" class="btn-warning btn-group-sm">EDIT</button>
-          <button type="submit" class="btn-danger btn-group-sm">DELETE</button>
+          <form method="POST" id="form{{cart.bookid}}" onsubmit="return confirm('Are you sure to delete?!!');">
+            {% comment %} cardid = bookid {% endcomment %}
+            {% csrf_token %}
+            <input type="hidden" value="{{cart.bookid}}" form="form{{cart.bookid}}" name="bookid" id="bookid">
+            <button type="submit" class="btn-danger btn-group-sm">DELETE</button>
+        </form>
+        </style>
         </td>
       </tr>
       

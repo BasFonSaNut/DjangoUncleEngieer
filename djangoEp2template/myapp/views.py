@@ -303,9 +303,26 @@ def AddtoCart(request,bid):
 def MyCart(request):
     username = request.user.username
     user = User.objects.get(username=username)
+    deletestatus = ''
+    if request.method == 'POST':
+        data = request.POST.copy()
+        bookid = data.get('bookid')
+        item = Cart.objects.get(user=user,bookid=bookid)
+        item.delete()
+        
+        # update total,count at profile
+        cartRec = Cart.objects.filter(user=user)
+        sumtotal = sum([c.total for c in cartRec])
+        sumquan = sum([c.quantity for c in cartRec])
+        
+        updateprofile = Profile.objects.get(user=user)
+        updateprofile.cartquan = sumquan
+        updateprofile.sumtotal = sumtotal
+        updateprofile.save()
+        deletestatus='deleted'
+        
     mycart = Cart.objects.filter(user=user)
-    
-    context = {'mycart': mycart} 
+    context = {'mycart': mycart,'deletestatus':deletestatus} 
     
     return render(request,'myapp/mycart.html',context)
         
