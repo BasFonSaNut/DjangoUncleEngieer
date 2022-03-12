@@ -6,16 +6,28 @@ My Card
 
 <div class="container mt-5">
   <h2 class="pb-1 border-bottom">ตะกร้าของฉัน</h2>
-  {% if status == 'deleted' %}
-  <div class="alert alert-danger">
-    <strong>ลบเรียบร้อยแล้ว</strong> 
-  </div>
-  {% endif %}
-  {% if status == 'updated' %}
-  <div class="alert alert-danger">
-    <strong>อัปเดตเรียบร้อยแล้ว</strong> 
-  </div>
-  {% endif %}
+  
+  
+    {% if status == 'deleted' %}
+    <div class="alert alert-danger">
+      <strong>ลบเรียบร้อยแล้ว</strong> 
+    </div>
+    {% endif %}
+
+    {% if status == 'updated' %}
+    <div class="alert alert-danger">
+      <strong>อัปเดตเรียบร้อยแล้ว</strong> 
+    </div>      
+    {% endif %}
+
+    {% if status == 'deletedall' %}
+    <div class="alert alert-danger">
+      <strong>เคลียร์ทั้งหมดเรียบร้อยแล้ว</strong> 
+    </div>      
+    {% endif %}
+    
+ 
+ 
   <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
     <thead>
       <tr>
@@ -26,7 +38,14 @@ My Card
         <th scope="col">Quantity</th>
         <th scope="col">Total</th>
         <th scope="col">Order Time</th>
-        <th scope="col">Action</th>
+        <th scope="col">Action
+          <form method="POST" id="formw" onsubmit="return confirm('Are you sure to update?!!');">
+            {% csrf_token %}
+              
+              <input type="text" value="dodeleteall" form="formw" name="state" id="state">
+              <button type="submit" class="btn-danger btn-group-sm" id='btn_deleteall'>DELETE ALL</button>
+          </form>  
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -53,7 +72,7 @@ My Card
                 <button type="submit" class="btn-warning btn-group-sm" id='btn_update' style='display:none'>UPDATE</button>
             </form>    
           <form method="POST" id="formy{{cart.bookid}}" onsubmit="return confirm('Are you sure to delete?!!');">
-            {% comment %} cardid = bookid {% endcomment %}
+            
             {% csrf_token %}
             <input type="hidden" value="{{cart.bookid}}" form="formy{{cart.bookid}}" name="bookid" id="bookid">
             <input type="hidden" value="dodelete" form="formy{{cart.bookid}}" name="state" id="state">
@@ -83,6 +102,7 @@ My Card
 {% block javascript %}
   <script>
   $(document).ready(function(){   
+    //don't know yet what to do in onload
   });      
 
     function doEdit(obj){
