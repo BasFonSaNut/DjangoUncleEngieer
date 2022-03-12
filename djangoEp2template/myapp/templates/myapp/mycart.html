@@ -1,4 +1,5 @@
 {% extends "myapp/layout.html" %}
+{% load humanize %}
 {% block title %}
 My Card
 {% endblock %}
@@ -54,10 +55,10 @@ My Card
         <th scope="row">{{cart.bookid}}</th>
         <td>{{cart.bookname}}</td>
         
-        <td>{{cart.price}}</td>
+        <td>{{cart.price|intcomma}}</td>
         <td><span>{{cart.quantity}}</span>
           <input type="text" value="" name="tempquantity" id="tempquantity" size="5" style="text-align:center;display:none" onkeyup="doKeyup($(this));"></td>
-        <td>{{cart.total}}</td>
+        <td>{{cart.total|intcomma}}</td>
         <td>{{cart.stamp}}</td>
         <td> 
           <div  class="d-flex">
@@ -88,7 +89,7 @@ My Card
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>{{user.profile.cartquan}}</td>
-        <td>{{user.profile.sumtotal}}</td>
+        <td>{{user.profile.sumtotal|intcomma}}</td>
         <td></td>
         <td>&nbsp;</td>
       </tr>
