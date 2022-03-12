@@ -27,7 +27,7 @@ My Card
     {% endif %}
     
  
- 
+ <button type="button" onclick="sum();">test</button>
   <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
     <thead>
       <tr>
@@ -39,10 +39,10 @@ My Card
         <th scope="col">Total</th>
         <th scope="col">Order Time</th>
         <th scope="col">Action
-          <form method="POST" id="formw" onsubmit="return confirm('Are you sure to update?!!');">
+          <form method="POST" id="formw" onsubmit="return confirm('Are you sure to delete all?!!');">
             {% csrf_token %}
               
-              <input type="text" value="dodeleteall" form="formw" name="state" id="state">
+              <input type="hidden" value="dodeleteall" form="formw" name="state" id="state">
               <button type="submit" class="btn-danger btn-group-sm" id='btn_deleteall'>DELETE ALL</button>
           </form>  
         </th>
@@ -103,12 +103,33 @@ My Card
   <script>
   $(document).ready(function(){   
     //don't know yet what to do in onload
-  });      
+  });     
 
+    function sum(){
+      newtotal=0
+      allrow = $("#tb_mycart").find("tr").length;
+      //oldsum = parseInt($('#tb_mycart tr:last').find('td:eq(3)').html())
+      $('#tb_mycart tr').each(function(index, tr) {
+        if (index <  allrow-1)
+        {
+          
+            $(tr).find('td:eq(3)').each (function (index, td) {
+              newtotal = newtotal+parseInt($(td).html())
+              $('#tb_mycart tr:last').find('td:eq(3)').html(newtotal);
+              console.log(newtotal)
+              
+            });
+        }
+      });
+        
+    }
+    
     function doEdit(obj){
       var currentquantity = obj.closest("tr").find('span').html();
+      
+      obj.closest("tr").find("input[id='tempquantity']").val(currentquantity).css('display','inline');
       obj.closest("tr").find('span').html('')
-      obj.closest("tr").find("input[id='quantity']").val(currentquantity).css('display','inline');
+      
       obj.css('display','none');
       obj.closest("td").find('#btn_update').css('display','inline');
       obj.closest("tr").find('#tempquantity').css('display','inline');
@@ -116,10 +137,12 @@ My Card
 
     function doKeyup(obj){
         
-        var price = obj.closest("tr").find("td:eq(1)").text()
-        var total = parseInt(obj.val()) * parseInt(price)
-        obj.closest("tr").find("td:eq(3)").html(total)
-        obj.closest("tr").find("#quantity").val(obj.val())
+        var price = obj.closest("tr").find("td:eq(1)").text();
+        var total = parseInt(obj.val()) * parseInt(price);
+        obj.closest("tr").find("td:eq(3)").html(total);
+        obj.closest("tr").find("#quantity").val(obj.val());
+
+        sum();
     }
   
     
