@@ -1,0 +1,89 @@
+{% extends "myapp/layout.html" %}
+{% block title %}
+Add product
+{% endblock %}
+
+{% block content %}
+<h2>ข้อมูลจัดส่งสินค้า</h2>
+<div class="container mt-2">
+  <div>
+   
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row g-2 mb-1">
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">Receive:</span>
+              <input type="text" class="form-control" id="fullname" placeholder="fullname" name="fullname">
+            </div>
+          </div>
+  
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">TEL:</span>
+              <input type="text" class="form-control" id="tel" placeholder="Enter Telephone" name="tel">
+            </div>
+        </div>
+      </div>
+
+        <div class="row g-2 mb-1">
+            <div class="col">
+                <div class="input-group mb-1">
+                  <span class="input-group-text">Address:</span>
+                    <textarea class="form-control" row="5" id="address" placeholder="example: 121/65 M.4 Bangkok " name="address"></textarea>
+                </div>
+            </div>
+
+            <div class="col">
+              <div class="input-group mb-1">
+                <span class="input-group-text">Note:</span>
+                <textarea  class="form-control" row="5" id="note" placeholder="example: if no one home drop at box11th " name="note"></textarea>
+              </div>
+            </div>
+      </div>
+
+     
+
+      <div class="row g-2 mb-1">
+          <div class="col">
+            <div class="input-group mb-1">
+                <span class="input-group-text">Shipping:</span>
+                {% comment %} <div class="form-group-text"> {% endcomment %}
+                  <input class="form-check-input mt-2" type="radio" value="ems" aria-label="" id="shipping" name="shipping">
+                  &nbsp;<label class="form-check-label mt-2" for="ems">EMS (50B)</label>
+                  &nbsp;&nbsp;<input class="form-check-input mt-2" type="radio" value="reg" aria-label="" id="shipping" name="shipping">
+                &nbsp;<label class="form-check-label mt-2" for="reg">REGISTER(30B)</label>
+                {% comment %} </div> {% endcomment %}
+                
+              </div>
+          </div>
+
+          <div class="col">
+            <div class="input-group mb-1">
+                <span class="input-group-text">Payment:</span>
+                {% comment %} <div class="form-group-text"> {% endcomment %}
+                  <input class="form-check-input mt-2" type="radio" value="transfer" aria-label="" id="payment" name="payment">
+                  &nbsp;<label class="form-check-label mt-2" for="transfer">TRANSFER</label>
+                  &nbsp;&nbsp;<input class="form-check-input mt-2" type="radio" value="cod" aria-label="" id="payment" name="payment">
+                &nbsp;<label class="form-check-label mt-2" for="cod">COD</label>
+                {% comment %} </div> {% endcomment %}
+                
+              </div>
+          </div>
+        </div>
+
+        <div class="row g-2 mb-1">
+          <div class="col">
+            <button type="submit" class="btn btn-primary">NEXT</button>
+          </div>
+
+          <div class="col">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+      </div>
+  </form>
+</div>
+
+{% endblock %}
+
+

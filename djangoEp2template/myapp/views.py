@@ -352,4 +352,7 @@ def MyCart(request):
     context = {'mycart': mycart,'status':status} 
     
     return render(request,'myapp/mycart.html',context)
-        
+
+def checkout1(request): 
+    return render(request,'myapp/checkout1.html')
+           
