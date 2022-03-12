@@ -38,7 +38,6 @@ def productpage(request):
     
 
 def home(request):
-   
     # with open('static/myapp/data/books.json') as f:
         # ขึ้นระบบจริงใช้ real path '/home/ajaxjson/djangoEp2template/static/myapp/data/books.json
         # jsondata = json.load(f)
@@ -247,7 +246,7 @@ def AddtoCart(request,bid):
     
     try:
         # if Cart.objects.filter(user=user,bookid=bid).exists():
-            #case mycart exist
+        #case mycart exist
         newcart = Cart.objects.get(user=user,bookid=bid)
         newquan = newcart.quantity+1
         calculate = newcart.price * newquan
@@ -294,10 +293,7 @@ def AddtoCart(request,bid):
         updateprofile = Profile.objects.get(user=user)
         updateprofile.cartquan = sumquan
         updateprofile.sumtotal = sumtotal
-
         updateprofile.save()
-        
-        
         return redirect('home-page')
         
 def MyCart(request):
@@ -323,6 +319,7 @@ def MyCart(request):
             updateprofile.sumtotal = sumtotal
             updateprofile.save()
             status='deleted'
+            
         if data.get('state') == 'doupdate':
             
             bookid = data.get('bookid')
@@ -343,7 +340,14 @@ def MyCart(request):
             updateprofile.sumtotal = sumtotal
             updateprofile.save()
             status='updated'
-            
+        if data.get('state') == 'dodeleteall':
+            Cart.objects.filter(user=user).delete()
+            updateprofile = Profile.objects.get(user=user)
+            updateprofile.cartquan = 0
+            updateprofile.sumtotal = 0
+            updateprofile.save()
+            status='deletedall'
+                
     mycart = Cart.objects.filter(user=user)
     context = {'mycart': mycart,'status':status} 
     
