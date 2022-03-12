@@ -6,9 +6,14 @@ My Card
 
 <div class="container mt-5">
   <h2 class="pb-1 border-bottom">ตะกร้าของฉัน</h2>
-  {% if deletestatus == 'deleted' %}
+  {% if status == 'deleted' %}
   <div class="alert alert-danger">
     <strong>ลบเรียบร้อยแล้ว</strong> 
+  </div>
+  {% endif %}
+  {% if status == 'updated' %}
+  <div class="alert alert-danger">
+    <strong>อัปเดตเรียบร้อยแล้ว</strong> 
   </div>
   {% endif %}
   <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
@@ -31,19 +36,27 @@ My Card
         <td>{{cart.bookname}}</td>
         
         <td>{{cart.price}}</td>
-        <td>{{cart.quantity}}</td>
+        <td><span>{{cart.quantity}}</span>
+          <input type="text" value="" name="tempquantity" id="tempquantity" size="5" style="text-align:center;display:none" onkeyup="doKeyup($(this));"></td>
         <td>{{cart.total}}</td>
         <td>{{cart.stamp}}</td>
         <td> 
           <div  class="d-flex">
+           
+                <button type="button" class="btn-warning btn-group-sm" id='btn_edit' onclick="doEdit($(this));">EDIT</button>
             
-            <button type="submit" class="btn-warning btn-group-sm" id='btn_edit'>EDIT</button>
-            <button type="submit" class="btn-warning btn-group-sm" id='btn_update' style='display:none'>UPDATE</button>
-
-          <form method="POST" id="form{{cart.bookid}}" onsubmit="return confirm('Are you sure to delete?!!');">
+            <form method="POST" id="formx{{cart.bookid}}" onsubmit="return confirm('Are you sure to update?!!');">
+              {% csrf_token %}
+              <input type="hidden" value="" name="quantity" id="quantity" size="5" style="text-align:center;">
+                <input type="hidden" value="{{cart.bookid}}" form="formx{{cart.bookid}}" name="bookid" id="bookid">
+                <input type="hidden" value="doupdate" form="formx{{cart.bookid}}" name="state" id="state">
+                <button type="submit" class="btn-warning btn-group-sm" id='btn_update' style='display:none'>UPDATE</button>
+            </form>    
+          <form method="POST" id="formy{{cart.bookid}}" onsubmit="return confirm('Are you sure to delete?!!');">
             {% comment %} cardid = bookid {% endcomment %}
             {% csrf_token %}
-            <input type="hidden" value="{{cart.bookid}}" form="form{{cart.bookid}}" name="bookid" id="bookid">
+            <input type="hidden" value="{{cart.bookid}}" form="formy{{cart.bookid}}" name="bookid" id="bookid">
+            <input type="hidden" value="dodelete" form="formy{{cart.bookid}}" name="state" id="state">
             <button type="submit" class="btn-danger btn-group-sm">DELETE</button>
         </form>
         </style>
@@ -69,64 +82,26 @@ My Card
 
 {% block javascript %}
   <script>
-    $(document).ready(function()
-    {
-      
-      $('body').on('click','button',function(event) {
-        //var rowindex = $(this).closest('tr').index();
+  $(document).ready(function(){   
+  });      
 
-        var row = $(this).closest("tr")[0];
+    function doEdit(obj){
+      var currentquantity = obj.closest("tr").find('span').html();
+      obj.closest("tr").find('span').html('')
+      obj.closest("tr").find("input[id='quantity']").val(currentquantity).css('display','inline');
+      obj.css('display','none');
+      obj.closest("td").find('#btn_update').css('display','inline');
+      obj.closest("tr").find('#tempquantity').css('display','inline');
+    }
 
-        //$(this).closest("td").find(input[button])
-        //$(this).closest("tr")[0].find('#btn_update').attr('display','inline');
-        //$("#" + thisid).html("status changed");
-        //$(this).closest("td").find('#example').removeAttr('display');
+    function doKeyup(obj){
         
-        var quantity = row.cells[3].innerHTML;
-        var totalprice = row.cells[4].innerHTML;
-        row.cells[3].innerHTML='';
-       // alert(row.cells[1].innerHTML);
-       //row.cells[3].innerHTML = '';
-       row.cells[3].innerHTML = '<input type="text" value="" name="quan" id="quan" size="5" style="text-align:center;">';
-       var quantCol = $(this).closest("tr")[0].cells[3]
-     
-       var row = $(this).closest("tr")[0];
-       //var idq = row.cells[6].find('btn_update').id();
-       //alert(idq)
-       //closest("tr").find('input[type=text]').val();
-       //$("elem").closest('tr').find('td:first').text();
-      // $(this).closest("tr")[0].find('#btn_update').attr('display','inline');
-
-      });
-
-     
-     
-     
-      
-      $('body').on('keyup','input',function(event) {
-        
-        var quantity = $(this).val()
-        var price = $(this).closest("tr")[0].cells[2].innerHTML
-        var total = parseInt(quantity) * parseInt(price)
-        //alert(total)
-        $(this).closest("tr")[0].cells[4].innerHTML = total
-        //alert($(this).closest("tr")[0].cells[2].innerHTML)
-        //var rowindex = $(this).closest('tr').index();
-        /*
-        var row = $(this).closest("tr")[0];
-        var quantity = row.cells[3].find(button[id='quan']).text();
-        
-        */
-        //var totalprice = row.cells[4].innerHTML;
-
-        //$(this).closest("tr")[0].cells[3].html('dddddd')
-        //$("#" + thisid).html("status changed");
-        //row.cells[3].innerHTML='';
-
-      });
-    
-     
+        var price = obj.closest("tr").find("td:eq(1)").text()
+        var total = parseInt(obj.val()) * parseInt(price)
+        obj.closest("tr").find("td:eq(3)").html(total)
+        obj.closest("tr").find("#quantity").val(obj.val())
+    }
   
-    });
+    
   </script>
 {% endblock javascript%}

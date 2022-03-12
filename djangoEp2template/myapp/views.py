@@ -303,26 +303,49 @@ def AddtoCart(request,bid):
 def MyCart(request):
     username = request.user.username
     user = User.objects.get(username=username)
-    deletestatus = ''
+    status = ''
     if request.method == 'POST':
         data = request.POST.copy()
-        bookid = data.get('bookid')
-        item = Cart.objects.get(user=user,bookid=bookid)
-        item.delete()
+        print(data.get('state'))
+        if data.get('state') == 'dodelete':
         
-        # update total,count at profile
-        cartRec = Cart.objects.filter(user=user)
-        sumtotal = sum([c.total for c in cartRec])
-        sumquan = sum([c.quantity for c in cartRec])
-        
-        updateprofile = Profile.objects.get(user=user)
-        updateprofile.cartquan = sumquan
-        updateprofile.sumtotal = sumtotal
-        updateprofile.save()
-        deletestatus='deleted'
-        
+            bookid = data.get('bookid')
+            item = Cart.objects.get(user=user,bookid=bookid)
+            item.delete()
+            
+            # update total,count at profile
+            cartRec = Cart.objects.filter(user=user)
+            sumtotal = sum([c.total for c in cartRec])
+            sumquan = sum([c.quantity for c in cartRec])
+            
+            updateprofile = Profile.objects.get(user=user)
+            updateprofile.cartquan = sumquan
+            updateprofile.sumtotal = sumtotal
+            updateprofile.save()
+            status='deleted'
+        if data.get('state') == 'doupdate':
+            
+            bookid = data.get('bookid')
+            quantity = int(data.get('quantity'))
+            item = Cart.objects.get(user=user,bookid=bookid)
+            item.quantity = quantity
+            calculate = item.price * quantity
+            item.total = calculate
+            item.save()
+            
+            # update total,count at profile
+            cartRec = Cart.objects.filter(user=user)
+            sumtotal = sum([c.total for c in cartRec])
+            sumquan = sum([c.quantity for c in cartRec])
+            
+            updateprofile = Profile.objects.get(user=user)
+            updateprofile.cartquan = sumquan
+            updateprofile.sumtotal = sumtotal
+            updateprofile.save()
+            status='updated'
+            
     mycart = Cart.objects.filter(user=user)
-    context = {'mycart': mycart,'deletestatus':deletestatus} 
+    context = {'mycart': mycart,'status':status} 
     
     return render(request,'myapp/mycart.html',context)
         
