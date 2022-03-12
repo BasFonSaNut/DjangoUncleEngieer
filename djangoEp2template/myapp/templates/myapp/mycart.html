@@ -27,7 +27,7 @@ My Card
     {% endif %}
     
  
- <button type="button" onclick="sum();">test</button>
+ 
   <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
     <thead>
       <tr>
@@ -106,22 +106,42 @@ My Card
   });     
 
     function sum(){
-      newtotal=0
-      allrow = $("#tb_mycart").find("tr").length;
-      //oldsum = parseInt($('#tb_mycart tr:last').find('td:eq(3)').html())
+      var newtotal=0
+      var allrow = $("#tb_mycart").find("tr").length;
+      var sumq = 0
+      //some price
       $('#tb_mycart tr').each(function(index, tr) {
-        if (index <  allrow-1)
+        if(index <  (allrow-1))
         {
           
             $(tr).find('td:eq(3)').each (function (index, td) {
               newtotal = newtotal+parseInt($(td).html())
-              $('#tb_mycart tr:last').find('td:eq(3)').html(newtotal);
-              console.log(newtotal)
+              //console.log(newtotal)
               
             });
         }
       });
-        
+
+      //some quant
+      $('#tb_mycart tr').each(function(index, tr) {
+        if(index <  (allrow-1))
+        {
+          
+            $(tr).find('td:eq(2)').each (function (index, td) {
+              if($(td).find('span').html() == '') {
+                sumq = sumq + parseInt($(td).find('#tempquantity').val()) 
+              } 
+              else{
+                sumq = sumq + parseInt($(td).find('span').html())
+              }
+             // console.log(sumq)
+            });
+        }
+      });
+
+      $('#tb_mycart tr:last').find('td:eq(3)').html(newtotal);
+      $('#tb_mycart tr:last').find('td:eq(2)').html(sumq);
+      
     }
     
     function doEdit(obj){
@@ -145,6 +165,6 @@ My Card
         sum();
     }
   
-    
+ 
   </script>
 {% endblock javascript%}
