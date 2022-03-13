@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image 
@@ -80,4 +81,48 @@ class Friend(models.Model):
     lives_in = models.CharField(max_length=150, null = True, blank = True)
 
     def __str__(self):
-        return self.nick_name    
+        return self.nick_name  
+
+class OrderList(models.Model):
+    # orderid = models.IntegerField(default=0,auto_created=True,primary_key=True,unique =True)
+    orderid = models.CharField(max_length=100)
+    bookid = models.IntegerField(default=0)
+    bookname = models.CharField(max_length=100)
+    price = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0)
+    total = models.IntegerField(default=0)
+    shippingstatus = models.BooleanField(default=False)
+    orderdate = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    stamp = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+
+    def __str__(self):
+        return self.orderid 
+class OrderPending(models.Model):
+    # orderid = models.IntegerField(default=0,auto_created=True,primary_key=True,unique =True)
+    orderid = models.CharField(max_length=100)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    fullname = models.CharField(max_length=500,default='')
+    tel = models.CharField(max_length=100,default='')
+    address = models.TextField(default='')
+    shipping = models.CharField(max_length=100,default='')
+    payment = models.CharField(max_length=100,default='')
+    note = models.TextField(default='')
+    
+    shippingstatus = models.BooleanField(default=False)
+    paymentstatus = models.BooleanField(default=False)
+    
+    slip = models.ImageField(upload_to="slip/",null=True,blank=True)
+    transactionid = models.CharField(max_length=100,default='')
+    
+    stamp = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    
+    def __str__(self):
+        return self.orderid 
+    
+    
+    
+                                  
+    
+    
+    
+      

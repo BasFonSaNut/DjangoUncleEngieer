@@ -78,7 +78,7 @@ Add product
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>
-                <form method="POST" action="{% url 'checkout-page' %}">
+                <form method="POST">
                   {% csrf_token %}
                 <input type="hidden" name="page" id="page" value="confirmation">
                 <textarea  class="form-control" row="5" id="note" name="note" style="display:none">
@@ -92,7 +92,9 @@ Add product
                 <input type="hidden" class="form-control" id="payment"  name="payment" value="{{address.payment}}">
                 <input type="hidden" class="form-control" id="shipping"  name="shipping" value="{{address.shipping}}">
                 <input type="hidden" class="form-control" id="email"  name="email" value="{{address.email}}">
-                <a href="{% url 'checkout-page' %}" class="btn-warning btn-group-sm">CONFIRM</a>
+                
+                <a href="{% url 'checkout-page' %}" class="btn-success btn-group-sm">CHECKOUT</a>
+                
               </form>
               </td>
             </tr>

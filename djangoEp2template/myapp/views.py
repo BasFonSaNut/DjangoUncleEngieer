@@ -1,8 +1,10 @@
+from datetime import datetime
 from math import ceil
 from urllib import request
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import BookProduct,Profile,Cart
+from .models import *
+
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from django.http import JsonResponse
@@ -353,7 +355,7 @@ def MyCart(request):
     
     return render(request,'myapp/mycart.html',context)
 
-def checkout1(request): 
+def checkout(request): 
     username = request.user.username
     user = User.objects.get(username=username)
     if request.method == 'POST':
@@ -379,9 +381,42 @@ def checkout1(request):
             context = {'mycart': mycart,'address':orderaddress} 
             
             return render(request,'myapp/checkout2.html',context)
+        
         if page =='confirmation':
-            print(page) 
-            return render(request,'myapp/checkout1.html')
+            mycart = Cart.objects.filter(user=user)
+            dt = datetime.now().strftime('%Y%m%d%H%M%S')
+            genorderid = 'OD'+str(user.id).zfill(4)+dt
+            for cartitem in mycart:
+                order= OrderList()
+                order.orderid = genorderid
+                order.bookid = cartitem.bookid
+                order.bookname = cartitem.bookname
+                order.price = cartitem.price
+                order.quantity = cartitem.quantity
+                order.total = cartitem.total
+                order.shippingstatus = False
+                order.orderdate = cartitem.stamp
+                order.save()
+            
+            orderpending = OrderPending()
+            orderpending.orderid = genorderid
+            orderpending.user = user
+            orderpending.fullname = fullname
+            orderpending.tel = tel
+            orderpending.address = address
+            orderpending.shipping = shipping
+            orderpending.payment = payment
+            orderpending.note = note
+            orderpending.shippingstatus = False
+            orderpending.paymentstatus = False
+            orderpending.save()
+            
+            Cart.objects.filter(user=user).delete()
+            updateprofile = Profile.objects.get(user=user)
+            updateprofile.cartquan = 0
+            updateprofile.sumtotal = 0
+            updateprofile.save()
+            return redirect(request,'mycart-page')
         
     return render(request,'myapp/checkout1.html')
            
