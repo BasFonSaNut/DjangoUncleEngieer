@@ -416,8 +416,6 @@ def checkout(request):
                 itempending.save()
             
             
-            
-            
             updateprofile = Profile.objects.get(user=user)
             updateprofile.cartquan = 0
             updateprofile.sumtotal = 0
