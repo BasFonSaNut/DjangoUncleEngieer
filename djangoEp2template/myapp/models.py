@@ -86,6 +86,7 @@ class Friend(models.Model):
 class OrderList(models.Model):
     # orderid = models.IntegerField(default=0,auto_created=True,primary_key=True,unique =True)
     orderid = models.CharField(max_length=100)
+    
     bookid = models.IntegerField(default=0)
     bookname = models.CharField(max_length=100)
     price = models.IntegerField(default=0)
@@ -103,10 +104,10 @@ class OrderPending(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     fullname = models.CharField(max_length=500,default='')
     tel = models.CharField(max_length=100,default='')
-    address = models.TextField(default='')
+    address = models.TextField()
     shipping = models.CharField(max_length=100,default='')
     payment = models.CharField(max_length=100,default='')
-    note = models.TextField(default='')
+    note = models.TextField()
     
     shippingstatus = models.BooleanField(default=False)
     paymentstatus = models.BooleanField(default=False)

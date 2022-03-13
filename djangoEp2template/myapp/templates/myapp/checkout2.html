@@ -81,19 +81,19 @@ Add product
                 <form method="POST">
                   {% csrf_token %}
                 <input type="hidden" name="page" id="page" value="confirmation">
-                <textarea  class="form-control" row="5" id="note" name="note" style="display:none">
+                <textarea   row="5" id="note" name="note" style="display:none">
                   {{address.note}}
                 </textarea>
-                <textarea class="form-control" row="5" id="address" name="address" style="display:none">
+                <textarea row="5" id="address" name="address" style="display:none">
                   {{address.address}} 
                 </textarea>
-                <input type="hidden" class="form-control" id="tel"  name="tel" value="{{address.tel}}">
-                <input type="hidden" class="form-control" id="fullname"  name="fullname" value="{{address.fullname}}">
-                <input type="hidden" class="form-control" id="payment"  name="payment" value="{{address.payment}}">
-                <input type="hidden" class="form-control" id="shipping"  name="shipping" value="{{address.shipping}}">
-                <input type="hidden" class="form-control" id="email"  name="email" value="{{address.email}}">
+                <input type="hidden"  id="tel"  name="tel" value="{{address.tel}}">
+                <input type="hidden"  id="fullname"  name="fullname" value="{{address.fullname}}">
+                <input type="hidden"  id="payment"  name="payment" value="{{address.payment}}">
+                <input type="hidden"  id="shipping"  name="shipping" value="{{address.shipping}}">
+                <input type="hidden"  id="email"  name="email" value="{{address.email}}">
                 
-                <a href="{% url 'checkout-page' %}" class="btn-success btn-group-sm">CHECKOUT</a>
+                <button type="submit" class="btn-success btn-group-sm">CHECKOUT</a>
                 
               </form>
               </td>

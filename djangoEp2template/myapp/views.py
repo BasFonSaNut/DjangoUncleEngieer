@@ -383,20 +383,10 @@ def checkout(request):
             return render(request,'myapp/checkout2.html',context)
         
         if page =='confirmation':
-            mycart = Cart.objects.filter(user=user)
+            # print('confirmation')
+            # print(data)
             dt = datetime.now().strftime('%Y%m%d%H%M%S')
             genorderid = 'OD'+str(user.id).zfill(4)+dt
-            for cartitem in mycart:
-                order= OrderList()
-                order.orderid = genorderid
-                order.bookid = cartitem.bookid
-                order.bookname = cartitem.bookname
-                order.price = cartitem.price
-                order.quantity = cartitem.quantity
-                order.total = cartitem.total
-                order.shippingstatus = False
-                order.orderdate = cartitem.stamp
-                order.save()
             
             orderpending = OrderPending()
             orderpending.orderid = genorderid
@@ -411,12 +401,30 @@ def checkout(request):
             orderpending.paymentstatus = False
             orderpending.save()
             
-            Cart.objects.filter(user=user).delete()
+            mycart = Cart.objects.filter(user=user)
+            for cartitem in mycart:
+                itempending= OrderList()
+                itempending.orderid = genorderid
+                itempending.bookid = cartitem.bookid
+                itempending.bookname = cartitem.bookname
+                itempending.price = cartitem.price
+                itempending.quantity = cartitem.quantity
+                itempending.total = cartitem.total
+            
+                itempending.shippingstatus = False
+                itempending.orderdate = cartitem.stamp
+                itempending.save()
+            
+            
+            
+            
             updateprofile = Profile.objects.get(user=user)
             updateprofile.cartquan = 0
             updateprofile.sumtotal = 0
             updateprofile.save()
-            return redirect(request,'mycart-page')
+            
+            Cart.objects.filter(user=user).delete()
+           
+            return redirect('mycart-page')
         
     return render(request,'myapp/checkout1.html')
-           
