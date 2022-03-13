@@ -15,7 +15,10 @@ urlpatterns =[
     path("contact/", views.contact, name="contact"),
     path('AddtoCart/<int:bid>', views.AddtoCart , name='addtocart'),
     path('MyCart/', views.MyCart, name='mycart-page'),
-    path('checkout/', views.checkout, name='checkout-page')
+    path('checkout/', views.checkout, name='checkout-page'),
+    path('orderlist/', views.OrderListPage, name='orderlist-page'),
+    path('allorderlist/', views.AllOrderListPage, name='allorderlist-page')
+    
     # path('addfriend', fortestviews.indexView,name="indexView"),
     # path('post/ajax/friend', fortestviews.postFriend, name = "post_friend"),
     # path('get/ajax/validate/nickname', fortestviews.checkNickName, name = "validate_nickname"),

@@ -104,16 +104,16 @@ class OrderPending(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     fullname = models.CharField(max_length=500,default='')
     tel = models.CharField(max_length=100,default='')
-    address = models.TextField()
+    address = models.TextField(default='',blank=True,null=True)
     shipping = models.CharField(max_length=100,default='')
     payment = models.CharField(max_length=100,default='')
-    note = models.TextField()
+    note = models.TextField(default='',blank=True,null=True)
     
     shippingstatus = models.BooleanField(default=False)
     paymentstatus = models.BooleanField(default=False)
     
     slip = models.ImageField(upload_to="slip/",null=True,blank=True)
-    transactionid = models.CharField(max_length=100,default='')
+    transactionid = models.CharField(max_length=100,default='',blank=True,null=True)
     
     stamp = models.DateTimeField(auto_now_add=True,blank=True,null=True)
     

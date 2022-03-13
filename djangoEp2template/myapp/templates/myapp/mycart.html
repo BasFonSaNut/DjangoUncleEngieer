@@ -79,7 +79,7 @@ My Card
             <input type="hidden" value="dodelete" form="formy{{cart.bookid}}" name="state" id="state">
             <button type="submit" class="btn-danger btn-group-sm">DELETE</button>
         </form>
-        </style>
+       
         </td>
       </tr>
       
@@ -116,7 +116,9 @@ My Card
         {
           
             $(tr).find('td:eq(3)').each (function (index, td) {
-              newtotal = newtotal+parseInt($(td).html())
+              price = $(td).html()
+              price = price.replace(/\,/g, '');
+              newtotal = newtotal+parseInt(price)
               //console.log(newtotal)
               
             });
@@ -159,6 +161,7 @@ My Card
     function doKeyup(obj){
         
         var price = obj.closest("tr").find("td:eq(1)").text();
+        price = price.replace(/\,/g, '');
         var total = parseInt(obj.val()) * parseInt(price);
         obj.closest("tr").find("td:eq(3)").html(total);
         obj.closest("tr").find("#quantity").val(obj.val());

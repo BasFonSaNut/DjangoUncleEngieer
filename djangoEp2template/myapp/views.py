@@ -426,3 +426,35 @@ def checkout(request):
             return redirect('mycart-page')
         
     return render(request,'myapp/checkout1.html')
+
+def OrderListPage(request):
+    username = request.user.username
+    user = User.objects.get(username=username)
+    order=OrderPending.objects.filter(user=user)
+    for od in order:
+        orderid = od.orderid
+        odlist = OrderList.objects.filter(orderid=orderid)
+        sumtotal = sum([c.total for c in odlist])
+        sumquan = sum([c.quantity for c in odlist])
+        od.total = sumtotal
+        od.quantity = sumquan
+            
+    context = {'orderlists':order}
+    return render(request,'myapp/orderlist.html',context)
+
+
+def AllOrderListPage(request):
+    if request.user.profile.usertype != 'admin':
+        return redirect('orderlist-page')
+    order=OrderPending.objects.all()
+    for od in order:
+        orderid = od.orderid
+        odlist = OrderList.objects.filter(orderid=orderid)
+        sumtotal = sum([c.total for c in odlist])
+        sumquan = sum([c.quantity for c in odlist])
+        od.total = sumtotal
+        od.quantity = sumquan
+            
+    context = {'orderlists':order}
+    return render(request,'myapp/allorderlist.html',context)
+    
