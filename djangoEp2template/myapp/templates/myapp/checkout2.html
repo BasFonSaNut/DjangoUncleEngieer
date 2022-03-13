@@ -1,0 +1,109 @@
+{% extends "myapp/layout.html" %}
+{% load humanize %}
+{% block title %}
+Add product
+{% endblock %}
+{% comment %}   
+  //sample data entry
+  context['fullname'] = 'Nisa Aumpan'
+            context['tel'] = '(123) 456-7890'
+            context['address'] = 'Private Company, Inc.<br>
+            007 street <br>
+            Bangkok City, TH 10440'
+            context['shipping'] = shipping
+            context['payment'] = payment
+            context['note'] = 'Drop at 12th box' {% endcomment %}
+{% block content %}
+<h2>ข้อมูลจัดส่งสินค้า</h2>
+<div class="container mt-2">
+  <address>
+    {% autoescape off %}
+        <strong>{{address.address|safe}}</strong><br>
+    {% endautoescape %}    
+    <abbr title="Phone">Tel:</abbr> {{address.tel}}
+   </address>
+
+   <address>
+    <strong>{{address.fullname}}</strong><br>
+    <a href="mailto:#">{{address.email}}</a>
+   </address>
+  
+   <address>
+    <strong>Shipping:{{address.shipping}}</strong><br>
+    <strong>Payment:{{address.payment}}</strong><br>
+   </address>
+
+    <div>
+    </div>
+
+        <div>
+        <table class="table table-striped table-hover" id="tb_order" name="tb_order">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Book</th>
+              
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total</th>
+              <th scope="col">Order Time</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {% for cart in mycart %}
+            <tr>
+              <th scope="row">{{cart.bookid}}</th>
+              <td>{{cart.bookname}}</td>
+              
+              <td>{{cart.price|intcomma}}</td>
+              <td><span>{{cart.quantity}}</span></td>
+              <td>{{cart.total|intcomma}}</td>
+              <td>{{cart.stamp}}</td>
+            </tr>
+            {% endfor %}  
+            <tr>
+              <th scope="row">&nbsp;</th>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>{{user.profile.cartquan}}</td>
+              <td>{{user.profile.sumtotal|intcomma}}</td>
+              <td></td>
+            </tr>
+
+            <tr>
+              <th scope="row">&nbsp;</th>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>
+                <form method="POST" action="{% url 'checkout-page' %}">
+                  {% csrf_token %}
+                <input type="hidden" name="page" id="page" value="confirmation">
+                <textarea  class="form-control" row="5" id="note" name="note" style="display:none">
+                  {{address.note}}
+                </textarea>
+                <textarea class="form-control" row="5" id="address" name="address" style="display:none">
+                  {{address.address}} 
+                </textarea>
+                <input type="hidden" class="form-control" id="tel"  name="tel" value="{{address.tel}}">
+                <input type="hidden" class="form-control" id="fullname"  name="fullname" value="{{address.fullname}}">
+                <input type="hidden" class="form-control" id="payment"  name="payment" value="{{address.payment}}">
+                <input type="hidden" class="form-control" id="shipping"  name="shipping" value="{{address.shipping}}">
+                <input type="hidden" class="form-control" id="email"  name="email" value="{{address.email}}">
+                <a href="{% url 'checkout-page' %}" class="btn-warning btn-group-sm">CONFIRM</a>
+              </form>
+              </td>
+            </tr>
+          </tbody>
+          
+        </table>
+        
+      
+      </div>
+</div>
+
+{% endblock %}
+
+

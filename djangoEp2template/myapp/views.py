@@ -354,5 +354,34 @@ def MyCart(request):
     return render(request,'myapp/mycart.html',context)
 
 def checkout1(request): 
+    username = request.user.username
+    user = User.objects.get(username=username)
+    if request.method == 'POST':
+        data = request.POST.copy()
+        fullname = data.get('fullname')
+        tel = data.get('tel')
+        address = data.get('address')
+        shipping = data.get('shipping')
+        payment = data.get('payment')
+        note = data.get('note')
+        page = data.get('page')
+        if page =='information':
+            orderaddress ={}
+            orderaddress['fullname'] = fullname
+            orderaddress['tel'] = tel
+            orderaddress['address'] = address
+            orderaddress['shipping'] = shipping
+            orderaddress['payment'] = payment
+            orderaddress['note'] = note
+            orderaddress['email'] = user.email
+            
+            mycart = Cart.objects.filter(user=user)
+            context = {'mycart': mycart,'address':orderaddress} 
+            
+            return render(request,'myapp/checkout2.html',context)
+        if page =='confirmation':
+            print(page) 
+            return render(request,'myapp/checkout1.html')
+        
     return render(request,'myapp/checkout1.html')
            

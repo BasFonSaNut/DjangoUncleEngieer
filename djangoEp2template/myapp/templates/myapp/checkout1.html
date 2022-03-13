@@ -1,4 +1,5 @@
 {% extends "myapp/layout.html" %}
+
 {% block title %}
 Add product
 {% endblock %}
@@ -8,7 +9,7 @@ Add product
 <div class="container mt-2">
   <div>
    
-    <form method="POST">
+    <form method="POST" action="{% url 'checkout-page' %}">
         {% csrf_token %}
         <div class="row g-2 mb-1">
           <div class="col">
@@ -22,6 +23,7 @@ Add product
             <div class="input-group mb-1">
               <span class="input-group-text">TEL:</span>
               <input type="text" class="form-control" id="tel" placeholder="Enter Telephone" name="tel">
+              
             </div>
         </div>
       </div>
@@ -31,6 +33,7 @@ Add product
                 <div class="input-group mb-1">
                   <span class="input-group-text">Address:</span>
                     <textarea class="form-control" row="5" id="address" placeholder="example: 121/65 M.4 Bangkok " name="address"></textarea>
+                    
                 </div>
             </div>
 
@@ -38,11 +41,10 @@ Add product
               <div class="input-group mb-1">
                 <span class="input-group-text">Note:</span>
                 <textarea  class="form-control" row="5" id="note" placeholder="example: if no one home drop at box11th " name="note"></textarea>
+                
               </div>
             </div>
       </div>
-
-     
 
       <div class="row g-2 mb-1">
           <div class="col">
@@ -74,11 +76,16 @@ Add product
 
         <div class="row g-2 mb-1">
           <div class="col">
+          <input type="hidden" name="page" id="page" value="information">
+          <button type="submit" class="btn-warning btn-sm">NEXT</button>
+          
+          {% comment %} <div class="col">
+            <input type="text" name="page" id="page" value="information">
             <button type="submit" class="btn btn-primary">NEXT</button>
-          </div>
-
+          </div> {% endcomment %}
+        </div>
           <div class="col">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            
           </div>
       </div>
   </form>
