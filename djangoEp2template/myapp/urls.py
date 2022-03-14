@@ -17,7 +17,9 @@ urlpatterns =[
     path('MyCart/', views.MyCart, name='mycart-page'),
     path('checkout/', views.checkout, name='checkout-page'),
     path('orderlist/', views.OrderListPage, name='orderlist-page'),
-    path('allorderlist/', views.AllOrderListPage, name='allorderlist-page')
+    path('allorderlist/', views.AllOrderListPage, name='allorderlist-page'),
+    path('uploadslip/<str:orderid>', views.UploadSlip, name='uploadslip-page')
+    
     
     # path('addfriend', fortestviews.indexView,name="indexView"),
     # path('post/ajax/friend', fortestviews.postFriend, name = "post_friend"),

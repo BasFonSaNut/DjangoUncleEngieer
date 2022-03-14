@@ -457,4 +457,40 @@ def AllOrderListPage(request):
             
     context = {'orderlists':order}
     return render(request,'myapp/allorderlist.html',context)
+
+def UploadSlip(request,orderid):
+    odlist = OrderList.objects.filter(orderid=orderid)
+    sumtotal = sum([c.total for c in odlist])
+    count = len(odlist)
+    odp=OrderPending.objects.get(orderid=orderid)
+    paymenttype = odp.payment
+    shippingtype = odp.shipping
+    
+    # enympa
+    shipcost = 0
+    if odp.shipping == 'ems':
+        shipcost = sum([50 if i == 0 else 10 for i in range(count)])
+    else:
+        shipcost = sum([30 if i == 0 else 10 for i in range(count)])
+    
+    codcost = 0
+    if odp.payment == 'cod':
+        codcost = 20
+              
+    totalamount =  sumtotal + shipcost + codcost           
+    context={'orderid':orderid,
+             'slipamount':sumtotal,
+             'shipingcost':shipcost,
+             
+             'totalamount':totalamount,
+             'codcost':codcost,
+             'bookcount':count,
+             'paymenttype':paymenttype,
+             'shippingtype':shippingtype
+             
+             }
+    return render(request,'myapp/uploadslip.html',context)
+
+    # new.image = request.FILES['imageupload']            
+    # new.save()
     

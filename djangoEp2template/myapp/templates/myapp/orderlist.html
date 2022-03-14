@@ -32,7 +32,7 @@ My Card
             {% if orderitem.paymentstatus %}
             <span class="text-success">PAID</span>
             {% else %}
-            <a href='#' class="btn btn-primary btn-sm">UPLOAD SLIP</a>
+            <a href="{% url 'uploadslip-page' orderitem.orderid %}" class="btn btn-primary btn-sm">UPLOAD SLIP</a>
             {% endif %}
         </td>     
       </tr>

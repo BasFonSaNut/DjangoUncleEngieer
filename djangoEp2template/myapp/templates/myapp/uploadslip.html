@@ -1,0 +1,112 @@
+{% extends "myapp/layout.html" %}
+{% block title %}
+Add product
+{% endblock %}
+
+{% block content %}
+<h2>Upload slip ORDER: {{orderid}}</h2>
+ประเภทการจัดส่ง : {{shippingtype}}<br>
+
+จำนวนสินค้า : {{bookcount}} ชิ้น<br>
+ราคาสินค้า {{slipamount}}<br>
+ค่าจัดส่ง : {{shipingcost}}  <br>
+{% if paymenttype == 'cod' %}
+บวกค่าเก็บเงินปลายทาง : {{codcost}}<br>
+{% endif %}
+ยอดสินค้ารวม : {{totalamount}} บาท<br>
+
+<div class="container mt-2">
+  <div>
+    
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="row g-2 mb-1">
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">จาก ธนาคาร:</span>
+              <input type="text" class="form-control" id="frombank" placeholder="customer's bank" name="frombank">
+            </div>
+          </div>
+
+          <div class="col">
+              <div class="input-group mb-1">
+                <span class="input-group-text">ธนาคารปลายทาง</span>
+                <input type="text" class="form-control" id="tobank" placeholder="shop's bank" name="tobank">
+              </div>
+          </div>
+      </div>
+
+      <div class="row g-2 mb-1">
+        <div class="col">
+          <div class="input-group mb-1">
+            <span class="input-group-text">จำนวนเงิน:</span>
+            <input type="text" class="form-control" value="{{slipamount}}" id="slipamount" placeholder="1000" name="slipamount">
+          </div>
+        </div>
+
+        <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">วัน:เวลา ทำรายการ (ดููที่ slip)</span>
+              <input type="text" class="form-control" id="slipdatetimekeyin" placeholder="23-03-2016:14.26" name="slipdatetimekeyin">
+            </div>
+        </div>
+      </div>
+
+       
+      <div class="row g-2 mb-1">
+        <div class="col">
+          <div class="input-group mb-1">
+            <span class="input-group-text">Shippingcost</span>
+            <input type="text" value="{{shipingcost}}" class="form-control" id="shipingcost" placeholder="" name="shipingcost">
+          </div>
+          
+        </div>
+        
+        <div class="col">
+          <div class="input-group">
+            <span class="input-group-text">Transaction No(ดูที่ slip):</span>
+            <input type="text" class="form-control" id="transactionid" placeholder="TXNT2541114" name="transactionid">
+            
+          </div>
+          
+        </div>
+    </div>
+
+      <div class="row g-2 mb-1">
+        <div class="col">
+          <div class="input-group mb-1">
+            <span class="input-group-text">Shippingcost</span>
+            <input type="text" value="{{totalamount}}" class="form-control" id="totalamount" placeholder="" name="totalamount">
+          </div>
+         
+          
+          
+        </div>
+
+        <div class="col">
+          <div class="input-group">
+            <span class="input-group-text">ไฟล์รูป</span>
+            <input type="file" class="form-control"  id="slipupload" name="slipupload">
+            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Clear File</button>
+          </div>
+          
+        </div>
+    </div>
+
+    <div class="row g-2 mb-1">
+      <div class="col">
+       
+        <button type="submit" class="btn btn-primary">UPLOAD</button>
+      </div>
+
+      <div class="col">
+       
+      </div>
+  </div>
+  </form>
+</div>
+
+{% endblock %}
+
+

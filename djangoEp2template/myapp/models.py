@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
@@ -112,11 +113,28 @@ class OrderPending(models.Model):
     shippingstatus = models.BooleanField(default=False)
     paymentstatus = models.BooleanField(default=False)
     
-    slip = models.ImageField(upload_to="slip/",null=True,blank=True)
+    image = models.ImageField(upload_to="slip/",default='default.png',null=True,blank=True)
     transactionid = models.CharField(max_length=100,default='',blank=True,null=True)
     
     stamp = models.DateTimeField(auto_now_add=True,blank=True,null=True)
     
+    frombank = models.CharField(max_length=100,default='',blank=True,null=True)
+    tobank = models.CharField(max_length=100,default='',blank=True,null=True)
+    slipamount = models.IntegerField(default=0,blank=True,null=True)
+    slipfilelocation = models.CharField(max_length=500,blank=True,null=True)
+    slipuploadtime = models.DateTimeField(auto_now_add=False,blank=True,null=True)
+    slipdatetimekeyin = models.CharField(max_length=100,blank=True,null=True)
+    slipcheckedstatus = models.BooleanField(default=False,blank=True,null=True)
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # saving image first
+        img = Image.open(self.image.path) # Open image using self
+
+        if img.height > 150 or img.width > 200:
+            new_img = (150,200)
+            img.thumbnail(new_img)
+            # img.resize(self.image.path, new_img)
+            img.save(self.image.path)  # saving image at the same path
     def __str__(self):
         return self.orderid 
     
