@@ -14,4 +14,8 @@ admin.site.register(Cart)
 class OrderListAdmin(admin.ModelAdmin):
     list_display = ['orderid','bookname','total']
 admin.site.register(OrderList,OrderListAdmin)
-admin.site.register(OrderPending)
+
+class OrderPendingAdmin(admin.ModelAdmin):
+    list_display=['orderid','payment','shipping','slipuploadstatus','slipuploadtime','totalquantity','goodsprice','codprice','shippingprice','totallyprice']
+    list_editable=['slipuploadstatus','payment','shipping']
+admin.site.register(OrderPending,OrderPendingAdmin)

@@ -23,7 +23,7 @@ Add product
 {% endif %}
 
 {% if odb.slipuploadstatus == True %}
-<strong>ORDER นี้  upload slip แล้ว ไม่จำเป็นต้อง upload ซ้ำ</strong> 
+<strong><span class="text-danger">ORDER นี้  upload slip แล้ว ไม่จำเป็นต้อง upload ซ้ำ</span></strong> 
 {% endif %}
 <div class="container mt-2">
   <div>
@@ -80,7 +80,7 @@ Add product
           <div class="input-group">
             <span class="input-group-text">Transaction No(ดูที่ slip):</span>
             <input type="text" class="form-control" id="transactionid" placeholder="TXNT2541114" name="transactionid">
-            <input type="text" class="form-control" value="{{orderid}}" id="orderid" placeholder="" name="orderid">
+            <input type="hidden" class="form-control" value="{{orderid}}" id="orderid" placeholder="" name="orderid">
             
           </div>
           

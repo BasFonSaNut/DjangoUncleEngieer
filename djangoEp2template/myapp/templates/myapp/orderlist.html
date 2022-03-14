@@ -18,7 +18,7 @@ My Card
         <th scope="col">Total Quantity</th>
         <th scope="col">Total Price</th>
         <th scope="col">Order Time</th>
-        <th scope="col">Payment Status</th>
+        <th scope="col">SLIP</th>
       </tr>
     </thead>
     <tbody>
@@ -29,10 +29,18 @@ My Card
         <td>{{orderitem.quantity}}</td>
         <td>{{orderitem.stamp}}</td>
         <td>
+         
+
+          {% comment %} {% if orderitem.slipuploadstatus%}
+          <span class="text danger">upload slip แล้ว</span>
+          {% endif %}
+
+          {% if orderitem.slipuploadstatus == False %}
+          
+          {% endif %} {% endcomment %}
+          <a href="{% url 'uploadslip-page' orderitem.orderid %}" class="btn btn-primary btn-sm">UPLOAD SLIP</a>
             {% if orderitem.paymentstatus %}
             <span class="text-success">PAID</span>
-            {% else %}
-            <a href="{% url 'uploadslip-page' orderitem.orderid %}" class="btn btn-primary btn-sm">UPLOAD SLIP</a>
             {% endif %}
         </td>     
       </tr>
