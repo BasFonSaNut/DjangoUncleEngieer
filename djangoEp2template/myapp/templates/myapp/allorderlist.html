@@ -29,11 +29,16 @@ My Card
         <td>{{orderitem.quantity}}</td>
         <td>{{orderitem.stamp}}</td>
         <td>
-            {% if orderitem.paymentstatus %}
-            <span class="text-success">PAID</span>
-            {% else %}
-            <a href='#' class="btn btn-primary btn-sm">UPLOAD SLIP</a>
-            {% endif %}
+          {% if orderitem.paymentstatus %}
+          <span class="text-success">PAID</span>
+          {% endif %}
+
+          {% if orderitem.slipuploadstatus%}
+          <a href="../media/{{orderitem.image}}" target="_blank">VIEW SLIP</a>
+          {% endif %}
+          {% if orderitem.slipuploadstatus == False %}
+          <span class="text danger">ยังไม่ส่งสลิป</span>
+          {% endif %}
         </td>     
       </tr>
       

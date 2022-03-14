@@ -121,20 +121,29 @@ class OrderPending(models.Model):
     frombank = models.CharField(max_length=100,default='',blank=True,null=True)
     tobank = models.CharField(max_length=100,default='',blank=True,null=True)
     slipamount = models.IntegerField(default=0,blank=True,null=True)
-    slipfilelocation = models.CharField(max_length=500,blank=True,null=True)
+    
+    slipuploadstatus = models.BooleanField(default=False,blank=True,null=True)
     slipuploadtime = models.DateTimeField(auto_now_add=False,blank=True,null=True)
     slipdatetimekeyin = models.CharField(max_length=100,blank=True,null=True)
     slipcheckedstatus = models.BooleanField(default=False,blank=True,null=True)
+    goodsprice =  models.IntegerField(default=0,blank=True,null=True)
+    totalquantity =  models.IntegerField(default=0,blank=True,null=True)
+    
+    codprice =  models.IntegerField(default=0,blank=True,null=True)
+    shippingprice =  models.IntegerField(default=0,blank=True,null=True)
+    totallyprice =  models.IntegerField(default=0,blank=True,null=True)
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # saving image first
         img = Image.open(self.image.path) # Open image using self
 
-        if img.height > 150 or img.width > 200:
+        new_img = (150,200)
+        if img.height > 200 or img.width > 150:
             new_img = (150,200)
-            img.thumbnail(new_img)
-            # img.resize(self.image.path, new_img)
-            img.save(self.image.path)  # saving image at the same path
+        img.thumbnail(new_img)
+        # img.resize(self.image.path, new_img)
+        img.save(self.image.path)  # saving image at the same path
+        
     def __str__(self):
         return self.orderid 
     

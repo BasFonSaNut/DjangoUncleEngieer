@@ -1,5 +1,6 @@
 from datetime import datetime
 from math import ceil
+from tkinter.tix import Tree
 from urllib import request
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
@@ -401,7 +402,15 @@ def checkout(request):
             orderpending.paymentstatus = False
             orderpending.save()
             
-            mycart = Cart.objects.filter(user=user)
+           
+            odp = OrderPending.objects.get(orderid=genorderid)
+            mycart = Cart.objects.filter(user=user) 
+            sumtotal = sum([c.total for c in mycart])
+            sumquan = sum([c.quantity for c in mycart])
+            odp.goodsprice = sumtotal
+            odp.totalquantity = sumquan
+            odp.save()
+            
             for cartitem in mycart:
                 itempending= OrderList()
                 itempending.orderid = genorderid
@@ -410,7 +419,6 @@ def checkout(request):
                 itempending.price = cartitem.price
                 itempending.quantity = cartitem.quantity
                 itempending.total = cartitem.total
-            
                 itempending.shippingstatus = False
                 itempending.orderdate = cartitem.stamp
                 itempending.save()
@@ -459,38 +467,57 @@ def AllOrderListPage(request):
     return render(request,'myapp/allorderlist.html',context)
 
 def UploadSlip(request,orderid):
-    odlist = OrderList.objects.filter(orderid=orderid)
-    sumtotal = sum([c.total for c in odlist])
-    count = len(odlist)
-    odp=OrderPending.objects.get(orderid=orderid)
-    paymenttype = odp.payment
-    shippingtype = odp.shipping
+    uploadstatus = ""
+    if request.method == 'POST' and request.FILES['slipupload']:
+        # print(data)
+        data = request.POST.copy()
+        codprice = data.get('codprice')
+        shippingprice = data.get('shippingprice')
+        totallyprice = data.get('totallyprice')
+        slipdatetimekeyin = data.get('slipdatetimekeyin')
+        transactionid = data.get('transactionid')
+        orderid =  data.get('orderid')
+        # print(data)
+        odp = OrderPending.objects.get(orderid=orderid)
+        odp.codprice =  codprice
+        odp.shippingprice =  shippingprice
+        odp.totallyprice =  totallyprice
+        odp.slipdatetimekeyin = slipdatetimekeyin
+        odp.transactionid = transactionid
+        odp.slipuploadstatus = True
+        odp.slipuploadtime = datetime.now()
+        odp.image = request.FILES['slipupload']            
+        odp.save()
+        uploadstatus = 'uploadslip'
+        
     
-    # enympa
+    
+    odp=OrderPending.objects.get(orderid=orderid)
+    sumquan = odp.totalquantity
+    
+    # calculate shipping cost
     shipcost = 0
     if odp.shipping == 'ems':
-        shipcost = sum([50 if i == 0 else 10 for i in range(count)])
+        shipcost = sum([50 if i == 0 else 10 for i in range(sumquan)])
     else:
-        shipcost = sum([30 if i == 0 else 10 for i in range(count)])
+        shipcost = sum([30 if i == 0 else 10 for i in range(sumquan)])
     
     codcost = 0
     if odp.payment == 'cod':
         codcost = 20
-              
-    totalamount =  sumtotal + shipcost + codcost           
-    context={'orderid':orderid,
-             'slipamount':sumtotal,
-             'shipingcost':shipcost,
-             
-             'totalamount':totalamount,
-             'codcost':codcost,
-             'bookcount':count,
-             'paymenttype':paymenttype,
-             'shippingtype':shippingtype
-             
-             }
+            
+    totalamount =  odp.goodsprice + shipcost + codcost           
+    context={
+            'orderid':orderid,
+            'totalamount':totalamount,
+            'shipingcost':shipcost,
+            'codcost':codcost,
+            'status' : uploadstatus,
+            'odb':odp
+            }
     return render(request,'myapp/uploadslip.html',context)
 
-    # new.image = request.FILES['imageupload']            
-    # new.save()
+    
+        
+    
     
