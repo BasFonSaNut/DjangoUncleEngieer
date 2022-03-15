@@ -1,9 +1,8 @@
 from datetime import datetime
 from math import ceil
-# from tkinter.tix import Tree
-# from urllib import request
+from urllib import request
 from django.shortcuts import render,redirect
-# from django.http import HttpResponse
+from django.http import HttpResponse
 from .models import *
 
 from django.contrib.auth.models import User
@@ -188,6 +187,7 @@ def register(request):
 def addproduct(request):
     if request.user.profile.usertype != 'admin':
         redirect('home-page')
+        
     if request.method == 'POST' and request.FILES['imageupload']:
         # print(data)
         data = request.POST.copy()
@@ -451,52 +451,6 @@ def OrderListPage(request):
     return render(request,'myapp/orderlist.html',context)
 
 
-def AllOrderListPage(request):
-    if request.user.profile.usertype != 'admin':
-        return redirect('orderlist-page')
-    
-    # if request.is_ajax():
-    if request.method == 'POST':
-       
-        context= {}
-        data = request.POST.copy()
-        orderid = data.get('orderid')
-        updateWhat = data.get('updateWhat')
-        print(orderid)
-        # orderid =request.POST.get('orderid', None)
-        # updateWhat =request.POST.get('updateWhat', None)
-        if updateWhat == 'slipchecked':
-            odp = OrderPending.objects.get(orderid=orderid)
-            odp.slipcheckedstatus = True
-            odp.save()
-            context= {'stausupdate': 'ผ่านการตรวจสอบสลิปเรียบร้อย'}
-            print('update slip called')
-        if updateWhat == 'paymentchecked':
-            odp = OrderPending.objects.get(orderid=orderid)
-            odp.paymentstatus = True
-            odp.save()
-            context= {'stausupdate': 'ผ่านการชำระเงินแล้ว'}
-        if updateWhat == 'deliverychecked':
-            odp = OrderPending.objects.get(orderid=orderid)
-            odp.shippingstatus = True
-            odp.save()
-            context= {'stausupdate': 'ผ่านการจัดส่ง'}        
-        #convert dict to json    
-        json_format = json.dumps(context)
-        # print(json_format)
-        return JsonResponse({"instance": json_format}, status=200)
-    else:
-        order=OrderPending.objects.all()
-        for od in order:
-            orderid = od.orderid
-            odlist = OrderList.objects.filter(orderid=orderid)
-            sumtotal = sum([c.total for c in odlist])
-            sumquan = sum([c.quantity for c in odlist])
-            od.total = sumtotal
-            od.quantity = sumquan
-                
-        context = {'orderlists':order}
-        return render(request,'myapp/allorderlist.html',context)
 
 def UploadSlip(request,orderid):
     uploadstatus = ""
@@ -549,7 +503,58 @@ def UploadSlip(request,orderid):
             }
     return render(request,'myapp/uploadslip.html',context)
 
+
+def AllOrderListPage(request):
+    if request.user.profile.usertype != 'admin':
+        return redirect('orderlist-page')
     
+    if request.method == 'POST':
+        data = request.POST.copy()
+        orderid = data.get('orderid')
+        updateWhat = data.get('updateWhat')
+        # print(updateWhat)
+        # orderid =request.POST.get('orderid', None)
+        # updateWhat =request.POST.get('updateWhat', None)
+        odp = OrderPending.objects.get(orderid=orderid)
+        if updateWhat == 'slipchecked':
+            # print("update checked slip")
+            odp.slipcheckedstatus = True
+            odp.save()
+            datax= {'statusupdate': 'status pass checked slip'}
+            json_format = json.dumps(datax)
+            return JsonResponse(json_format, status=200)
+        elif updateWhat == 'paymentchecked':
+            # print("update payment")
+            odp.paymentstatus = True
+            odp.save()
+            datax= {'statusupdate': 'status Paid'}
+            json_format = json.dumps(datax)
+            return JsonResponse({"instance": json_format}, status=200)
+        elif updateWhat == 'deliverychecked':
+            # print("update delivery")
+            odp.shippingstatus = True
+            odp.save()
+            datax= {'statusupdate': 'status  under delivery'}  
+            json_format = json.dumps(datax)
+            return JsonResponse({"instance": json_format}, status=200)  
+        
+    order=OrderPending.objects.all()
+    for od in order:
+        orderid = od.orderid
+        odlist = OrderList.objects.filter(orderid=orderid)
+        sumtotal = sum([c.total for c in odlist])
+        sumquan = sum([c.quantity for c in odlist])
+        od.total = sumtotal
+        od.quantity = sumquan
+            
+    context = {'orderlists':order}
+    
+    return render(request,'myapp/allorderlist.html',context)
+
+
+        
+        
+        
         
     
             
