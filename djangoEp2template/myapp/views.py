@@ -1,9 +1,9 @@
 from datetime import datetime
 from math import ceil
-from tkinter.tix import Tree
-from urllib import request
+# from tkinter.tix import Tree
+# from urllib import request
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from .models import *
 
 from django.contrib.auth.models import User
