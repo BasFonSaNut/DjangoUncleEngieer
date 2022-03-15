@@ -18,7 +18,8 @@ urlpatterns =[
     path('checkout/', views.checkout, name='checkout-page'),
     path('orderlist/', views.OrderListPage, name='orderlist-page'),
     path('allorderlist/', views.AllOrderListPage, name='allorderlist-page'),
-    path('uploadslip/<str:orderid>', views.UploadSlip, name='uploadslip-page')
+    path('uploadslip/<str:orderid>', views.UploadSlip, name='uploadslip-page'),
+    # path('doUpdateStatus/',views.AllOrderListPage, name='updatestatus-page')
     
     
     # path('addfriend', fortestviews.indexView,name="indexView"),

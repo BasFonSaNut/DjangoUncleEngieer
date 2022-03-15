@@ -110,8 +110,8 @@ class OrderPending(models.Model):
     payment = models.CharField(max_length=100,default='')
     note = models.TextField(default='',blank=True,null=True)
     
-    shippingstatus = models.BooleanField(default=False)
-    paymentstatus = models.BooleanField(default=False)
+    shippingstatus = models.BooleanField(default=False,blank=True,null=True)
+    paymentstatus = models.BooleanField(default=False,blank=True,null=True)
     
     image = models.ImageField(upload_to="slip/",default='default.png',null=True,blank=True)
     transactionid = models.CharField(max_length=100,default='',blank=True,null=True)

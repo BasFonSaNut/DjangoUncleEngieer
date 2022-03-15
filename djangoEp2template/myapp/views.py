@@ -454,17 +454,49 @@ def OrderListPage(request):
 def AllOrderListPage(request):
     if request.user.profile.usertype != 'admin':
         return redirect('orderlist-page')
-    order=OrderPending.objects.all()
-    for od in order:
-        orderid = od.orderid
-        odlist = OrderList.objects.filter(orderid=orderid)
-        sumtotal = sum([c.total for c in odlist])
-        sumquan = sum([c.quantity for c in odlist])
-        od.total = sumtotal
-        od.quantity = sumquan
-            
-    context = {'orderlists':order}
-    return render(request,'myapp/allorderlist.html',context)
+    
+    # if request.is_ajax():
+    if request.method == 'POST':
+       
+        context= {}
+        data = request.POST.copy()
+        orderid = data.get('orderid')
+        updateWhat = data.get('updateWhat')
+        print(orderid)
+        # orderid =request.POST.get('orderid', None)
+        # updateWhat =request.POST.get('updateWhat', None)
+        if updateWhat == 'slipchecked':
+            odp = OrderPending.objects.get(orderid=orderid)
+            odp.slipcheckedstatus = True
+            odp.save()
+            context= {'stausupdate': 'ผ่านการตรวจสอบสลิปเรียบร้อย'}
+            print('update slip called')
+        if updateWhat == 'paymentchecked':
+            odp = OrderPending.objects.get(orderid=orderid)
+            odp.paymentstatus = True
+            odp.save()
+            context= {'stausupdate': 'ผ่านการชำระเงินแล้ว'}
+        if updateWhat == 'deliverychecked':
+            odp = OrderPending.objects.get(orderid=orderid)
+            odp.shippingstatus = True
+            odp.save()
+            context= {'stausupdate': 'ผ่านการจัดส่ง'}        
+        #convert dict to json    
+        json_format = json.dumps(context)
+        # print(json_format)
+        return JsonResponse({"instance": json_format}, status=200)
+    else:
+        order=OrderPending.objects.all()
+        for od in order:
+            orderid = od.orderid
+            odlist = OrderList.objects.filter(orderid=orderid)
+            sumtotal = sum([c.total for c in odlist])
+            sumquan = sum([c.quantity for c in odlist])
+            od.total = sumtotal
+            od.quantity = sumquan
+                
+        context = {'orderlists':order}
+        return render(request,'myapp/allorderlist.html',context)
 
 def UploadSlip(request,orderid):
     uploadstatus = ""
@@ -517,6 +549,10 @@ def UploadSlip(request,orderid):
             }
     return render(request,'myapp/uploadslip.html',context)
 
+    
+        
+    
+            
     
         
     

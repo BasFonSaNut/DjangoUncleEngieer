@@ -8,7 +8,11 @@ My Card
 <div class="container mt-5">
   <h2 class="pb-1 border-bottom">All Order and Order Status (admin)</h2>
   
-    
+  
+  <div id ="notifyupdate" class="alert alert-danger" style="display:none">
+    <strong>ลบเรียบร้อยแล้ว</strong> 
+  </div>
+  
  
  
   <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
@@ -19,6 +23,9 @@ My Card
         <th scope="col">Total Price</th>
         <th scope="col">Order Time</th>
         <th scope="col">SLIP</th>
+        <th scope="col">SLIP CHECKED</th>
+        <th scope="col">PAID</th>
+        <th scope="col">DELIVERY</th>
       </tr>
     </thead>
     <tbody>
@@ -28,18 +35,58 @@ My Card
         <td>{{orderitem.total|intcomma}}</td>
         <td>{{orderitem.quantity}}</td>
         <td>{{orderitem.stamp}}</td>
-        <td>
-          {% if orderitem.paymentstatus %}
-          <span class="text-success">PAID</span>
-          {% endif %}
-
+       
+        <td>    
           {% if orderitem.slipuploadstatus%}
-          <a href="../media/{{orderitem.image}}" target="_blank">VIEW SLIP</a>
+          <a href="../media/{{orderitem.image}}" target="_blank">
+            <span class="text-success"><i class='fas fa-receipt' style='font-size:20px'></i></span>
+          </a>
+          {% else %}
+           
+            <span class="text-warning"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>pending</span>
+           
           {% endif %}
-          {% if orderitem.slipuploadstatus == False %}
-          <span class="text danger">ยังไม่ส่งสลิป</span>
+        </td>
+        <td>
+          {% if orderitem.slipcheckedstatus %}
+          <span id="slipcheck" class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+          {% else %}
+            <form id="frmCheckslip{{orderitem.orderid}}">
+              {% csrf_token %}
+            <input type = "hidden" value="{{orderitem.orderid}}" id="orderid" name="orderid">  
+            <input type = "hidden" value="slipchecked" id="updateWhat" name="updateWhat">  
+            <button type="submit" class="btn-secondary btn-group-sm" onclick="doCheckslip($(this).closest('form'))"><span class="text-warning"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span></button>
+            
+            <form>
           {% endif %}
-        </td>     
+        </td>
+        
+        
+        <td>
+         
+            {% if orderitem.paymentstatus %}
+            <span class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+            {% else %}
+            <form id="frmCheckpayment">
+              {% csrf_token %}
+            <input type = "hidden" value="{{orderitem.orderid}}" id="orderid" name="orderid">  
+            <input type = "hidden" value="paymentchecked" id="updateWhat" name="updateWhat">  
+            
+            <span class="text-warning" onclick="doCheckpayment($(this))"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span>
+            <form>
+
+              
+            {% endif %}
+        </td>
+        
+        <td>
+          {% if orderitem.shippingstatus %}
+          <span class="text-success"><i class='fas fas fa-truck' style='font-size:20px'></i></span>
+          {% else %}
+          <span class="text-warning"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span>
+          {% endif %}
+        </td>
+            
       </tr>
       
       {% endfor %}  
@@ -48,3 +95,39 @@ My Card
   </table>
 </div>
 {% endblock %}
+
+{% block javascript %}
+  <script>
+
+  function doCheckslip(objfrom)
+    {  
+        $(objfrom).submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($(objfrom)[0]); 
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'allorderlist-page' %}",
+                data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false, 
+                
+                success: function (response) {
+                    var instance = JSON.parse(response["instance"]);
+                    $("#notifyupdate").css('display','inline')
+                    $("#notifyupdate").html('slip was pass checked')
+                    //$(objfrom).closest("td").find("button([id='slipcheck']").html(total);
+                    //id="slipcheck"
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
+
+          })
+            
+  }
+  </script>
+{% endblock javascript%}
