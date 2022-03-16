@@ -508,6 +508,7 @@ def AllOrderListPage(request):
     if request.user.profile.usertype != 'admin':
         return redirect('orderlist-page')
     
+    statusupdate = ""
     if request.method == 'POST':
         data = request.POST.copy()
         orderid = data.get('orderid')
@@ -520,24 +521,29 @@ def AllOrderListPage(request):
             # print("update checked slip")
             odp.slipcheckedstatus = True
             odp.save()
-            datax= {'statusupdate': 'status pass checked slip'}
-            json_format = json.dumps(datax)
-            return JsonResponse(json_format, status=200)
+            statusupdate =  'status pass checked slip'
+            # datax= {'statusupdate': 'status pass checked slip'}
+            # json_format = json.dumps(datax)
+            # return JsonResponse({"instance":json_format}, status=200)
+            # return render(request,'myapp/allorderlist.html',context)
         elif updateWhat == 'paymentchecked':
             # print("update payment")
             odp.paymentstatus = True
             odp.save()
-            datax= {'statusupdate': 'status Paid'}
-            json_format = json.dumps(datax)
-            return JsonResponse({"instance": json_format}, status=200)
+            statusupdate = "status Paid"
+            # datax= {"statusupdate": "status Paid"}
+            # json_format = json.dumps(datax)
+            # return JsonResponse({"instance":json_format}, status=200)
+            # return render(request,'myapp/allorderlist.html',context)
         elif updateWhat == 'deliverychecked':
             # print("update delivery")
             odp.shippingstatus = True
             odp.save()
-            datax= {'statusupdate': 'status  under delivery'}  
-            json_format = json.dumps(datax)
-            return JsonResponse({"instance": json_format}, status=200)  
-        
+            statusupdate = "status  under delivery"
+            # datax= {"statusupdate": "status  under delivery"}  
+            # json_format = json.dumps(datax)
+            # return JsonResponse({"instance":json_format}, status=200)  
+            # return render(request,'myapp/allorderlist.html',context)
     order=OrderPending.objects.all()
     for od in order:
         orderid = od.orderid
@@ -547,9 +553,29 @@ def AllOrderListPage(request):
         od.total = sumtotal
         od.quantity = sumquan
             
-    context = {'orderlists':order}
+    context = {
+                'orderlists':order,
+               'updatestatus':statusupdate
+              }
     
     return render(request,'myapp/allorderlist.html',context)
+
+
+def UpdateTracking(request,orderid):
+    if request.user.profile.usertype != 'admin':
+        return redirect('orderlist-page')
+    
+    if request.method == 'POST':
+        data = request.POST.copy()
+        trackingnumber = data.get('trackingnumber')
+        odp = OrderPending.objects.get(orderid=orderid)
+        odp.trackingnumber = trackingnumber
+        odp.shippingstatus = True
+        odp.save()
+        return redirect('allorderlist-page')
+    
+    context = {'orderid':orderid}
+    return render(request, "myapp/updatetracking.html",context)
 
 
         

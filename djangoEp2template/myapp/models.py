@@ -129,6 +129,7 @@ class OrderPending(models.Model):
     goodsprice =  models.IntegerField(default=0,blank=True,null=True)
     totalquantity =  models.IntegerField(default=0,blank=True,null=True)
     
+    trackingnumber = models.CharField(max_length=100,blank=True,null=True)
     codprice =  models.IntegerField(default=0,blank=True,null=True)
     shippingprice =  models.IntegerField(default=0,blank=True,null=True)
     totallyprice =  models.IntegerField(default=0,blank=True,null=True)

@@ -1,0 +1,35 @@
+{% extends "myapp/layout.html" %}
+{% block title %}
+Update Tracking
+{% endblock %}
+
+{% block content %}
+<h2>อัฟเดตเลขพัสดุ</h2>
+<p>ORDERID: {{orderid}}
+<div class="container mt-2">
+  <div>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row g-2 mb-1">
+            
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">เลขที่พัสดุ:</span>
+              <input type="text" class="form-control" id="trackingnumber" placeholder="เลขที่พัสดุ" name="trackingnumber">
+            </div>
+          </div>
+  
+          <div class="col">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+
+     
+
+  </form>
+</div>
+
+{% endblock %}
+
+

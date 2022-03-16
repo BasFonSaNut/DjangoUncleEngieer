@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'djangoEp2template.urls'
@@ -144,3 +145,10 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home-page'
 
 LOGOUT_REDIRECT_URL = 'login'
+
+
+# SESSION_COOKIE_SAMESITE = 'None'
+# CSRF_COOKIE_SAMESITE = 'None'
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_SAVE_EVERY_REQUEST = True

@@ -19,6 +19,9 @@ My Card
         <th scope="col">Total Price</th>
         <th scope="col">Order Time</th>
         <th scope="col">SLIP</th>
+        <th scope="col">SLIP CHECKED</th>
+        <th scope="col">PAID</th>
+        <th scope="col">DELIVERY</th>
       </tr>
     </thead>
     <tbody>
@@ -30,19 +33,42 @@ My Card
         <td>{{orderitem.stamp}}</td>
         <td>
          
-
-          {% comment %} {% if orderitem.slipuploadstatus%}
-          <span class="text danger">upload slip แล้ว</span>
-          {% endif %}
-
-          {% if orderitem.slipuploadstatus == False %}
-          
-          {% endif %} {% endcomment %}
+          {% if orderitem.slipuploadstatus%}
+          <a href="../media/{{orderitem.image}}" target="_blank">
+            <span class="text-success"><i class='fas fa-receipt' style='font-size:20px'></i></span>
+          </a>
+          {% else %}
+           
           <a href="{% url 'uploadslip-page' orderitem.orderid %}" class="btn btn-primary btn-sm">UPLOAD SLIP</a>
-            {% if orderitem.paymentstatus %}
-            <span class="text-success">PAID</span>
-            {% endif %}
+           
+          {% endif %}
         </td>     
+
+
+        <td>
+          {% if orderitem.slipcheckedstatus %}
+          <span class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+          {% else %}
+          <span class="text-warning">รอตรวจสอบ</span>
+          {% endif %}
+        </td>
+
+        <td>
+          {% if orderitem.paymentstatus %}
+          <span class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+          {% else %}
+          <span class="text-warning">รอยืนยันเงินเข้า</span>
+          {% endif %}
+        </td>
+
+        <td>
+          {% if orderitem.shippingstatus %}
+          <span class="text-success">{{orderitem.trackingnumber}}</span>
+          {% else %}
+          <span class="text-warning">อยู่ระหว่างการบรรจุ</span>
+          {% endif %}
+        </td>
+        
       </tr>
       
       {% endfor %}  

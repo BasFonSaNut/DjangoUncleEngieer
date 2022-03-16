@@ -6,9 +6,12 @@ OrderList Admin
 
 {% block content %}
 
-<div id ="notifyupdate" class="alert alert-danger" style="display:none">
-  <strong></strong> 
+{% if updatestatus != '' %}
+<div id ="notifyupdate" class="alert alert-danger">
+  {% comment %} style="display:none" {% endcomment %}
+  <strong>{{updatestatus}}</strong> 
 </div>
+{% endif%}
 <div class="container mt-5">
   <h2 class="pb-1 border-bottom">All Order and Order Status (admin)</h2>
   <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
@@ -48,15 +51,15 @@ OrderList Admin
           {% if orderitem.slipcheckedstatus %}
           <span class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
           {% else %}
-            <form id="frmCheckslip{{orderitem.orderid}}">
+            <form id="frmCheckslip{{orderitem.orderid}}" method="POST">
               {% csrf_token %}
               <span id="slipcheck" style="display:none" class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
             <input type = "hidden" form="frmCheckslip{{orderitem.orderid}}" value="{{orderitem.orderid}}" id="orderid" name="orderid">  
             <input type = "hidden" form="frmCheckslip{{orderitem.orderid}}" value="slipchecked" id="updateWhat" name="updateWhat">  
-            <button id='btn_checkslip' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm" onclick="doCheckslip($(this).closest('form'),$(this))">
+            <button id='btn_checkslip' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm">
               <span class="text-warning"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span>
             </button>
-            
+            {% comment %} onclick="doCheckslip($(this).closest('form'),$(this))" {% endcomment %}
             <form>
           {% endif %}
         </td>
@@ -67,15 +70,15 @@ OrderList Admin
             {% if orderitem.paymentstatus %}
             <span class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
             {% else %}
-            <form id="frmCheckpayment{{orderitem.orderid}}">
+            <form id="frmCheckpayment{{orderitem.orderid}}"  method="POST">
               {% csrf_token %}
             <span id="paymentcheck" style="display:none" class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
             <input type = "hidden" form="frmCheckpayment{{orderitem.orderid}}" value="{{orderitem.orderid}}" id="orderid" name="orderid">  
             <input type = "hidden" form="frmCheckpayment{{orderitem.orderid}}" value="paymentchecked" id="updateWhat" name="updateWhat">  
-            <button id='btn_checkpayment' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm" onclick="doCheckpayment($(this).closest('form'),$(this))">
+            <button id='btn_checkpayment' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm">
               <span class="text-warning"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span>
             </button>
-            
+            {% comment %} onclick="doCheckpayment($(this).closest('form'),$(this))" {% endcomment %}
             <form>
               
             {% endif %}
@@ -83,18 +86,20 @@ OrderList Admin
         
         <td>
           {% if orderitem.shippingstatus %}
-          <span class="text-success"><i class='fas fas fa-truck' style='font-size:20px'></i></span>
+          <span class="text-success">{{orderitem.trackingnumber}}</span>
+          {% comment %} <i class='fas fas fa-truck' style='font-size:20px'></i> {% endcomment %}
           {% else %}
-          <form id="frmCheckship{{orderitem.orderid}}">
+          <a href="{% url 'updatetracking' orderitem.orderid %}" class="btn-success btn-group-sm">ENTER TRACKING</a>
+           {% comment %} <form id="frmCheckship{{orderitem.orderid}}" method="POST">
             {% csrf_token %}
           <span id="shippingcheck" style="display:none" class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
           <input type = "hidden" form="frmCheckship{{orderitem.orderid}}" value="{{orderitem.orderid}}" id="orderid" name="orderid">  
           <input type = "hidden" form="frmCheckship{{orderitem.orderid}}" value="deliverychecked" id="updateWhat" name="updateWhat">  
-          <button id='btn_checkshipping' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm" onclick="doCheckship($(this).closest('form'),$(this))">
+          <button id='btn_checkshipping' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm">
             <span class="text-warning"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span>
           </button>
-          
-          <form>
+          onclick="doCheckship($(this).closest('form'),$(this))"
+          <form> {% endcomment %}
             
           
           {% endif %}
@@ -128,11 +133,11 @@ OrderList Admin
                   contentType: false, 
                   processData: false,  
                     success: function (response) {
-                        var instance = JSON.parse(response["instance"]);
-                        //var instance = JSON.parse(response["statusupdate"]);
-                        console.log(response["instance"]["updatestatus"])
+                       var instance = JSON.parse(response["instance"]);
+                        
+                        console.log(instance["statusupdate"])
                         $("#notifyupdate").css('display','inline')
-                        //$("#notifyupdate").html(instance["updatestatus"])
+                        $("#notifyupdate").html(instance["statusupdate"])
                         //$("#notifyupdate").html(`${instance}`)
                         
                         $(objform).find('span[id="shippingcheck"]').css('display','inline');
@@ -165,10 +170,10 @@ OrderList Admin
                   contentType: false, 
                   processData: false,  
                     success: function (response) {
-                        var instance = JSON.parse(response["instance"]);
+                      var instance = JSON.parse(response["instance"]);
                         
                         $("#notifyupdate").css('display','inline')
-                        $("#notifyupdate").html(`${instance["updatestatus"]}`)
+                        $("#notifyupdate").html(instance["statusupdate"])
                         $(objform).find('span[id="paymentcheck"]').css('display','inline');
                         $(objbutton).css('display','none');
                     },
@@ -202,7 +207,7 @@ OrderList Admin
                     var instance = JSON.parse(response["instance"]);
                     
                     $("#notifyupdate").css('display','inline')
-                    $("#notifyupdate").html(`${instance["updatestatus"]}`)
+                    $("#notifyupdate").html(instance["statusupdate"])
                     $(objform).find('span[id="slipcheck"]').css('display','inline');
                     $(objbutton).css('display','none');
                     
