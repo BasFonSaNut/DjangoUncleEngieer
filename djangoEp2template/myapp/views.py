@@ -9,6 +9,67 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from django.http import JsonResponse
 import json
+# for ajax
+from django.views.generic import ListView
+from django.views.generic import View
+
+#===============================Ajax===========
+class OdpCrudView(ListView):
+    model = OrderPending
+    template_name = 'myapp/allorderlistajax.html'
+    order=OrderPending.objects.all()
+    context_object_name = 'orderlists'
+    # for od in order:
+    #     orderid = od.orderid
+    #     odlist = OrderList.objects.filter(orderid=orderid)
+    #     sumtotal = sum([c.total for c in odlist])
+    #     sumquan = sum([c.quantity for c in odlist])
+    #     od.total = sumtotal
+    #     od.quantity = sumquan
+        
+    # data = {
+    #            'orderlists':order,
+    #            'updatestatus':statusupdate
+    #           }        
+        # context_object_name = 'orderlists'
+    # context = {
+    #         'orderlists': order
+    # }
+    # return render(request,"myapp/allorderlistajax.html",context)
+    # return JsonResponse(data)
+    
+class UpdateSlipcheckST(View):
+    def post(self, request):
+        orderid = request.POST.get('orderid', None)
+        updateWhat = request.POST.get('updateWhat', None)
+        csrfmiddlewaretoken = request.POST.get('csrfmiddlewaretoken', None)
+
+
+        print(updateWhat)
+        obj = OrderPending.objects.get(orderid=orderid)
+        obj.slipcheckedstatus = True
+        obj.save()
+        data = {
+            'statusupdate' : 'slip was check'
+        }
+        return JsonResponse(data)
+    
+class UpdatePaymentST(View):
+    def post(self, request):
+        orderid = request.POST.get('orderid', None)
+        updateWhat = request.POST.get('updateWhat', None)
+        csrfmiddlewaretoken = request.POST.get('csrfmiddlewaretoken', None)
+        print(updateWhat)
+       
+        obj = OrderPending.objects.get(orderid=orderid)
+        obj.paymentstatus = True
+        obj.save()
+        
+        data = {
+            'statusupdate': 'slip was paid'
+        }
+        return JsonResponse(data)
+#==============================
 def aboutus(request):
     return render(request,'myapp/aboutus.html')
 
@@ -526,6 +587,10 @@ def AllOrderListPage(request):
             # json_format = json.dumps(datax)
             # return JsonResponse({"instance":json_format}, status=200)
             # return render(request,'myapp/allorderlist.html',context)
+            data = {
+            'statusupdate' : 'slip was check'
+            }
+            return JsonResponse(data)
         elif updateWhat == 'paymentchecked':
             # print("update payment")
             odp.paymentstatus = True
@@ -535,6 +600,10 @@ def AllOrderListPage(request):
             # json_format = json.dumps(datax)
             # return JsonResponse({"instance":json_format}, status=200)
             # return render(request,'myapp/allorderlist.html',context)
+            data = {
+            'statusupdate' : 'order was paid'
+            }
+            return JsonResponse(data)
         elif updateWhat == 'deliverychecked':
             # print("update delivery")
             odp.shippingstatus = True
@@ -544,6 +613,10 @@ def AllOrderListPage(request):
             # json_format = json.dumps(datax)
             # return JsonResponse({"instance":json_format}, status=200)  
             # return render(request,'myapp/allorderlist.html',context)
+            data = {
+            'statusupdate' : 'slip was check'
+            }
+            return JsonResponse(data)
     order=OrderPending.objects.all()
     for od in order:
         orderid = od.orderid
@@ -554,7 +627,7 @@ def AllOrderListPage(request):
         od.quantity = sumquan
             
     context = {
-                'orderlists':order,
+               'orderlists':order,
                'updatestatus':statusupdate
               }
     
@@ -576,6 +649,15 @@ def UpdateTracking(request,orderid):
     
     context = {'orderid':orderid}
     return render(request, "myapp/updatetracking.html",context)
+
+
+
+def FRMtracking(request,orderid):
+    if request.user.profile.usertype != 'admin':
+        return redirect('orderlist-page')
+    
+    context = {'orderid':orderid}
+    return render(request, "myapp/frmuploadtracking.html",context)
 
 
         

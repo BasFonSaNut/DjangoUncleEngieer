@@ -1,0 +1,17 @@
+<form action="">
+        {% csrf_token %}
+        <input type="text" class="form-control" value="{{orderid}}" id="orderid" name="orderid"> 
+        <div class="row g-2 mb-1">
+            
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">เลขที่พัสดุ:</span>
+              <input type="text" class="form-control" id="trackingnumber" placeholder="เลขที่พัสดุ" name="trackingnumber">
+            </div>
+          </div>
+  
+          <div class="col">
+            <button class="btn btn-primary" onclick="updateTracknumber($(this));">Submit</button>
+        </div>
+      </div>
+ </form>

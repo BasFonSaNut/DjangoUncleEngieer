@@ -19,9 +19,13 @@ urlpatterns =[
     path('orderlist/', views.OrderListPage, name='orderlist-page'),
     path('allorderlist/', views.AllOrderListPage, name='allorderlist-page'),
     path('uploadslip/<str:orderid>', views.UploadSlip, name='uploadslip-page'),
-    path('updatetracking/<str:orderid>', views.UpdateTracking, name='updatetracking')
+    path('updatetracking/<str:orderid>', views.UpdateTracking, name='updatetracking'),
+    path('frmupdatetracking/<str:orderid>', views.FRMtracking, name='frmupdatetracking'),
     
-    
+    # ================Ajax=========================
+    path('updatecheckslip/',  views.UpdateSlipcheckST.as_view(), name='updatecheckslip_ajax'),
+    path('updatepayment/',  views.UpdatePaymentST.as_view(), name='updatepayment_ajax'),
+    path('orderlistajax/',  views.OdpCrudView.as_view(), name='orderlistajax')
     
     # path('addfriend', fortestviews.indexView,name="indexView"),
     # path('post/ajax/friend', fortestviews.postFriend, name = "post_friend"),
