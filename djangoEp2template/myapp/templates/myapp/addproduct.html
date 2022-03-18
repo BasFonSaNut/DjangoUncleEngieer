@@ -10,7 +10,7 @@ ADD PRODUCT
 
 <div class="container mt-2">
   <div>
-        <form id="addproduct-form">
+        <form id="addproduct-form" action="">
           {% comment %} enctype="multipart/form-data" {% endcomment %}
           {% csrf_token %}
          
@@ -127,11 +127,11 @@ ADD PRODUCT
   <nav aria-label="Page navigation example">
     <ul class="pagination">
      
-      <li class="page-item"><a class="page-link" href="../addproductpaging/{{previousPage}}">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' previousPage %}">Previous</a></li>
       {% for i in totalpage %}
-      <li class="page-item"><a class="page-link" href="../addproductpaging/{{i}}">{{i}}</a></li>
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' i %}">{{i}}</a></li>
       {% endfor %}  
-      <li class="page-item"><a class="page-link" href="../addproductpaging/{{nextPage}}">Next</a></li>
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' nextPage %}">Next</a></li>
     </ul>
   </nav>
 </div>
@@ -146,7 +146,6 @@ ADD PRODUCT
         <th scope="col">Price</th>
         <th scope="col">Quantity</th>
         <th scope="col">Unit</th>
-        <th scope="col">Instock</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -159,11 +158,7 @@ ADD PRODUCT
         <td>{{book.price}}</td>
         <td>{{book.quantity}}</td>
         <td>{{book.unit}}</td>
-        {% if book.instock == True %}
-        <td>มีสินค้า</td>
-        {% else %}
-        <td>สินค้าหมด</td>
-        {% endif %}
+        
         <td> 
           <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
           <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
@@ -179,11 +174,11 @@ ADD PRODUCT
   <nav aria-label="Page navigation example">
     <ul class="pagination">
      
-      <li class="page-item"><a class="page-link" href="../addproductpaging/{{previousPage}}">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' previousPage %}">Previous</a></li>
       {% for i in totalpage %}
-      <li class="page-item"><a class="page-link" href="../addproductpaging/{{i}}">{{i}}</a></li>
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' i %}">{{i}}</a></li>
       {% endfor %}  
-      <li class="page-item"><a class="page-link" href="../addproductpaging/{{nextPage}}">Next</a></li>
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' nextPage %}">Next</a></li>
     </ul>
   </nav>
 </div>
@@ -192,60 +187,60 @@ ADD PRODUCT
 
 {% block javascript %}
   <script>
-  function addBook()
-  {  
-      $("#addproduct-form").submit(function (e) {
-        e.preventDefault();
-        var formData = new FormData($("#addproduct-form")[0]); 
-       // $('#notify').html("<img src='../static/myapp/images/animate/pleasewait3.gif' width='50%>")
-        $.ajax({
-            type: 'POST',
-            url: "{% url 'addproduct' %}",
-            data: formData,
-            async: false, 
-            cache: false, 
-            contentType: false, 
-            processData: false, 
-            success: function (response) {
-                // on successfull creating object
-                // 1. clear the form.
-                $("#addproduct-form").trigger('reset');
-                // 2. focus to name input 
-                $("#name").focus();
+    function addBook()
+    {  
+        $("#addproduct-form").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($("#addproduct-form")[0]); 
+            //$('#notify').html("<img src='../static/myapp/images/animate/pleasewait3.gif' width='50%>")
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addproduct-page' 1%}",
+                data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false, 
+                dataType: 'json',
+                success: function (response) {
+                  //alert(response)
+                    // on successfull creating object
+                    // 1. clear the form.
+                    $("#addproduct-form").trigger('reset');
+                    // 2. focus to nickname input 
+                    $("#name").focus();
 
-                // display the newly book to table.
-                var instance = JSON.parse(response["instance"]);
-                
-                //alert(instance["id"])
-                /*in case more than 1 row use below
-                var fields = instance[0]["fields"];
-                console.log(fields)
-                */
-                $("#tb_product tbody").prepend(
-                  `<tr>
-                    <td>${instance["id"]}</td>
-                    <td>${instance["bookname"]}</td>
-                    <td>${instance["author"]}</td>
-                    <td>${instance["price"]}</td>
-                    <td>${instance["quantity"]}</td>
-                    <td>${instance["unit"]}</td>
-                    <td>${instance["instock"]}</td>
-                  
-                    <td> 
-                      <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
-                      <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
-                   </td>
-                    </tr>`
-                )
-                
-                
-            },
-            error: function (response) {
-                // alert the error if any error occured
-                alert(response["responseJSON"]["error"]);
-            }
+                    // display the newly friend to table.
+                    //var instance = JSON.parse(response["instance"]);
+                    
+                    //alert(instance["id"])
+                    /*
+                    var fields = instance[0]["fields"];
+                    console.log(fields)
+                    */
+                    
+                    $("#tb_product tbody").prepend(
+                        `<tr>
+                        <td>${response.id}</td>
+                        <td>${response.bookname}</td>
+                        <td>${response.author}</td>
+                        <td>${response.price}</td>
+                        <td>${response.quantity}</td>
+                        <td>${response.unit}</td>
+                        
+                        <td> 
+                            <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
+                            <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+                        </td>
+                        </tr>`
+                    )
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
         })
-    })
   }
   </script>
 {% endblock javascript%}

@@ -4,17 +4,16 @@ from . import views
 urlpatterns =[
    
     path('', views.view_Home, name="home-page"),
+    path("pagingitem/<int:pageno>",views.view_PagingItem,name="pagingitem"),
     path("aboutus/", views.view_Aboutus, name="aboutus"),
     path("contact/", views.view_Contactus, name="contact"),
     
     path("register/", views.view_Register, name="register"),
-    path("pagingitem/<int:pageno>",views.view_PagingItem,name="pagingitem"),
-    path("addproductpaging/<int:pageno>",views.view_AddProductPaging,name="addproductpaging"),
-    path("productpage/", views.view_ProductPage, name="productpage"),
-    path("post/ajax/addproduct/", views.view_AddProduct, name="addproduct"),
-    
+
+    path("addproduct/<int:pageno>",views.view_AddProduct,name="addproduct-page"),
+        
     path('AddtoCart/<int:bid>', views.view_AddtoCart , name='addtocart'),
-    path('MyCart/', views.view_MyCart, name='mycart-page'),
+    path('mycart/', views.view_MyCart, name='mycart-page'),
     path('checkout/', views.view_Checkout, name='checkout-page'),
     path('orderlist/', views.view_OrderListPage, name='orderlist-page'),
     path('allorderlist/', views.view_AllOrderListPage, name='allorderlist-page'),
