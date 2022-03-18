@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.shortcuts import render,redirect
-from myapp.models import Cart,OrderPending,OrderList,Profile
+from myapp.models import Cart,Orders,OrderList,Profile
 from django.contrib.auth.models import User
 # from django.contrib.auth import authenticate,login
 from django.http import JsonResponse
@@ -8,7 +8,7 @@ from django.http import JsonResponse
 def view_OrderListPage(request):
     username = request.user.username
     user = User.objects.get(username=username)
-    order=OrderPending.objects.filter(user=user)
+    order=Orders.objects.filter(user=user)
     for od in order:
         orderid = od.orderid
         odlist = OrderList.objects.filter(orderid=orderid)
@@ -53,7 +53,7 @@ def view_Checkout(request):
             dt = datetime.now().strftime('%Y%m%d%H%M%S')
             genorderid = 'OD'+str(user.id).zfill(4)+dt
             
-            orderpending = OrderPending()
+            orderpending = Orders()
             orderpending.orderid = genorderid
             orderpending.user = user
             orderpending.fullname = fullname
@@ -67,7 +67,7 @@ def view_Checkout(request):
             orderpending.save()
             
            
-            odp = OrderPending.objects.get(orderid=genorderid)
+            odp = Orders.objects.get(orderid=genorderid)
             mycart = Cart.objects.filter(user=user) 
             sumtotal = sum([c.total for c in mycart])
             sumquan = sum([c.quantity for c in mycart])
@@ -112,7 +112,7 @@ def view_UploadSlip(request,orderid):
         transactionid = data.get('transactionid')
         orderid =  data.get('orderid')
         # print(data)
-        odp = OrderPending.objects.get(orderid=orderid)
+        odp = Orders.objects.get(orderid=orderid)
         odp.codprice =  codprice
         odp.shippingprice =  shippingprice
         odp.totallyprice =  totallyprice
@@ -126,7 +126,7 @@ def view_UploadSlip(request,orderid):
         
     
     
-    odp=OrderPending.objects.get(orderid=orderid)
+    odp=Orders.objects.get(orderid=orderid)
     sumquan = odp.totalquantity
     
     # calculate shipping cost
@@ -164,7 +164,7 @@ def view_AllOrderListPage(request):
         # print(updateWhat)
         # orderid =request.POST.get('orderid', None)
         # updateWhat =request.POST.get('updateWhat', None)
-        odp = OrderPending.objects.get(orderid=orderid)
+        odp = Orders.objects.get(orderid=orderid)
         if updateWhat == 'slipchecked':
             # print("update checked slip")
             odp.slipcheckedstatus = True
@@ -204,7 +204,7 @@ def view_AllOrderListPage(request):
             'statusupdate' : 'slip was check'
             }
             return JsonResponse(data)
-    order=OrderPending.objects.all()
+    order=Orders.objects.all()
     for od in order:
         orderid = od.orderid
         odlist = OrderList.objects.filter(orderid=orderid)
@@ -228,7 +228,7 @@ def view_UpdateTracking(request,orderid):
     if request.method == 'POST':
         data = request.POST.copy()
         trackingnumber = data.get('trackingnumber')
-        odp = OrderPending.objects.get(orderid=orderid)
+        odp = Orders.objects.get(orderid=orderid)
         odp.trackingnumber = trackingnumber
         odp.shippingstatus = True
         odp.save()

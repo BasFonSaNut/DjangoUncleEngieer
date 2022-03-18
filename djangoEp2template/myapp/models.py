@@ -99,7 +99,9 @@ class OrderList(models.Model):
 
     def __str__(self):
         return self.orderid 
-class OrderPending(models.Model):
+    
+
+class Orders(models.Model):
     # orderid = models.IntegerField(default=0,auto_created=True,primary_key=True,unique =True)
     orderid = models.CharField(max_length=100)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -146,15 +148,5 @@ class OrderPending(models.Model):
         img.save(self.image.path)  # saving image at the same path
         
     def __str__(self):
-        return self.orderid 
-    
-# ============================AJAX========================
-  
-    
-    
-    
-                                  
-    
-    
-    
-      
+        return self.orderid     
+# ============================AJAX========================                               

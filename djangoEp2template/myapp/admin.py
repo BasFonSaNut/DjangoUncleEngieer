@@ -15,7 +15,7 @@ class OrderListAdmin(admin.ModelAdmin):
     list_display = ['orderid','bookname','total']
 admin.site.register(OrderList,OrderListAdmin)
 
-class OrderPendingAdmin(admin.ModelAdmin):
+class OrdersAdmin(admin.ModelAdmin):
     list_display=['orderid','payment','shipping','slipuploadstatus','slipcheckedstatus','paymentstatus','shippingstatus','trackingnumber','slipuploadtime','totalquantity','goodsprice','codprice','shippingprice','totallyprice']
     list_editable=['slipuploadstatus','slipcheckedstatus','paymentstatus','shippingstatus','payment','shipping']
-admin.site.register(OrderPending,OrderPendingAdmin)
+admin.site.register(Orders,OrdersAdmin)
