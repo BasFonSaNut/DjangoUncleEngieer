@@ -100,6 +100,7 @@ def view_Checkout(request):
     return render(request,'myapp/checkout1.html')
 
 
+
 def view_UploadSlip(request,orderid):
     uploadstatus = ""
     if request.method == 'POST' and request.FILES['slipupload']:
@@ -122,7 +123,11 @@ def view_UploadSlip(request,orderid):
         odp.slipuploadtime = datetime.now()
         odp.image = request.FILES['slipupload']            
         odp.save()
-        uploadstatus = 'uploadslip'
+        
+        datax = {
+            "statusuploadslip" : 'slip was uploaded'
+        }
+        return JsonResponse(datax)
         
     
     
@@ -149,7 +154,7 @@ def view_UploadSlip(request,orderid):
             'status' : uploadstatus,
             'odb':odp
             }
-    return render(request,'myapp/uploadslip.html',context)
+    return render(request,'myapp/frmuploadslip.html',context)
 
 
 def view_AllOrderListPage(request):

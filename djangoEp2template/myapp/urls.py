@@ -20,6 +20,7 @@ urlpatterns =[
     path('uploadslip/<str:orderid>', views.view_UploadSlip, name='uploadslip-page'),
     path('updatetracking/<str:orderid>', views.view_UpdateTracking, name='updatetracking'),
     path('frmupdatetracking/<str:orderid>', views.view_FRMtracking, name='frmupdatetracking'),
+   
     
     # ================Ajax=========================
     path('updatecheckslip/',  views.view_OrderCrudSlipChecked.as_view(), name='updatecheckslip_ajax'),

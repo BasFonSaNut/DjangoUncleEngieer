@@ -38,8 +38,14 @@ My Card
             <span class="text-success"><i class='fas fa-receipt' style='font-size:20px'></i></span>
           </a>
           {% else %}
-           
-          <a href="{% url 'uploadslip-page' orderitem.orderid %}" class="btn btn-primary btn-sm">UPLOAD SLIP</a>
+          <a href="../media/{{orderitem.image}}" target="_blank">
+              <span id='uploadslipstatus' class="text-success" style="display:none"><i class='fas fa-receipt' style='font-size:20px'></i></span>
+          </a>
+          <button type="button" onclick="popUpUploadSlip($(this),'{{orderitem.orderid}}');" class="btn btn-primary" 
+          data-bs-toggle="modal" data-bs-target="#uploadSlipModal">
+            UPLOAD SLIP
+          </button> 
+          {% comment %} <a href="{% url 'uploadslip-page' orderitem.orderid %}" class="btn btn-primary btn-sm">UPLOAD SLIP</a> {% endcomment %}
            
           {% endif %}
         </td>     
@@ -76,4 +82,71 @@ My Card
     </tbody>
   </table>
 </div>
+
+<div class="modal fade" id="uploadslipModal" tabindex="-1" aria-labelledby="uploadslipLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadslipLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
+
+
+{% block javascript %}
+  <script>
+    $(document).ready(function () {
+
+    });
+    
+    function uploadSlip(){
+      //on('submit', function(e){
+      $('#frmuploadSlip').submit(function( event ) {
+        e.preventDefault();
+        var formData = new FormData($('#frmuploadSlip')[0]); 
+        alert(formData)
+        url = '../uploadslip/'+orderid
+        $.ajax({
+          type: 'POST',
+          url: url,
+          cache: false, 
+          data: formData,
+          async: false, 
+          
+          contentType: false, 
+          processData: false, 
+          dataType: 'json' ,
+            success: function (response) {
+                alert(response.statusuploadslip)
+                $(objbutton).closest("td").find('span[id="uploadslipstatus"]').css('display','inline')
+                $(objbutton).css('display','none');
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+      })
+    }
+
+    function popUpUploadSlip(objbutton,orderid)
+    {
+      url = '../uploadslip/'+orderid
+      $('.modal-body').load(url,function(){
+        //$('.modal-body').find('input[id="orderid"]').val(orderid);
+        $('.modal-title').html('UPLOAD FOR :'+orderid)
+        $('#uploadslipModal').modal('show');
+      });
+    }
+  </script>
+{% endblock javascript%}

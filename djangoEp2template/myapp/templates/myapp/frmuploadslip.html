@@ -1,0 +1,79 @@
+<form id="frmuploadSlip" enctype="multipart/form-data" >
+    <input type="hidden" name="orderid" id="orderid" value="{{orderid}}">
+    {% csrf_token %}
+
+    <div class="row g-2 mb-1" style="display:none">
+        <div class="col">
+          <div class="input-group mb-1">
+            <span class="input-group-text">จาก ธนาคาร:</span>
+            <input type="text" class="form-control" id="frombank" placeholder="customer's bank" name="frombank">
+            <input type="text" class="form-control" value="{{totalamount}}" id="totallyprice" placeholder="" name="totallyprice">
+            
+          </div>
+        </div>
+
+        <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">ธนาคารปลายทาง</span>
+              <input type="text" class="form-control" id="tobank" placeholder="shop's bank" name="tobank">
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-2 mb-1" style="display:none">
+      <div class="col">
+        <div class="input-group mb-1">
+          <span class="input-group-text">codcost:</span>
+          <input type="text" class="form-control" value="{{codcost}}" id="codprice" placeholder="1000" name="codprice">
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="input-group mb-1">
+          <span class="input-group-text">shippingprice</span>
+          <input type="text" value="{{shipingcost}}" class="form-control" id="shippingprice" placeholder="" name="shippingprice">
+        </div>
+      </div>
+    </div>
+
+     
+    <div class="row g-2 mb-1">
+      <div class="col">
+        <div class="input-group mb-1">
+          <span class="input-group-text">วัน:เวลา ทำรายการ (ดููที่ slip)</span>
+          <input type="text" class="form-control" id="slipdatetimekeyin" placeholder="23-03-2016:14.26" name="slipdatetimekeyin">
+        </div>
+        
+        
+      </div>
+      
+      <div class="col">
+        <div class="input-group">
+          <span class="input-group-text">Transaction No(ดูที่ slip):</span>
+          <input type="text" class="form-control" id="transactionid" placeholder="TXNT2541114" name="transactionid">
+          <input type="hidden" class="form-control" value="{{orderid}}" id="orderid" placeholder="" name="orderid">
+          
+        </div>
+        
+      </div>
+  </div>
+
+    <div class="row g-2 mb-1">
+      <div class="col">
+        <div class="input-group">
+          <span class="input-group-text">ไฟล์รูป</span>
+          <input type="file" class="form-control"  id="slipupload" name="slipupload">
+          <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Clear File</button>
+        </div>
+      </div>
+
+      <div class="row g-2 mb-1">
+        <div class="col">
+            <button type="button" class="btn btn-primary" onclick="uploadSlip('{{orderitem.orderid}}')">UPLOAD</button>
+        </div>
+        <div class="col">
+        </div>
+      </div>  
+     
+  </div>
+</form>
