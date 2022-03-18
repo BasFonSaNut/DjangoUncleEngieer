@@ -1,41 +1,29 @@
 from django.urls import path
-from myapp import views
-   
+from . import views
 
 urlpatterns =[
-    path('', views.home, name="home-page"),
-    path("register/", views.register, name="register"),
+   
+    path('', views.view_Home, name="home-page"),
+    path("aboutus/", views.view_Aboutus, name="aboutus"),
+    path("contact/", views.view_Contactus, name="contact"),
     
-    path("pagingitem/<int:pageno>",views.pagingitem,name="pagingitem"),
-    path("addproductpaging/<int:pageno>",views.addproductpaging,name="addproductpaging"),
-    path("productpage/", views.productpage, name="productpage"),
-    path("post/ajax/addproduct/", views.addproduct, name="addproduct"),
+    path("register/", views.view_Register, name="register"),
+    path("pagingitem/<int:pageno>",views.view_PagingItem,name="pagingitem"),
+    path("addproductpaging/<int:pageno>",views.view_AddProductPaging,name="addproductpaging"),
+    path("productpage/", views.view_ProductPage, name="productpage"),
+    path("post/ajax/addproduct/", views.view_AddProduct, name="addproduct"),
     
-    path("aboutus/", views.aboutus, name="aboutus"),
-    path("contact/", views.contact, name="contact"),
-    path('AddtoCart/<int:bid>', views.AddtoCart , name='addtocart'),
-    path('MyCart/', views.MyCart, name='mycart-page'),
-    path('checkout/', views.checkout, name='checkout-page'),
-    path('orderlist/', views.OrderListPage, name='orderlist-page'),
-    path('allorderlist/', views.AllOrderListPage, name='allorderlist-page'),
-    path('uploadslip/<str:orderid>', views.UploadSlip, name='uploadslip-page'),
-    path('updatetracking/<str:orderid>', views.UpdateTracking, name='updatetracking'),
-    path('frmupdatetracking/<str:orderid>', views.FRMtracking, name='frmupdatetracking'),
+    path('AddtoCart/<int:bid>', views.view_AddtoCart , name='addtocart'),
+    path('MyCart/', views.view_MyCart, name='mycart-page'),
+    path('checkout/', views.view_Checkout, name='checkout-page'),
+    path('orderlist/', views.view_OrderListPage, name='orderlist-page'),
+    path('allorderlist/', views.view_AllOrderListPage, name='allorderlist-page'),
+    path('uploadslip/<str:orderid>', views.view_UploadSlip, name='uploadslip-page'),
+    path('updatetracking/<str:orderid>', views.view_UpdateTracking, name='updatetracking'),
+    path('frmupdatetracking/<str:orderid>', views.view_FRMtracking, name='frmupdatetracking'),
     
     # ================Ajax=========================
-    path('updatecheckslip/',  views.UpdateSlipcheckST.as_view(), name='updatecheckslip_ajax'),
-    path('updatepayment/',  views.UpdatePaymentST.as_view(), name='updatepayment_ajax'),
-    path('orderlistajax/',  views.OdpCrudView.as_view(), name='orderlistajax')
-    
-    # path('addfriend', fortestviews.indexView,name="indexView"),
-    # path('post/ajax/friend', fortestviews.postFriend, name = "post_friend"),
-    # path('get/ajax/validate/nickname', fortestviews.checkNickName, name = "validate_nickname"),
-    # path("testconvert/",fortestviews.testconvert,name='testconvert')
-    # re_path(r'^signup/$', views.SignUpView.as_view(), name='signup'),
-    # re_path(r'^ajax/validate_username/$', views.validate_username, name='validate_username')
-    # path("log/", views.log_message, name="log"),
-    #path("displaylog/", home_list_view, name="displaylog")
-    # path("displaylog/", views.displaylog, name="displaylog")
-    #path("greek/", views.form.greek_view,name="greek"),
-    #path("hello_there/<str:name>",views.hello_there,name="hello_there"),
+    path('updatecheckslip/',  views.view_OrderCrudSlipChecked.as_view(), name='updatecheckslip_ajax'),
+    path('updatepayment/',  views.OrderCrudPaidChecked.as_view(), name='updatepayment_ajax'),
+    path('orderlistajax/',  views.view_OrderCrudView.as_view(), name='orderlistajax')
 ]
