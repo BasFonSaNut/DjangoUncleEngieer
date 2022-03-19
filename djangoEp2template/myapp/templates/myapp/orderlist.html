@@ -43,15 +43,15 @@ My Card
           {% else %}
          
          
-            <a  href="../media/{{orderitem.image}}" target="_blank">
+          <a  href="../media/{{orderitem.image}}" target="_blank">
               <span  id="resupload"  style="display:none" class="text-success" ><i class='fas fa-receipt' style='font-size:20px'></i></span>
           </a>
          
-          <button type="button" id="btn_uploadslip" onclick="popUpUploadSlip($(this),'{{orderitem.orderid}}');" class="btn btn-primary" 
-          data-bs-toggle="modal" data-bs-target="#uploadSlipModal">
-            UPLOAD SLIP
-          </button> 
-          {% comment %} <a href="{% url 'uploadslip-page' orderitem.orderid %}" class="btn btn-primary btn-sm">UPLOAD SLIP</a> {% endcomment %}
+          <button id='btn_uploadslip' style="background-color:transparent;border:0px" 
+          class="btn-secondary btn-group-sm">
+            <span class="text-warning" onclick="popUpUploadSlip($(this),'{{orderitem.orderid}}');"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>upload slip</span>
+          </button>
+
            
           {% endif %}
         </td>     
@@ -89,6 +89,7 @@ My Card
   </table>
 </div>
 
+<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -102,7 +103,7 @@ My Card
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#myModal').modal('hide');">CLOSE</button>
+        <button type="button" class="btn-secondary btn-group-sm" data-dismiss="modal" onclick="$('#myModal').modal('hide');">CLOSE</button>
     </div>
   </div>
 </div>

@@ -210,7 +210,7 @@ def view_FRMtracking(request,orderid,rowindex):
     context = {'orderid':orderid,
                'rowindex':rowindex
               }
-    return render(request, "myapp/frmuploadtracking.html",context)
+    return render(request, "myapp/frmupdatetracking.html",context)
 
 def view_FRMUploadSlip(request,orderid,rowindex):
     context = {'orderid':orderid,
