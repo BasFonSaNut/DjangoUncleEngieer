@@ -7,29 +7,20 @@ from django.http import JsonResponse
 
 def view_OrderListPage(request):
     if request.method == 'POST' and request.FILES['slipupload']:
-        # print(data)
         data = request.POST.copy()
         rowindex = data.get('rowindex')
-        # codprice = data.get('codprice')
-        # shippingprice = data.get('shippingprice')
-        # totallyprice = data.get('totallyprice')
         slipdatetimekeyin = data.get('slipdatetimekeyin')
         transactionid = data.get('transactionid')
         orderid =  data.get('orderid')
-        # print(data)
         odp = Orders.objects.get(orderid=orderid)
-        
         
         odp.slipdatetimekeyin = slipdatetimekeyin
         odp.transactionid = transactionid
         odp.slipuploadstatus = True
         odp.slipuploadtime = datetime.now()
         odp.image = request.FILES['slipupload']            
-       
-        
         
         sumquan = odp.totalquantity
-        
         # calculate shipping cost
         shipcost = 0
         if odp.shipping == 'ems':
@@ -97,8 +88,6 @@ def view_Checkout(request):
             return render(request,'myapp/checkout2.html',context)
         
         if page =='confirmation':
-            # print('confirmation')
-            # print(data)
             dt = datetime.now().strftime('%Y%m%d%H%M%S')
             genorderid = 'OD'+str(user.id).zfill(4)+dt
             
