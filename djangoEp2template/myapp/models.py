@@ -34,12 +34,13 @@ class BookProduct(models.Model):
     instock = models.BooleanField(default=True)
     unit = models.CharField(max_length=200,default='-')
     quantity = models.IntegerField(default=1)
-    image = models.ImageField(upload_to="books/",null=True,blank=True)
+    image = models.ImageField(upload_to="books/",null=True,blank=True,default='default.png')
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # saving image first
         img = Image.open(self.image.path) # Open image using self
 
+       
         if img.height > 260 or img.width > 171:
             new_img = (171, 260)
             img.thumbnail(new_img)

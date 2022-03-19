@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect,render
 from myapp.models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
@@ -22,5 +22,6 @@ def view_Register(request):
         # from django.contrib.auth import authenticate,login ,for auto login after register
         user = authenticate(username=data.get('username'),password=data.get('password'))
         login(request,user)
-        
+        return redirect('home-page')    
+    
     return render(request, "myapp/register.html")

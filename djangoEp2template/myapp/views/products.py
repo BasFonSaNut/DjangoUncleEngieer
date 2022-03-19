@@ -7,7 +7,7 @@ import json
 
 def view_AddProduct(request, pageno=None):
     if request.user.profile.usertype != 'admin':
-        redirect('home')
+        redirect('home-page')
 
     if request.method == 'POST' and request.FILES['imageupload']:
     # print(data)

@@ -11,7 +11,7 @@ ADD PRODUCT
 <div class="container mt-2">
   <div>
         <form id="addproduct-form" action="">
-          {% comment %} enctype="multipart/form-data" {% endcomment %}
+          {% comment %}  enctype="multipart/form-data"  {% endcomment %}
           {% csrf_token %}
          
           <div class="row g-2 mb-1">
@@ -82,8 +82,9 @@ ADD PRODUCT
 
             <div class="col">
               <div class="input-group">
-                <span class="input-group-text">ชื่อไฟล์</span>
-                <input type="text" class="form-control"  id="imageurl"  name="imageurl">
+                <span class="input-group-text">ไฟล์รูป</span>
+                <input type="file" class="form-control"  id="imageupload" name="imageupload">
+                <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Clear File</button>
               </div>
             </div>
           </div>            
@@ -91,21 +92,10 @@ ADD PRODUCT
         
         <div class="row g-2 mb-1">    
             <div class="col">
-              {% comment %} <input type="submit" class="btn btn-primary" value="ADD" /> {% endcomment %}
               <button class="btn-secondary btn-group-sm" onclick="addBook()">ADD</button>
-              {% comment %} <button class="btn-secondary btn-group-sm">UPDATE</button>
-              <button class="btn-secondary btn-group-sm">DELETE</button>  {% endcomment %}
-
             </div>
 
             <div class="col">
-              
-              <div class="input-group">
-                <span class="input-group-text">ไฟล์รูป</span>
-                <input type="file" class="form-control"  id="imageupload" name="imageupload">
-                <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Clear File</button>
-              </div>
-
             </div>
 
             <div class="row g-2 mb-1">
@@ -187,12 +177,12 @@ ADD PRODUCT
 
 {% block javascript %}
   <script>
-    function addBook()
+    function editBook()
     {  
         $("#addproduct-form").submit(function (e) {
             e.preventDefault();
             var formData = new FormData($("#addproduct-form")[0]); 
-            //$('#notify').html("<img src='../static/myapp/images/animate/pleasewait3.gif' width='50%>")
+            
             $.ajax({
                 type: 'POST',
                 url: "{% url 'addproduct-page' 1%}",
@@ -203,21 +193,95 @@ ADD PRODUCT
                 processData: false, 
                 dataType: 'json',
                 success: function (response) {
-                  //alert(response)
-                    // on successfull creating object
-                    // 1. clear the form.
                     $("#addproduct-form").trigger('reset');
-                    // 2. focus to nickname input 
                     $("#name").focus();
-
-                    // display the newly friend to table.
-                    //var instance = JSON.parse(response["instance"]);
                     
-                    //alert(instance["id"])
-                    /*
-                    var fields = instance[0]["fields"];
-                    console.log(fields)
-                    */
+                    $("#tb_product tbody").prepend(
+                        `<tr>
+                        <td>${response.id}</td>
+                        <td>${response.bookname}</td>
+                        <td>${response.author}</td>
+                        <td>${response.price}</td>
+                        <td>${response.quantity}</td>
+                        <td>${response.unit}</td>
+                        
+                        <td> 
+                            <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
+                            <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+                        </td>
+                        </tr>`
+                    )
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
+        })
+  }
+  
+
+    function updateBook()
+    {  
+        $("#addproduct-form").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($("#addproduct-form")[0]); 
+            
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addproduct-page' 1%}",
+                data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false, 
+                dataType: 'json',
+                success: function (response) {
+                    $("#addproduct-form").trigger('reset');
+                    $("#name").focus();
+                    
+                    $("#tb_product tbody").prepend(
+                        `<tr>
+                        <td>${response.id}</td>
+                        <td>${response.bookname}</td>
+                        <td>${response.author}</td>
+                        <td>${response.price}</td>
+                        <td>${response.quantity}</td>
+                        <td>${response.unit}</td>
+                        
+                        <td> 
+                            <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
+                            <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+                        </td>
+                        </tr>`
+                    )
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
+        })
+  }
+
+    function addBook()
+    {  
+        $("#addproduct-form").on('submit', function(e){
+            e.preventDefault();
+            var formData = new FormData($("#addproduct-form")[0]); 
+            
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addproduct-page' 1%}",
+                data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false, 
+                dataType: 'json',
+                success: function (response) {
+                    $("#addproduct-form").trigger('reset');
+                    $("#name").focus();
                     
                     $("#tb_product tbody").prepend(
                         `<tr>
@@ -244,5 +308,3 @@ ADD PRODUCT
   }
   </script>
 {% endblock javascript%}
-
-
