@@ -17,8 +17,9 @@ urlpatterns =[
     path('checkout/', views.view_Checkout, name='checkout-page'),
     path('orderlist/', views.view_OrderListPage, name='orderlist-page'),
     path('allorderlist/', views.view_AllOrderListPage, name='allorderlist-page'),
-    path('uploadslip/<str:orderid>', views.view_UploadSlip, name='uploadslip-page'),
+    path('frmuploadslip/<str:orderid>/<int:rowindex>', views.view_FRMUploadSlip, name='frmuploadslip'),
     path('frmupdatetracking/<str:orderid>/<int:rowindex>', views.view_FRMtracking, name='frmupdatetracking'),
+     path('orderinfo/<str:orderid>', views.view_OrderInfo, name='orderinfo'),
    
     
     # ================Ajax=========================

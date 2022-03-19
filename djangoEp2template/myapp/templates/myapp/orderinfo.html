@@ -1,0 +1,18 @@
+{% load humanize %}
+<div>
+    <h2>Upload slip ORDER: {{odb.orderid}}</h2>
+    ประเภทการจัดส่ง : {{odb.shipping}}<br>
+    จำนวนสินค้า : {{odb.totalquantity}} ชิ้น<br>
+    ราคาสินค้า {{odb.goodsprice|intcomma}}<br>
+    ค่าจัดส่ง : {{odb.shippingprice}} <br>
+    {% if odb.payment == 'cod' %}
+    บวกค่าเก็บเงินปลายทาง : {{odb.codprice|intcomma}}<br>
+    {% endif %}
+    ยอดสินค้ารวม : {{odb.totallyprice|intcomma}} บาท<br>
+  
+    {% if odb.slipuploadstatus  == True %}
+    <div class="alert alert-danger">
+      <strong>ORDER นี้  upload slip แล้ว รอการเช็คสลิปเพื่อยืนยืนการชำระเงิน</strong> 
+    </div>
+    {% endif %}
+  </div>

@@ -6,6 +6,55 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 
 def view_OrderListPage(request):
+    if request.method == 'POST' and request.FILES['slipupload']:
+        # print(data)
+        data = request.POST.copy()
+        rowindex = data.get('rowindex')
+        # codprice = data.get('codprice')
+        # shippingprice = data.get('shippingprice')
+        # totallyprice = data.get('totallyprice')
+        slipdatetimekeyin = data.get('slipdatetimekeyin')
+        transactionid = data.get('transactionid')
+        orderid =  data.get('orderid')
+        # print(data)
+        odp = Orders.objects.get(orderid=orderid)
+        
+        
+        odp.slipdatetimekeyin = slipdatetimekeyin
+        odp.transactionid = transactionid
+        odp.slipuploadstatus = True
+        odp.slipuploadtime = datetime.now()
+        odp.image = request.FILES['slipupload']            
+       
+        
+        
+        sumquan = odp.totalquantity
+        
+        # calculate shipping cost
+        shipcost = 0
+        if odp.shipping == 'ems':
+            shipcost = sum([50 if i == 0 else 10 for i in range(sumquan)])
+        else:
+            shipcost = sum([30 if i == 0 else 10 for i in range(sumquan)])
+        
+        codcost = 0
+        if odp.payment == 'cod':
+            codcost = 20
+       
+        totalamount =  odp.goodsprice + shipcost + codcost 
+        odp.codprice =  codcost
+        odp.shippingprice =  shipcost
+        odp.totallyprice =  totalamount
+        odp.save()
+        
+        # statustxt =  'ORDER :' + orderid +" WAS UPLOADSLIP"        
+        datax={
+                'orderid': orderid,
+                'rowindex':rowindex
+                }
+        return JsonResponse(datax)
+    
+    
     username = request.user.username
     user = User.objects.get(username=username)
     order=Orders.objects.filter(user=user)
@@ -99,64 +148,6 @@ def view_Checkout(request):
         
     return render(request,'myapp/checkout1.html')
 
-
-
-def view_UploadSlip(request,orderid):
-    uploadstatus = ""
-    if request.method == 'POST' and request.FILES['slipupload']:
-        # print(data)
-        data = request.POST.copy()
-        codprice = data.get('codprice')
-        shippingprice = data.get('shippingprice')
-        totallyprice = data.get('totallyprice')
-        slipdatetimekeyin = data.get('slipdatetimekeyin')
-        transactionid = data.get('transactionid')
-        orderid =  data.get('orderid')
-        # print(data)
-        odp = Orders.objects.get(orderid=orderid)
-        odp.codprice =  codprice
-        odp.shippingprice =  shippingprice
-        odp.totallyprice =  totallyprice
-        odp.slipdatetimekeyin = slipdatetimekeyin
-        odp.transactionid = transactionid
-        odp.slipuploadstatus = True
-        odp.slipuploadtime = datetime.now()
-        odp.image = request.FILES['slipupload']            
-        odp.save()
-        
-        datax = {
-            "statusuploadslip" : 'slip was uploaded'
-        }
-        return JsonResponse(datax)
-        
-    
-    
-    odp=Orders.objects.get(orderid=orderid)
-    sumquan = odp.totalquantity
-    
-    # calculate shipping cost
-    shipcost = 0
-    if odp.shipping == 'ems':
-        shipcost = sum([50 if i == 0 else 10 for i in range(sumquan)])
-    else:
-        shipcost = sum([30 if i == 0 else 10 for i in range(sumquan)])
-    
-    codcost = 0
-    if odp.payment == 'cod':
-        codcost = 20
-            
-    totalamount =  odp.goodsprice + shipcost + codcost           
-    context={
-            'orderid':orderid,
-            'totalamount':totalamount,
-            'shipingcost':shipcost,
-            'codcost':codcost,
-            'status' : uploadstatus,
-            'odb':odp
-            }
-    return render(request,'myapp/frmuploadslip.html',context)
-
-
 def view_AllOrderListPage(request):
     if request.user.profile.usertype != 'admin':
         return redirect('orderlist-page')
@@ -166,32 +157,19 @@ def view_AllOrderListPage(request):
         data = request.POST.copy()
         orderid = data.get('orderid')
         updateWhat = data.get('updateWhat')
-        # print(updateWhat)
-        # orderid =request.POST.get('orderid', None)
-        # updateWhat =request.POST.get('updateWhat', None)
         odp = Orders.objects.get(orderid=orderid)
         if updateWhat == 'slipchecked':
-            # print("update checked slip")
             odp.slipcheckedstatus = True
             odp.save()
             statusupdate =  'status pass checked slip'
-            # datax= {'statusupdate': 'status pass checked slip'}
-            # json_format = json.dumps(datax)
-            # return JsonResponse({"instance":json_format}, status=200)
-            # return render(request,'myapp/allorderlist.html',context)
             data = {
             'statusupdate' : 'slip was check'
             }
             return JsonResponse(data)
         elif updateWhat == 'paymentchecked':
-            # print("update payment")
             odp.paymentstatus = True
             odp.save()
             statusupdate = "status Paid"
-            # datax= {"statusupdate": "status Paid"}
-            # json_format = json.dumps(datax)
-            # return JsonResponse({"instance":json_format}, status=200)
-            # return render(request,'myapp/allorderlist.html',context)
             data = {
             'statusupdate' : 'order was paid'
             }
@@ -215,11 +193,10 @@ def view_AllOrderListPage(request):
             data = {
             'orderid' : orderid,    
             'trackingNo' : trackingnumber,
-            'rowindex' : rowindex
-            
+            'rowindex' : rowindex            
             }
             return JsonResponse(data)
-        
+    
     order=Orders.objects.all()
     for od in order:
         orderid = od.orderid
@@ -245,3 +222,20 @@ def view_FRMtracking(request,orderid,rowindex):
                'rowindex':rowindex
               }
     return render(request, "myapp/frmuploadtracking.html",context)
+
+def view_FRMUploadSlip(request,orderid,rowindex):
+    context = {'orderid':orderid,
+               'rowindex':rowindex
+              }
+    return render(request, "myapp/frmuploadslip.html",context)
+
+def view_OrderInfo(request,orderid):
+    odp = Orders.objects.get(orderid=orderid)
+    warningtxt = "<strong>ORDER นี้  upload slip แล้ว รอการเช็คสลิปเพื่อยืนยืนการชำระเงิน</strong>"
+    context = {
+            "odb":odp,
+            "uploadslipwarning" : warningtxt
+               
+            }
+    return render(request, "myapp/orderinfo.html",context)
+

@@ -5,26 +5,29 @@ Add product
 {% endblock %}
 
 {% block content %}
-<h2>Upload slip ORDER: {{orderid}}</h2>
-ประเภทการจัดส่ง : {{odb.shipping}}<br>
+<div id="orderinfo">
+  <h2>Upload slip ORDER: {{orderid}}</h2>
+  ประเภทการจัดส่ง : {{odb.shipping}}<br>
 
-จำนวนสินค้า : {{odb.totalquantity}} ชิ้น<br>
-ราคาสินค้า {{odb.goodsprice}}<br>
-ค่าจัดส่ง : {{shipingcost}} <br>
-{% if odb.payment == 'cod' %}
-บวกค่าเก็บเงินปลายทาง : {{codcost}}<br>
-{% endif %}
-ยอดสินค้ารวม : {{totalamount|intcomma}} บาท<br>
+  จำนวนสินค้า : {{odb.totalquantity}} ชิ้น<br>
+  ราคาสินค้า {{odb.goodsprice}}<br>
+  ค่าจัดส่ง : {{odb.shippingprice}} <br>
+  {% if odb.payment == 'cod' %}
+  บวกค่าเก็บเงินปลายทาง : {{odb.codprice}}<br>
+  {% endif %}
+  ยอดสินค้ารวม : {{totalamount|intcomma}} บาท<br>
 
-{% if status == 'uploadslip' %}
-<div class="alert alert-danger">
-  <strong>ORDER นี้  upload slip แล้ว รอการเช็คสลิปเพื่อยืนยืนการชำระเงิน</strong> 
+  {% if status == 'uploadslip' %}
+  <div class="alert alert-danger">
+    <strong>ORDER นี้  upload slip แล้ว รอการเช็คสลิปเพื่อยืนยืนการชำระเงิน</strong> 
+  </div>
+  {% endif %}
+
+  {% if odb.slipuploadstatus == True %}
+  <strong><span class="text-danger">ORDER นี้  upload slip แล้ว ไม่จำเป็นต้อง upload ซ้ำ</span></strong> 
+  {% endif %}
 </div>
-{% endif %}
 
-{% if odb.slipuploadstatus == True %}
-<strong><span class="text-danger">ORDER นี้  upload slip แล้ว ไม่จำเป็นต้อง upload ซ้ำ</span></strong> 
-{% endif %}
 <div class="container mt-2">
   <div>
     {% if odb.slipuploadstatus == False %}
