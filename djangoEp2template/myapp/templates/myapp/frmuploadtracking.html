@@ -1,6 +1,9 @@
-<form action="">
+<form action="" id="frmUpdateTracker">
         {% csrf_token %}
-        <input type="text" class="form-control" value="{{orderid}}" id="orderid" name="orderid"> 
+        <input type="hidden" class="form-control" value="{{orderid}}" id="orderid" name="orderid"> 
+        <input type="hidden" class="form-control" value="{{rowindex}}" id="rowindex" name="rowindex"> 
+        
+        <input type="hidden" value="getTrackinnumber" id="updateWhat" name="updateWhat">
         <div class="row g-2 mb-1">
             
           <div class="col">
@@ -11,7 +14,7 @@
           </div>
   
           <div class="col">
-            <button class="btn btn-primary" onclick="updateTracknumber($(this));">Submit</button>
+            <button class="btn btn-primary" onclick="updateTracknumber();">Submit</button>
         </div>
       </div>
  </form>

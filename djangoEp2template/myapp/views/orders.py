@@ -201,14 +201,25 @@ def view_AllOrderListPage(request):
             odp.shippingstatus = True
             odp.save()
             statusupdate = "status  under delivery"
-            # datax= {"statusupdate": "status  under delivery"}  
-            # json_format = json.dumps(datax)
-            # return JsonResponse({"instance":json_format}, status=200)  
-            # return render(request,'myapp/allorderlist.html',context)
             data = {
             'statusupdate' : 'slip was check'
             }
             return JsonResponse(data)
+        elif updateWhat == 'getTrackinnumber':
+            trackingnumber = data.get('trackingnumber')
+            rowindex = data.get('rowindex')
+            odp = Orders.objects.get(orderid=orderid)
+            odp.trackingnumber = trackingnumber
+            odp.shippingstatus = True
+            odp.save()
+            data = {
+            'orderid' : orderid,    
+            'trackingNo' : trackingnumber,
+            'rowindex' : rowindex
+            
+            }
+            return JsonResponse(data)
+        
     order=Orders.objects.all()
     for od in order:
         orderid = od.orderid
@@ -226,27 +237,11 @@ def view_AllOrderListPage(request):
     return render(request,'myapp/allorderlist.html',context)
 
 
-def view_UpdateTracking(request,orderid):
+def view_FRMtracking(request,orderid,rowindex):
     if request.user.profile.usertype != 'admin':
         return redirect('orderlist-page')
     
-    if request.method == 'POST':
-        data = request.POST.copy()
-        trackingnumber = data.get('trackingnumber')
-        odp = Orders.objects.get(orderid=orderid)
-        odp.trackingnumber = trackingnumber
-        odp.shippingstatus = True
-        odp.save()
-        return redirect('allorderlist-page')
-    
-    context = {'orderid':orderid}
-    return render(request, "myapp/updatetracking.html",context)
-
-
-
-def view_FRMtracking(request,orderid):
-    if request.user.profile.usertype != 'admin':
-        return redirect('orderlist-page')
-    
-    context = {'orderid':orderid}
+    context = {'orderid':orderid,
+               'rowindex':rowindex
+              }
     return render(request, "myapp/frmuploadtracking.html",context)

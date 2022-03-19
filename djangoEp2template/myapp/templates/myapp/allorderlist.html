@@ -107,12 +107,12 @@ OrderList Admin
 
  
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <h4 class="modal-title" id="myModalLabel">Update Tracking</h4>
+        <h5 class="modal-title" id="uploadslipLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
       <div class="modal-body">
@@ -133,7 +133,7 @@ OrderList Admin
 
     });
 
-    function updateTracknumber(objbutton)
+    function updateTracknumber()
     {
       $('#frmUpdateTracker').on('submit', function(e){
         e.preventDefault();
@@ -151,13 +151,14 @@ OrderList Admin
           processData: false, 
           dataType: 'json' ,
             success: function (response) {
-                alert(response.statusupdate)
-                console.log(response.statusupdate)
+                //alert(response.trackingNo)
+                console.log(response.trackingNo)
                 $("#notifyupdate").css('display','inline')
-                $("#notifyupdate").html(response.statusupdate)
+                $("#notifyupdate").html(response.trackingNo+' WAS DEFINE FOR '+response.orderid);
 
-                $(objform).find('span[id="shippingcheck"]').css('display','inline');
-                $(objbutton).css('display','none');
+                $("tr:eq("+response.rowindex.toString()+")" ).find('span[id="gottracknumber"]').css('display','inline').html(response.trackingNo)
+                $("tr:eq("+response.rowindex.toString()+")" ).find('button[id="btn_updatetraking"]').css('display','none');
+                
             },
             error: function (response) {
                 // alert the error if any error occured
@@ -170,10 +171,14 @@ OrderList Admin
     function popUpTracking(objbutton,orderid)
     {
 
-      //alert(orderid)
-      url = '../frmupdatetracking/'+orderid 
+      rowindex = $(objbutton).closest('tr').index()
+      rowindex=rowindex+1
+
+      var url = "{% url 'frmupdatetracking' 12345 67890 %}".replace(/12345/, orderid.toString()).replace(/67890/, rowindex.toString());
+
       $('.modal-body').load(url,function(){
         $('.modal-body').find('input[id="orderid"]').val(orderid);
+        $('.modal-title').html('UPDATE TRACKING FOR :'+orderid);
         $('#myModal').modal('show');
       });
       
