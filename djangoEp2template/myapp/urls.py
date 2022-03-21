@@ -12,14 +12,14 @@ urlpatterns =[
 
     path("addproduct/<int:pageno>",views.view_AddProduct,name="addproduct-page"),
         
-    path('AddtoCart/<int:bid>', views.view_AddtoCart , name='addtocart'),
+    path('addtocart/', views.view_AddtoCart , name='addtocart-page'),
     path('mycart/', views.view_MyCart, name='mycart-page'),
     path('checkout/', views.view_Checkout, name='checkout-page'),
     path('orderlist/', views.view_OrderListPage, name='orderlist-page'),
     path('allorderlist/', views.view_AllOrderListPage, name='allorderlist-page'),
     path('frmuploadslip/<str:orderid>/<int:rowindex>', views.view_FRMUploadSlip, name='frmuploadslip'),
     path('frmupdatetracking/<str:orderid>/<int:rowindex>', views.view_FRMtracking, name='frmupdatetracking'),
-     path('orderinfo/<str:orderid>', views.view_OrderInfo, name='orderinfo'),
+    path('orderinfo/<str:orderid>', views.view_OrderInfo, name='orderinfo'),
    
     
     # ================Ajax=========================

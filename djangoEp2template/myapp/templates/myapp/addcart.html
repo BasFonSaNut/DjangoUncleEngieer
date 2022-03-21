@@ -14,11 +14,11 @@ HOME
     <nav aria-label="Page navigation example">
       <ul class="pagination">
        
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{previousPage}}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' previousPage %}">Previous</a></li>
         {% for i in totalpage %}
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{i}}">{{i}}</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' i %}">{{i}}</a></li>
         {% endfor %}  
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{nextPage}}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' nextPage %}">Next</a></li>
       </ul>
     </nav>
   </div>
@@ -57,11 +57,11 @@ HOME
     <nav aria-label="Page navigation example">
       <ul class="pagination">
        
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{previousPage}}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' previousPage %}">Previous</a></li>
         {% for i in totalpage %}
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{i}}">{{i}}</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' i %}">{{i}}</a></li>
         {% endfor %}  
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{nextPage}}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' nextPage %}">Next</a></li>
       </ul>
     </nav>
   </div>

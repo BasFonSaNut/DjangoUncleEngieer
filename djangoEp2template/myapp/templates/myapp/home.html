@@ -14,11 +14,11 @@ HOME
     <nav aria-label="Page navigation example">
       <ul class="pagination">
        
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{previousPage}}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' previousPage %}">Previous</a></li>
         {% for i in totalpage %}
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{i}}">{{i}}</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' i %}">{{i}}</a></li>
         {% endfor %}  
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{nextPage}}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' nextPage %}">Next</a></li>
       </ul>
     </nav>
   </div>
@@ -36,7 +36,11 @@ HOME
          {% comment %} if json use  if book.instock == '1''{% endcomment %}
          {% if book.instock == True  %}
             {% if user.is_authenticated %}
-              <a href="{% url 'addtocart' book.id %}" class="btn-success btn-sm">Order</a>
+            <form id="frmaddcart{{book.id}}" action="">
+              {% csrf_token %}
+              <input type="text" id="bid" name="bid" form="frmaddcart{{book.id}}" value="{{book.id}}">
+             <button type="button" class="btn-success btn-sm" onclick="addTocart($(this).closest('form'))">Order</button>
+            </form>
               
             {% else %} 
             <a href="{% url 'login' %}" class="btn-success btn-sm">Order</a>
@@ -60,13 +64,47 @@ HOME
     <nav aria-label="Page navigation example">
       <ul class="pagination">
        
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{previousPage}}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' previousPage %}">Previous</a></li>
         {% for i in totalpage %}
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{i}}">{{i}}</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' i %}">{{i}}</a></li>
         {% endfor %}  
-        <li class="page-item"><a class="page-link" href="../pagingitem/{{nextPage}}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'pagingitem' nextPage %}">Next</a></li>
       </ul>
     </nav>
   </div>
 
 {% endblock %}
+
+{% block javascript %}
+  <script>
+    $(document).ready(function () {
+
+    });
+
+    function addTocart(objform)
+    {
+      var formData = new FormData($(objform)[0]); 
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'addtocart-page' %}",
+        cache: false, 
+        data: formData,
+        async: false, 
+        contentType: false, 
+        processData: false, 
+        dataType: 'json' ,
+          success: function (response) {
+              //alert(response.sumquan)
+              $(document).find('span[id="cartquan"]').html(response.sumquan)
+              
+          },
+          error: function (response) {
+              // alert the error if any error occured
+              alert(response["responseJSON"]["error"]);
+          }
+      });
+
+    }
+
+  </script>
+{% endblock javascript%}
