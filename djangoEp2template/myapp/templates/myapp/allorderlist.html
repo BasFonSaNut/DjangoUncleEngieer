@@ -185,43 +185,7 @@ OrderList Admin
       
     }
 
-
-      function doCheckship(objform,objbutton)
-      {  
-           $(objform).on('submit', function(e){
-                e.preventDefault();
-                var formData = new FormData($(objform)[0]); 
-                $.ajax({
-                  type: 'POST',
-                  url: "{% url 'allorderlist-page' %}",
-                  cache: false, 
-                  data: formData,
-                  async: false, 
-                  
-                  contentType: false, 
-                  processData: false, 
-                  dataType: 'json' ,
-                    success: function (response) {
-                        alert(response.statusupdate)
-                        console.log(response.statusupdate)
-                        $("#notifyupdate").css('display','inline')
-                        $("#notifyupdate").html(response.statusupdate)
-
-                        $(objform).find('span[id="shippingcheck"]').css('display','inline');
-                        $(objbutton).css('display','none');
-                    },
-                    error: function (response) {
-                        // alert the error if any error occured
-                        alert(response["responseJSON"]["error"]);
-                    }
-                })
-                
-    
-              })
-                
-      }
-
-      function doCheckpayment(objform,objbutton)
+    function doCheckpayment(objform,objbutton)
       {  
            $(objform).on('submit', function(e){
                 e.preventDefault();
