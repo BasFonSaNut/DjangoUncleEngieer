@@ -1,0 +1,126 @@
+
+
+
+
+
+
+
+
+
+
+{% extends 'school/base.html'%}
+
+
+
+{% block content %}
+
+<div class="container">
+
+      <div class="container">
+      {% if user.profile.photoprofile %}
+                <img src="{{user.profile.photoprofile.url}}" width="200" class="rounded">
+      {% endif %}
+      </div>
+
+      <form method="POST" enctype="multipart/form-data" >   
+        <!-- novalidate -->
+        {% csrf_token %}
+        &nbsp&nbsp
+            <div class="form-group w-50">
+              <label for="first_name">ชื่อ:</label>
+              <input type="text" class="form-control" id="first_name" name="first_name" value="{{data.first_name}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="last_name">สกุล:</label>
+              <input type="text" class="form-control" id="last_name" name="last_name" value="{{data.last_name}}">
+            </div>
+
+            
+            <div class="form-group w-50">
+              <label for="email">อีเมล:</label>
+              <input type="email" class="form-control" id="email" name="email" value="{{data.email}}">
+            </div>
+
+
+            <!-- <div class="form-group w-50">
+              <label for="username">ชื่อผู้ใช้(Username):</label>
+              <input type="text" class="form-control" id="username" name="student_user" value="{{data.username}}">
+            </div> -->
+
+
+
+            <label>Select Photo</label>
+            <input type="file" id="photo_profile" name="photo_profile"value=""required><br><br>
+                                                 
+            
+            
+            <button type="submit" class="btn btn-primary">แก้ไขข้อมูล</button>
+      </form>
+
+  
+  
+  
+</div>
+
+  
+{% endblock content %}
+
+
+
+<!-- <div class="form-group w-50">
+              <label for="idcard_citizen">หมายเลขบัตรประชาชน13หลัก:</label>
+              <input type="text" maxlength="13" placeholder="เลข 13 หลัก"class="form-control" id="idcard_citizen" name="idcard_citizen" value="{{data.idcard_citizen}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="birthday">วัน/เดือน/ปีเกิด:</label>
+              <input type="text"class="form-control" id="birthday" name="birthday" value="{{data.birthday}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="level">ระดับการศึกษาและชื่อสังกัดโรงเรียน ณ ปัจจุบัน:</label>
+              <input type="text"class="form-control" id="level" name="level" value="{{data.level}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="school_name">ชื่อสังกัดโรงเรียน ณ ปัจจุบัน:</label>
+              <input type="text"placeholder="สังกัดโรงเรียน ตัวอย่าง  ...เลยพิทยาคม..."class="form-control" id="school_name" name="school_name" value="{{data.school_name}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="phone_number">หมายเลขโทรศัพท์ตนเอง:</label>
+              <input type="text" maxlength="10" placeholder="เลข 10 หลัก"class="form-control" id="phone_number" name="phone_number" value="{{data.phone_number}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="parent_name1">ชื่อผู้ปกครอง1:</label>
+              <input type="text"placeholder="บิดาหรือมารดา"class="form-control" id="parent_name1" name="parent_name1" value="{{data.parent_name1}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="parent_phone1">หมายเลขโทรศัพท์ผู้ปกครอง1:</label>
+              <input type="text" maxlength="10" placeholder="เลข 10 หลัก"class="form-control" id="parent_phone1" name="parent_phone1" value="{{data.parent_phone1}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="parent_name2">ชื่อผู้ปกครอง2:</label>
+              <input type="text"placeholder="บิดาหรือมารดา"class="form-control" id="parent_name2" name="parent_name2" value="{{data.parent_name2}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="parent_phone2">หมายเลขโทรศัพท์ผู้ปกครอง2:</label>
+              <input type="text" maxlength="10" placeholder="เลข 10 หลัก"class="form-control" id="parent_phone2" name="parent_phone2" value="{{data.parent_phone2}}">
+            </div>
+
+            
+            <div class="form-group w-50">
+              <label for="address">ที่อยู่ที่ติดต่อได้:</label>
+              <textarea name="address" cols="30"  rows="5" class="form-control" id="address"  value="{{data.address}}"></textarea>
+            </div> -->
+
+  
+
+
+
+

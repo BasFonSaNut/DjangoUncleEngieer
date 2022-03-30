@@ -1,0 +1,47 @@
+{% extends 'school/base.html'%}
+
+{% block content %}
+
+
+    <div align="center"> 
+        <h1 >วิชาคณิตศาสตร์ ม.4</h1>
+        <!-- <img src="pic/2022-01-24_214729.jpg" alt="MOTHERSHIP" width="120px" height="120px"></a><br> -->
+    
+    {% if user.profile.photoprofile %}
+    <img src="{{user.profile.photoprofile.url}}" width="200" class="rounded">
+    {% endif %}
+    <p>
+    <strong>ให้นักเรียนศึกษา</strong>amet.
+    </div>
+    <hr> <!--สร้างเส้นคั่น -->
+
+
+    <h2>หัวข้อรายวิชา</h2>
+    <h3>ค.4-1   ค.4-2   ค.4-3</h3>
+    <hr>
+
+
+    <h2>ค.4-1 เซต</h2>
+    <p><strong>ให้นักเรียนศึกษาClip Vedio พร้อมทำแบบฝึกหัด</strong>Lorem ipsum dolor <br>sit amet.</p>
+    
+    <div>
+    <a href="http://www.youtube.com/watch?v=eHqP3FXQFTM" target="_blank">ClipVideo from link youtube 1.1 เซต</a>
+    <br>
+    <br>
+    <h4><u>ClipVideo from folder</u></h4>
+    <video controls width="400px" height="400px">
+        <source src="vedio/11.mp4" type="video/mp4"> 
+    </video>
+    <hr>
+
+   
+    
+    <br>
+    <iframe width="400" height="400"src="https://www.youtube.com/embed/224S4U4u7u0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    
+
+
+   
+
+    {% endblock content %}

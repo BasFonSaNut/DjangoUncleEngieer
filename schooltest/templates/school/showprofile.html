@@ -1,0 +1,106 @@
+{% extends 'school/base.html'%}
+
+{% block content %}
+  
+<div class="container">
+        
+      <div class="container">
+        <center>
+      {% if user.profile.photoprofile %}
+                <img src="{{user.profile.photoprofile.url}}" width="200" class="rounded">
+      {% endif %}
+      </div>
+        </center>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+            <!-- <div class="form-group w-50">
+              <label for="username">Username:</label>
+              <h4 class="account-heading">{{user.username}}</h4> -->
+              
+              &nbsp&nbsp
+            <div class="city" >
+              <h5><label for="username">Username &nbsp:&nbsp {{user.username}}</label></h5>
+              
+            </div> 
+
+                                  
+            <div class="city" >
+                
+              <h5><label for="first_name">ชื่อ &nbsp:&nbsp {{user.first_name}}</label></h5>
+                          
+            </div>
+            
+            <div class="city" >
+              
+              <h5><label for="last_name">สกุล &nbsp:&nbsp {{user.last_name}}</label></h5>
+              
+            </div>
+
+            <div class="city" >
+              
+              <h5><label for="email">Email &nbsp:&nbsp {{user.email}}</label></h5>
+              
+            </div>
+
+            
+            <!-- <div class="form-group w-50">
+              <label for="idcard_citizen">หมายเลขบัตรประชาชน13หลัก:</label>
+              <input type="text" maxlength="13" placeholder="เลข 13 หลัก"class="form-control" id="idcard_citizen" name="idcard_citizen" value="{{data.idcard_citizen}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="level">ระดับการศึกษาและชื่อสังกัดโรงเรียน ณ ปัจจุบัน:</label>
+              <select  name="level"class="form-control" id="level"  value="{{data.level}}">
+                <option value="ม.x"selected>ม.x</option>
+                <option value="ม.1">ม.1</option>
+                <option value="ม.2">ม.2</option>
+                <option value="ม.3">ม.3</option>
+                <option value="ม.4">ม.4</option>
+                <option value="ม.5">ม.5</option>
+                <option value="ม.6">ม.6</option>
+            </div>
+
+            <div class="form-group w-50">
+              <label for="school_name">ชื่อสังกัดโรงเรียน ณ ปัจจุบัน:</label>
+              <input type="text"placeholder="สังกัดโรงเรียน ตัวอย่าง  ...เลยพิทยาคม..."class="form-control" id="school_name" name="school_name" value="{{data.school_name}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="phone_number">หมายเลขโทรศัพท์ตนเอง:</label>
+              <input type="text" maxlength="10" placeholder="เลข 10 หลัก"class="form-control" id="phone_number" name="phone_number" value="{{data.phone_number}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="parent_name">ชื่อผู้ปกครอง:</label>
+              <input type="text"placeholder="บิดาหรือมารดา"class="form-control" id="parent_name" name="parent_name" value="{{data.parent_name}}">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="parent_name">หมายเลขโทรศัพท์ผู้ปกครอง:</label>
+              <input type="text" maxlength="10" placeholder="เลข 10 หลัก"class="form-control" id="parent_name" name="parent_name" value="{{data.parent_name}}">
+            </div>
+
+            
+            <div class="form-group w-50">
+              <label for="address">ที่อยู่ที่ติดต่อได้:</label>
+              <textarea name="address" cols="30"  rows="5" class="form-control" id="address"  value="{{data.address}}"></textarea>
+            </div>
+ -->
+
+
+
+            
+      </form>
+
+  
+  
+    
+</div>
+
+  
+{% endblock content %}
+
+
+
+

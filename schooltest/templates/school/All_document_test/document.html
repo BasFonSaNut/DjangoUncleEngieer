@@ -1,0 +1,28 @@
+{% extends 'school/base.html'%}
+
+{% block content %}
+  
+<div class="container">
+
+  <center>
+
+  <table style="width:100%">    	 
+  	<tr><th>คำอธิบาย ม.1</th><th>แบบทดสอบ ม.1</th><th>เฉลย ม.1</th><tr>
+  {% for dc in document %}
+  	{% if dc.level == 'ม.1' %}
+		<tr><td>{{dc.description}}</td><td><a href="{{dc.document_exam.url}}">{{dc.document_name}}</a></td><td>{{dc.document_answer}}</td></tr>
+	{% endif %}		
+  {% endfor %}
+  </table><br>
+
+  
+  
+  </center>
+
+</div>
+
+{% endblock content %}
+
+
+
+

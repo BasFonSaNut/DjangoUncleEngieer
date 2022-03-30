@@ -1,0 +1,95 @@
+{% extends 'school/base.html'%}
+
+{% block content %}
+  
+<div class="container">
+  <div class="row">
+   
+  <center>
+  
+  <table style="width:100%">    	 
+  	<tr><th><u>คำอธิบาย ม.1</u></th><th><u>แบบทดสอบ ม.1</u></th><th><u>เฉลย ม.1</u></th><tr>
+  {% for dc in document %}
+  	{% if dc.level == 'ม.1' %}
+		<tr><td>{{dc.description}}</td><td><a href="{{dc.document_exam.url}}">{{dc.exam_name}}</a></td><td><a href="{{dc.document_answer.url}}">{{dc.answer_name}}</a></td></tr>
+	  {% endif %}		
+  {% endfor %}
+  </table><br>
+  <hr>
+
+
+  <table style="width:100%">
+  <tr><th><u>คำอธิบาย ม.2</u></th><th><u>แบบทดสอบ ม.2</u></th><th><u>เฉลย ม.2</u></th><tr>
+    {% for dc in document %}
+      {% if dc.level == 'ม.2' %}
+      <tr><td>{{dc.description}}</td><td><a href="{{dc.document_exam.url}}">{{dc.exam_name}}</a></td><td><a href="{{dc.document_answer.url}}">{{dc.answer_name}}</a></td></tr>
+      {% endif %}		
+    {% endfor %}
+    </table><br>
+    <hr>
+
+    <table style="width:100%">    	 
+      <tr><th><u>คำอธิบาย ม.3</u></th><th><u>แบบทดสอบ ม.3</u></th><th><u>เฉลย ม.3</u></th><tr>
+    {% for dc in document %}
+      {% if dc.level == 'ม.3' %}
+      <tr><td>{{dc.description}}</td><td><a href="{{dc.document_exam.url}}">{{dc.exam_name}}</a></td><td><a href="{{dc.document_answer.url}}">{{dc.answer_name}}</a></td></tr>
+      {% endif %}		
+    {% endfor %}
+    </table><br>
+    <hr>
+
+
+    <table style="width:100%">
+    <tr><th><u>คำอธิบาย ม.4</u></th><th><u>แบบทดสอบ ม.4</u></th><th><u>เฉลย ม.4</u></th><tr>
+      {% for dc in document %}
+        {% if dc.level == 'ม.4' %}
+        <tr><td>{{dc.description}}</td><td><a href="{{dc.document_exam.url}}">{{dc.exam_name}}</a></td><td><a href="{{dc.document_answer.url}}">{{dc.answer_name}}</a></td></tr>
+        {% endif %}		
+      {% endfor %}
+      </table><br>
+      <hr>
+
+      <table style="width:100%">    	 
+        <tr><th><u>คำอธิบาย ม.5</u></th><th><u>แบบทดสอบ ม.5</u></th><th><u>เฉลย ม.5</u></th><tr>
+      {% for dc in document %}
+        {% if dc.level == 'ม.5' %}
+        <tr><td>{{dc.description}}</td><td><a href="{{dc.document_exam.url}}">{{dc.exam_name}}</a></td><td><a href="{{dc.document_answer.url}}">{{dc.answer_name}}</a></td></tr>
+        {% endif %}		
+      {% endfor %}
+      </table><br>
+      <hr>
+      
+
+      <table style="width:100%">
+      <tr><th><u>คำอธิบาย ม.6</u></th><th><u>แบบทดสอบ ม.6</u></th><th><u>เฉลย ม.6</u></th><tr>
+        {% for dc in document %}
+          {% if dc.level == 'ม.6' %}
+          <tr><td>{{dc.description}}</td><td><a href="{{dc.document_exam.url}}">{{dc.exam_name}}</a></td><td><a href="{{dc.document_answer.url}}">{{dc.answer_name}}</a></td></tr>
+          {% endif %}		
+        {% endfor %}
+        </table><br>
+        <hr>
+        
+
+        <table style="width:100%">
+        <tr><th><u>คำอธิบาย เตรียมสอบ</u></th><th><u>แบบทดสอบ เตรียมสอบ</u></th><th><u>เฉลย เตรียมสอบ</u></th><tr>
+          {% for dc in document %}
+            {% if dc.level == 'ม.x' %}
+            <tr><td>{{dc.description}}</td><td><a href="{{dc.document_exam.url}}">{{dc.exam_name}}</a></td><td><a href="{{dc.document_answer.url}}">{{dc.answer_name}}</a></td></tr>
+            {% endif %}		
+          {% endfor %}
+          </table><br>
+          <hr>
+
+                 
+  
+  
+  </center>
+   </div>
+</div>
+
+{% endblock content %}
+
+
+
+

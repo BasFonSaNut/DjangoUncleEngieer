@@ -1,0 +1,97 @@
+{% extends 'school/base.html'%}
+
+{% block content %}
+  
+<div class="container">
+      <form method="post">
+        {% csrf_token %}
+
+            <div class="form-group w-50">
+              <label for="first_name">ชื่อ:</label>
+              <input type="text" placeholder="เว้นว่างได้"  class="form-control" id="first_name" name="first_name" >
+            </div>
+
+            <div class="form-group w-50">
+              <label for="last_name">สกุล:</label>
+              <input type="text" placeholder="เว้นว่างได้"class="form-control" id="last_name" name="last_name">
+            </div>
+
+            
+            <div class="form-group w-50">
+              <label for="email">อีเมล:</label>
+              <input type="email" placeholder="เว้นว่างได้"class="form-control" id="email" name="email">
+            </div>
+
+            
+
+            <div class="form-group w-50">
+              <label for="student_user">ตั้งชื่อผู้ใช้(Username):</label>
+              <input type="text"placeholder="จำเป็น" class="form-control" id="student_user" name="student_user" required>
+            </div>
+
+            <div class="form-group w-50">
+              <label for="password">ตั้งรหัสผ่าน(Password):</label>
+              <input type="password"placeholder="จำเป็น 6 หลัก"  maxlength="6"class="form-control"  id="password" name="password">
+            </div>
+
+
+
+            <!-- <div class="form-group w-50">
+              <label for="idcard_citizen">หมายเลขบัตรประชาชน13หลัก:</label>
+              <input type="text"placeholder="เว้นว่างได้" maxlength="13" class="form-control" id="idcard_citizen" name="idcard_citizen">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="level">ระดับการศึกษาและชื่อสังกัดโรงเรียน ณ ปัจจุบัน:</label>
+              <select  name="level"class="form-control" id="level">
+                <option value="ม.x"selected>ม.x</option>
+                <option value="ม.1">ม.1</option>
+                <option value="ม.2">ม.2</option>
+                <option value="ม.3">ม.3</option>
+                <option value="ม.4">ม.4</option>
+                <option value="ม.5">ม.5</option>
+                <option value="ม.6">ม.6</option>
+            </div>
+
+            <div class="form-group w-50">
+              <label for="school_name">ชื่อสังกัดโรงเรียน ณ ปัจจุบัน:</label>
+              <input type="text"placeholder="สังกัดโรงเรียน ตัวอย่าง  ...เลยพิทยาคม..."class="form-control" id="school_name" name="school_name">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="phone_number">หมายเลขโทรศัพท์ตนเอง:</label>
+              <input type="text"placeholder="เว้นว่างได้" maxlength="10" placeholder="เลข 10 หลัก"class="form-control" id="phone_number" name="phone_number">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="parent_name">ชื่อผู้ปกครอง:</label>
+              <input type="text"placeholder="เว้นว่างได้"class="form-control" id="parent_name" name="parent_name">
+            </div>
+
+            <div class="form-group w-50">
+              <label for="parent_name">หมายเลขโทรศัพท์ผู้ปกครอง:</label>
+              <input type="text"placeholder="เว้นว่างได้" maxlength="10" placeholder="เลข 10 หลัก"class="form-control" id="parent_name" name="parent_name">
+            </div>
+
+            
+            <div class="form-group w-50">
+              <label for="address">ที่อยู่ที่ติดต่อได้:</label>
+              <textarea name="address"placeholder="เว้นว่างได้" cols="30"  rows="5" class="form-control" id="address"></textarea>
+            </div> -->
+
+                        
+              
+            <button type="submit" class="btn btn-primary">สมัคร</button>
+      </form>
+
+  
+  
+  
+</div>
+
+  
+{% endblock content %}
+
+
+
+

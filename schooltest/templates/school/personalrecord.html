@@ -1,0 +1,65 @@
+{% extends 'school/base.html'%}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+
+    <!-- <center> -->
+    {% if user.profile.photoprofile %}
+              <img src="{{user.profile.photoprofile.url}}" width="200" class="rounded">
+    {% endif %}
+    </div>
+    <!-- </center> -->
+    &nbsp
+      
+    <form method="POST" enctype="multipart/form-data"novalidate >  
+        <!-- novalidate -->
+        {% csrf_token %}
+
+        <div class="form-group w-50">
+            <h5><label for="username">Username &nbsp:&nbsp {{user.username}}</label></h5>
+            
+          </div>
+
+          <div class="form-group w-50">
+                
+            <h5><label for="first_name">ชื่อ &nbsp:&nbsp {{user.first_name}}</label></h5>
+                        
+          </div>
+          
+          <div class="form-group w-50">
+            
+            <h5><label for="last_name">สกุล &nbsp:&nbsp {{user.last_name}}</label></h5>
+            
+          </div>
+       
+            
+            <!-- {{ form.as_p}} -->
+            <table>
+              {{ form.as_table}}
+            </table>
+            <hr> 
+            <!-- {{ form|crispy }} -->
+                
+            
+            
+            <button type="submit" class="btn btn-primary">เพิ่มประวัติส่วนตัว</button>
+      </form>
+
+  
+  
+    </div>
+</div>
+
+  
+{% endblock content %}
+
+
+
+
+
+
+

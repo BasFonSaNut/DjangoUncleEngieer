@@ -1,0 +1,49 @@
+{% extends 'school/base.html'%}
+{% load static %}
+{% block content %}
+  
+<div class="container">
+
+      <form method="POST">
+        {% csrf_token %}
+
+            
+            <div class="form-group w-50">
+              <label for="username">ชื่อผู้ใช้(Username):</label>
+              <input type="text" class="form-control" id="username" name="username">
+            </div>
+
+
+            <div class="form-group w-50">
+              <label for="password">รหัสผ่าน(Password):</label>
+              <input type="password" class="form-control"  id="password" name="password">
+            </div>
+              
+            <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+      </form>
+      <hr>
+      <div class="alert alert-danger">
+        <strong>ติดต่อ Admin!</strong> เพื่อขอ Username และ Password
+      </div>     
+      
+      <img src="{% static 'pic/qrcode.jpg' %}" class="img-thumbnail" alt="Cinque Terre" width="250" height="250">
+      <p></p>
+      <p><h5><u><mark> QR Code Line ติดต่อ Admin</mark></u></h5></p>
+      <p><h3><u><mark>Tel.  089-4760483  (น้าน้อย)</mark></u></h3></p>
+            <div class="spinner-border text-muted"></div>
+            <div class="spinner-border text-primary"></div>
+            <div class="spinner-border text-success"></div>
+            <div class="spinner-border text-info"></div>
+            <div class="spinner-border text-warning"></div>
+            <div class="spinner-border text-danger"></div>
+            <div class="spinner-border text-secondary"></div>
+            <div class="spinner-border text-light"></div>
+  
+</div>
+
+  
+{% endblock content %}
+
+
+
+

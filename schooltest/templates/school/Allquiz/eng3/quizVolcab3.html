@@ -1,0 +1,155 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+	body{
+		background: #0e0c0c;
+		color:#3c0cec;
+		font-family: 'Arial', sans-serif;
+		font-size: 16px;
+	    }
+	#container{
+		width: 70%;
+		background: #c3c5c3;
+		margin: 10px auto;
+		overflow: auto;
+		padding: 40px;
+	}
+	header{
+		text-align: center;
+		/* border-bottom: rgb(255, 255, 255) dashed 1px; */
+	}
+	header h1{
+		margin: 0;
+		padding: 0;
+	}
+	header p{
+		padding: 0;
+		margin-top: 5px;
+		color: #000;
+	}
+	section{
+		min-height: 400px;
+	}
+	footer{
+		background: black;
+		text-align: center;
+	}
+	input[type = 'submit']{
+		font-size: 35px;
+		width: 100%;
+		background: #f5500a;
+		border:0;
+		color: rgb(12, 9, 219);
+		padding: 10px 15px;
+		cursor: pointer;
+		font-weight: 900;
+	}
+	input[type = 'radio']{
+		transform: scale(2);
+	}
+	#results h3{
+		background: #FFFFFF;
+		color: #22C4C6;
+		padding:10px 15px;
+		margin: 10px 0;
+	}
+	#results span{
+		color: red;
+		font-weight: bold;
+	}
+	.button {
+		font-size: 30px;
+		display: block;
+		width: 100;
+		height: 30px;
+		background: #38a9c5;
+		padding: 20px;
+		text-align: center;
+		border-radius: 5px;
+		color: rgb(230, 8, 8);
+		font-weight: 900;
+	}
+    </style>
+	<script>
+		function submitdes(description){
+          var tip = description;
+          var showdes = document.getElementById('showdes');
+          showdes.innerHTML = "<h1> เฉลยละเอียด =<span> "+ tip + "</span></h1>";
+          return false;
+        }
+        function submitAnswers(answers){
+          var top = answers; 
+	      choice = document.forms["quizForm"]["q"].value;
+     	  if(choice == top)
+	      {cum ="ถูกต้อง  ";}
+	      else
+	      {cum ="ไม่ถูกต้อง  ";}
+	      var results = document.getElementById('results');
+          results.innerHTML = "<h1><span>" + cum + "</span> คำตอบ = <span>"+  top + "</span></h1>";
+          return false;
+        }
+	</script>
+	<title>Quiz Application</title>
+</head>
+<body>
+	<div id = "container">
+		<header>
+			<a href="/" class = "button">HOME-Page</a>
+			<br> 
+			<h1>Vocabulary test Question</h1>
+		</header>
+
+		<section>
+			
+			<form name = "quizForm" onsubmit = "return submitAnswers(answers = [{% for q in questions %}'{{ q.answer }}',{% endfor %}])">
+			<!-- <form name = "quizForm" onsubmit = "return submitdes(description = [{% for q in questions %}'{{ q.des }}',{% endfor %}])"> -->
+			{% for q in questions   %}
+			    <hr>
+				<h1>{{ q.question }}</h1>
+				<h1><input type = "radio" name = "q" value = "a" id = "q1a">&nbsp&nbsp&nbsp<b>a.&nbsp{{ q.option1 }}</b><br></h1>
+				<!-- <input type = "radio" name = "q{{ q.id }}" value = "a" id = "q1a">   a. {{ q.option1 }}<br><br>  -->
+				<h1><input type = "radio" name = "q" value = "b" id = "q1b">&nbsp&nbsp&nbsp<b>b.&nbsp{{ q.option2 }}</b><br></h1>         
+				<h1><input type = "radio" name = "q" value = "c" id = "q1c">&nbsp&nbsp&nbsp<b>c.&nbsp{{ q.option3 }}</b><br></h1>  
+				<h1><input type = "radio" name = "q" value = "d" id = "q1d">&nbsp&nbsp&nbsp<b>d.&nbsp{{ q.option4 }}</b><br></h1>  
+				<!-- <h3>คำตอบ</h3>
+				<h3>{{ q.answer }}.{{q.des}}</h3> -->
+				       
+				<h5>รหัสคำถาม = 5.Quiz( {{ q.id }} )</h5>
+			    <hr>
+			{% endfor %}
+                <div id = "results"></div>
+				<div id = "showdes"></div>
+				
+				
+				<input type = "submit" value = "Answer">
+				<br><br>  
+				<center>               
+				<button onclick="submitdes(description = [{% for q in questions %}'{{ q.des }}',{% endfor %}]);"><h2>เฉลยละเอียด</h2></button>
+			    </center>
+				<br>
+				
+			</form>
+			
+			
+		<a href="" class="button">Next QUIZ</a>	
+		<hr>
+		
+		
+		</section>
+	</div>
+
+
+
+
+
+	
+
+
+
+	
+</body>
+</html>
