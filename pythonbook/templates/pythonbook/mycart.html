@@ -1,0 +1,174 @@
+{% extends "pythonbook/layout.html" %}
+{% load humanize %}
+{% block title %}
+My Card
+{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="pb-1 border-bottom">ตะกร้าของฉัน</h2>
+  
+  
+    {% if status == 'deleted' %}
+    <div class="alert alert-danger">
+      <strong>ลบเรียบร้อยแล้ว</strong> 
+    </div>
+    {% endif %}
+
+    {% if status == 'updated' %}
+    <div class="alert alert-danger">
+      <strong>อัปเดตเรียบร้อยแล้ว</strong> 
+    </div>      
+    {% endif %}
+
+    {% if status == 'deletedall' %}
+    <div class="alert alert-danger">
+      <strong>เคลียร์ทั้งหมดเรียบร้อยแล้ว</strong> 
+    </div>      
+    {% endif %}
+    
+ 
+ 
+  <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Book</th>
+        
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Total</th>
+        <th scope="col">Order Time</th>
+        <th scope="col">Action
+          <form method="POST" id="formw" onsubmit="return confirm('Are you sure to delete all?!!');">
+            {% csrf_token %}
+              
+              <input type="hidden" value="dodeleteall" form="formw" name="state" id="state">
+              <button type="submit" class="btn-danger btn-group-sm" id='btn_deleteall'>DELETE ALL</button>
+          </form>  
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cart in mycart %}
+      <tr>
+        <th scope="row">{{cart.bookid}}</th>
+        <td>{{cart.bookname}}</td>
+        
+        <td>{{cart.price|intcomma}}</td>
+        <td><span>{{cart.quantity}}</span>
+          <input type="text" value="" name="tempquantity" id="tempquantity" size="5" style="text-align:center;display:none" onkeyup="doKeyup($(this));"></td>
+        <td>{{cart.total|intcomma}}</td>
+        <td>{{cart.stamp}}</td>
+        <td> 
+          <div  class="d-flex">
+           
+                <button type="button" class="btn-warning btn-group-sm" id='btn_edit' onclick="doEdit($(this));">EDIT</button>
+            
+            <form method="POST" id="formx{{cart.bookid}}" onsubmit="return confirm('Are you sure to update?!!');">
+              {% csrf_token %}
+              <input type="hidden" value="" name="quantity" id="quantity" size="5" style="text-align:center;">
+                <input type="hidden" value="{{cart.bookid}}" form="formx{{cart.bookid}}" name="bookid" id="bookid">
+                <input type="hidden" value="doupdate" form="formx{{cart.bookid}}" name="state" id="state">
+                <button type="submit" class="btn-warning btn-group-sm" id='btn_update' style='display:none'>UPDATE</button>
+            </form>    
+          <form method="POST" id="formy{{cart.bookid}}" onsubmit="return confirm('Are you sure to delete?!!');">
+            
+            {% csrf_token %}
+            <input type="hidden" value="{{cart.bookid}}" form="formy{{cart.bookid}}" name="bookid" id="bookid">
+            <input type="hidden" value="dodelete" form="formy{{cart.bookid}}" name="state" id="state">
+            <button type="submit" class="btn-danger btn-group-sm">DELETE</button>
+        </form>
+       
+        </td>
+      </tr>
+      
+      {% endfor %}  
+      <tr>
+        <th scope="row">&nbsp;</th>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>{{user.profile.cartquan}}</td>
+        <td>{{user.profile.sumtotal|intcomma}}</td>
+        <td>&nbsp;</td>
+        <td><a href="{% url 'checkout-page' %}" class="btn-success btn-group-sm">CHECKOUT</a></td>
+      </tr>
+    </tbody>
+  </table>
+  
+ 
+</div>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+  $(document).ready(function(){   
+    //don't know yet what to do in onload
+  });     
+
+    function sum(){
+      var newtotal=0
+      var allrow = $("#tb_mycart").find("tr").length;
+      var sumq = 0
+      //some price
+      $('#tb_mycart tr').each(function(index, tr) {
+        if(index <  (allrow-1))
+        {
+          
+            $(tr).find('td:eq(3)').each (function (index, td) {
+              price = $(td).html()
+              price = price.replace(/\,/g, '');
+              newtotal = newtotal+parseInt(price)
+              //console.log(newtotal)
+              
+            });
+        }
+      });
+
+      //some quant
+      $('#tb_mycart tr').each(function(index, tr) {
+        if(index <  (allrow-1))
+        {
+          
+            $(tr).find('td:eq(2)').each (function (index, td) {
+              if($(td).find('span').html() == '') {
+                sumq = sumq + parseInt($(td).find('#tempquantity').val()) 
+              } 
+              else{
+                sumq = sumq + parseInt($(td).find('span').html())
+              }
+             // console.log(sumq)
+            });
+        }
+      });
+
+      $('#tb_mycart tr:last').find('td:eq(3)').html(newtotal);
+      $('#tb_mycart tr:last').find('td:eq(2)').html(sumq);
+      
+    }
+    
+    function doEdit(obj){
+      var currentquantity = obj.closest("tr").find('span').html();
+      
+      obj.closest("tr").find("input[id='tempquantity']").val(currentquantity).css('display','inline');
+      obj.closest("tr").find('span').html('')
+      
+      obj.css('display','none');
+      obj.closest("td").find('#btn_update').css('display','inline');
+      obj.closest("tr").find('#tempquantity').css('display','inline');
+    }
+
+    function doKeyup(obj){
+        
+        var price = obj.closest("tr").find("td:eq(1)").text();
+        price = price.replace(/\,/g, '');
+        var total = parseInt(obj.val()) * parseInt(price);
+        obj.closest("tr").find("td:eq(3)").html(total);
+        obj.closest("tr").find("#quantity").val(obj.val());
+
+        sum();
+    }
+  
+ 
+  </script>
+{% endblock javascript%}

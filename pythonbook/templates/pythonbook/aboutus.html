@@ -1,0 +1,155 @@
+{% extends "pythonbook/layout.html" %}
+{% block title %}
+About us 
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 py-5" id="featured-3">
+    <h2 class="pb-1 border-bottom">PHASE 1 :EP0-E9</h2>
+    อย่าสักแต่ให้ผ่านว่าแค่ทำได้ แต่ต้องผ่าน performance ด้วย นั่นคือที่โค้ช ได้กล่าวไว้ ช้าๆ แต่ให้มั่นคง โปรดอ่านรายละเอียดด้านล่าง        
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+     
+      <div class="feature col">
+        <div class="feature-icon bg-primary bg-gradient">
+           &nbsp;
+        </div>
+        
+        <h2>แก้ไข Model</h2>
+        เพื่อลดขนาดรูป BookProduct
+        <p style="float: left;position: relative;">
+          <pre>
+          <code>
+class BookProduct(models.Model):
+    bookname=models.CharField(max_length=100)
+    price=models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+    description = models.CharField(max_length=500,null=True,blank = True)
+    imageurl = models.CharField(max_length=500,null=True,blank=True)
+    imagefilename = models.CharField(max_length=500,null=True,blank=True)
+    instock = models.BooleanField(default=True)
+    unit = models.CharField(max_length=200,default='-')
+    quantity = models.IntegerField(default=1)
+    image = models.ImageField(upload_to="books/",null=True,blank=True)
+
+    #เพิ่มส่วนนี้เพื่อ ลดขนาดรูป
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # saving image first
+        img = Image.open(self.image.path) # Open image using self
+
+        if img.height > 260 or img.width > 171:
+            new_img = (171, 260)
+            img.thumbnail(new_img)
+            # img.resize(self.image.path, (171, 260))
+            img.save(self.image.path)  # saving image at the same path
+    
+    #original        
+    def __self__(self):
+        return self.bookname
+          </code> 
+        </pre>
+        </p>
+        <a href="#" class="icon-link" style="display:none">
+          Call to action
+          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
+        </a>
+      </div>
+      <div class="feature col">
+        <div class="feature-icon bg-primary bg-gradient">
+            &nbsp;
+        </div>
+        <h2>แก้ไข Model</h2>
+        เพื่อลดขนาดรูป Profile
+        <p style="float: left;position: relative;">
+          <pre>
+          <code>
+class Profile(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to="photoprofile/",null=True,blank=True,default='default.png')
+    usertype = models.CharField(max_length=100,default='member')
+    
+    #เพิ่มส่วนนี้เพื่อ ลดขนาดรูป
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # saving image first
+        img = Image.open(self.photo.path) # Open image using self
+
+        if img.height > 200 or img.width > 200:
+            new_img = (200, 200)
+            img.thumbnail(new_img)
+            # img.resize(self.photo.path, (200, 200))
+            img.save(self.photo.path)  # saving image at the same path
+    
+    #original       
+    def __str__(self):
+        return self.user.first_name
+          </code> 
+        </pre>
+        </p>
+        <a href="#" class="icon-link" style="display:none">
+          Call to action
+          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
+        </a>
+      </div>
+      <div class="feature col">
+        <div class="feature-icon bg-primary bg-gradient">
+           &nbsp;
+        </div>
+        <h2>Read Json File</h2>
+        เพื่อดึงข้อมูลจาก json มาแสดง แทนการดึงจาก database
+        <p style="float: left;position: relative;">
+          <pre>
+          <code>
+def home(request):
+    with open('static/pythonbook/data/books.json') as f:
+        # ขึ้นระบบจริงใช้ real path '/home/ajaxjson/djangoEp2template/static/pythonbook/data/books.json
+        jsondata = json.load(f)
+        top10 = jsondata[:10]
+        totalrecord = len(jsondata)
+        totalpage = ceil(totalrecord/10)
+        currentpage = 1
+        previousPage = 1
+        nextPage = 1
+    context = {
+            'books':top10,
+            'totalrecord':totalrecord,
+            'totalpage':range(1,(totalpage+1)),
+            'currentpage':currentpage,
+            'previousPage':previousPage,
+            'nextPage' : nextPage
+            }     
+    return render(request,"pythonbook/home.html",context)
+          </code> 
+        </pre>
+        </p>
+        <a href="#" class="icon-link" style="display:none">
+          Call to action
+          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+<p>
+  <br>เว็บเบสนั้น มันไม่เหมือน ออฟไลน์ โปรแกรม GUI แบบของ บาส ดังนั้น ทุกครั้งเรียนกับลุง ทำได้จนเห็นชิ้นงาน แต่ละตอน
+  <br>โค้ชจะมาให้โจทย์เพิ่มเติม เพื่อปรับเสริมเติมแต่ง ชวนกันวิเคราะห์เสมอ ตามหลักการของ
+  <br>Software Engineering,Software Design, Software Efficency
+  <br>แค่เขียนได้ ออกผลนั้นไม่พอ ต้องเร็วด้วย เพราะเน็ตของแต่ละคน เร็วช้าไม่เท่ากัน
+  <br>แค่เขียนได้ ออกผลนั้นไม่พอ ต้องเล็กด้วย เพราะเจ้าของงานแต่ละเจ้า แต่ละคน ความสามารถในการจ่ายพื้นที่ ไม่เท่ากัน
+  <br>แค่เขียนได้ ออกผลนั้นไม่พอ ต้องกินทรัพยากรของ server น้อยด้วย เพราะเจ้าของงานแต่ละเจ้า แต่ละคน ความสามารถในการจ่าย service ในการเรียกใช้ทรัพยากรของเซอฟเวอร์ไม่เท่ากัน 
+  <br>จาก EP 1-10 สิ่งที่สา ทำได้คือ สร้าง login, สร้าง profile ให้ user แต่ละคนได้ ,กำหนดระดับของ user แต่ละคนได้ ส่วนนี้ไม่มีปัญหาในเรื่องทรัพยากรที่ต้องมา นอร์มอลไลซ์ กัน
+  <br>จาก EP 1-10 สิ่งที่สา สร้าง รายการสินค้า โดยสามารถ อัปโหลดภาพของสินค้าเข้าไปได้ ,แสดงผลรายการสินค้า โดยสามารถ แบ่งเป็นหน้าได้ 2 จุดนี้ ที่โค้ชให้ความสำคัญเป็นอย่างมาก
+  <br>
+  <br>จากที่คุยกัน แบบถามตอบ ถ้า user เอารูป profile ขนาด 1mb ขึ้นไปสัก 100 คน , ถ้าคนดูแลหลังร้านเอารูปสินค้าขึ้นระบบ ขนาด 1bm ต่อ 1 รายการสินค้า ไปสัก 100 รายการสินค้า
+  <br>กับความสามารถของเจ้าของงาน ที่เขามีความสามารถในการเช่าพื้นที่ (hosting) แค่ปีละ 500mb หรือ 1GB เขาไม่ต้องขยายแผนเช่า เป็นแพคเกจที่แพงกว่า รึ
+  <br>
+  <br>การแสดงผล สินค้าที่หน้าแรก ที่เป็นลักษณะ paging ทุกครั้งที่เปลี่ยนหน้า หากใช้ concept ไปดังจากฐานข้อมูลทุกครั้ง 
+  <br>เคยคิดหรือไม่ หากลูกค้าวางแผนจะเอาแอฟตัวนี้ไปขึ้น cloud base และหากเจ้านั้นเขาเขี้ยวมาก นับ 1 connection ถือเป็น 1 service provide
+  <br>แค่เปลี่ยนหน้าไปมา ก็ต้องจ่ายเสียแล้ว สรุปที่จ่ายตังก์หมดไปกับ การเลื่อนดูรายการสินค้า ซึ่งไม่ได้เกิดรายได้อะไรเลย พอถึงตอนจะได้เงินขึ้นมาจริงๆ
+  <br>ตอนลูกค้าจะทำรายการสั่งซื้อ หรือ ทำรายการออกออร์เดอร์ หรือ โควเตชั่นให้ลูกค้า service หมด
+  <br>
+  <br>จากสองเรื่อง ที่เสวนากัน โค้ชให้โจทย์ที่ต้องไปทำเพิ่ม 
+  <br>1 ก่อนรูปจะไปอยู่ใน server หรือต่อให้ขึ้นไปแล้ว ทำยังไงก็ได้ ให้เอารูปนั้นมา resize ใหม่ พูดง่ายๆ หลังจบกระบวนการ ขนาดรูปต้องไม่เกิน 20k ต่อรูป จะ convert ร่วมด้วยก็ได้ ไม่กำหนด ถ้าเห็นว่า jpeg เล็กกว่า ก็ .jpeg คิดว่า png เล็กกว่า ก็ .png
+  <br>Solution นี้เราเลือกที่จะเป็น thumbnail แทน resize ด้วยผลปลายทางขนาดไฟล์เล็กกว่า แม้ว่า resolution ของจะภาพต่ำลง แต่ในระดับที่สังเกตุด้วยตาเปล่าแทบไม่แตกต่าง
+  <br>2 การเลื่อนดูรายการสินค้า ให้ใช้วิธี read จาก static file เพราะทุก hosting ไม่ค่าใช้จ่าย ในเรื่อง read,write ไฟล์ ซึ่ง process เกิดขึ้นภายใน ไม่ใช่ หลักการของ ftp ที่กระบวนการที่เกิดกับไฟล์เกิดการกระทำกันสองทาง ซึ่งเป็นค่าใช้จ่ายของฝ่ายผู้ให้บริการเช่า ซึ่งต้องมาเก็บกับเรา
+  <br>Solution 2 เราเลือก เป็น read จาก json file แทน เพราะง่านในการ convert json มาเป็น dict และง่ายที่เล่นกับ dict เสมือนเล่นกับเรคคอร์ดใน database ซึ่ง Python เขามี การเล่นกับทุก object ผ่าน obj อยู่แล้ว 
+  <br>โดยโปรเซสทุกครั้งที่เกิด Add,Update,Delete รายการสินค้า ระบบจะ generate .json ไฟล์ให้ up to date  เทียบเท่า ในฐานข้อมูลเสมอ
+</p>
+{% endblock %}

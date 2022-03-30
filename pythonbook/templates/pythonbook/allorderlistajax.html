@@ -1,0 +1,243 @@
+{% extends "pythonbook/layout.html" %}
+{% load humanize %}
+{% block title %}
+OrderList Admin
+{% endblock %}
+
+{% block content %}
+
+{% if updatestatus != '' %}
+<div id ="notifyupdate" class="alert alert-danger" style="display:none">
+  {% comment %} style="display:none" {% endcomment %}
+  <strong>{{updatestatus}}</strong> 
+</div>
+{% endif%}
+<div class="container mt-5">
+  <h2 class="pb-1 border-bottom">All Order and Order Status (admin)</h2>
+  <table class="table table-striped table-hover" id="tb_mycart" name="tb_mycart">
+    <thead>
+      <tr>
+        <th scope="col">OrderId</th>
+        <th scope="col">Total Quantity</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Order Time</th>
+        <th scope="col">SLIP</th>
+        <th scope="col">SLIP CHECKED</th>
+        <th scope="col">PAID</th>
+        <th scope="col">DELIVERY</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for orderitem in orderlists %}
+      <tr>
+        <td>{{orderitem.orderid}}</td>
+        <td>{{orderitem.total|intcomma}}</td>
+        <td>{{orderitem.quantity}}</td>
+        <td>{{orderitem.stamp}}</td>
+       
+        <td>    
+          {% if orderitem.slipuploadstatus%}
+          <a href="../media/{{orderitem.image}}" target="_blank">
+            <span class="text-success"><i class='fas fa-receipt' style='font-size:20px'></i></span>
+          </a>
+          {% else %}
+           
+            <span class="text-warning"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>pending</span>
+           
+          {% endif %}
+        </td>
+
+        <td>
+          {% if orderitem.slipcheckedstatus %}
+          <span class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+          {% else %}
+            <form id="frmCheckslip{{orderitem.orderid}}" action="">
+                {% csrf_token %}
+              <span id="slipcheck" style="display:none" class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+            <input type = "hidden" form="frmCheckslip{{orderitem.orderid}}" value="{{orderitem.orderid}}" id="orderid" name="orderid">  
+            <input type = "hidden" form="frmCheckslip{{orderitem.orderid}}" value="slipchecked" id="updateWhat" name="updateWhat">  
+            <button id='btn_checkslip' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm">
+              <span class="text-warning" onclick="doCheckslip($(this).closest('form'),$(this))"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span>
+            </button>
+            {% comment %} onclick="doCheckslip($(this).closest('form'),$(this))" {% endcomment %}
+        </form>
+          {% endif %}
+        </td>
+        
+        
+        <td>
+         
+            {% if orderitem.paymentstatus %}
+            <span class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+            {% else %}
+            <form id="frmCheckpayment{{orderitem.orderid}}" action="">
+                {% csrf_token %}
+            <span id="paymentcheck" style="display:none" class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+            <input type = "hidden" form="frmCheckpayment{{orderitem.orderid}}" value="{{orderitem.orderid}}" id="orderid" name="orderid">  
+            <input type = "hidden" form="frmCheckpayment{{orderitem.orderid}}" value="paymentchecked" id="updateWhat" name="updateWhat">  
+            <button id='btn_checkpayment' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm">
+              <span class="text-warning" onclick="doCheckpayment($(this).closest('form'),$(this))"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span>
+            </button>
+            {% comment %} onclick="doCheckpayment($(this).closest('form'),$(this))" {% endcomment %}
+        </form>
+              
+            {% endif %}
+        </td>
+        
+        <td>
+          {% if orderitem.shippingstatus %}
+          <span class="text-success">{{orderitem.trackingnumber}}</span>
+          {% comment %} <i class='fas fas fa-truck' style='font-size:20px'></i> {% endcomment %}
+          {% else %}
+          <a href="{% url 'updatetracking' orderitem.orderid %}" class="btn-success btn-group-sm">ENTER TRACKING</a>
+           {% comment %} <form id="frmCheckship{{orderitem.orderid}}" method="POST">
+           
+          <span id="shippingcheck" style="display:none" class="text-success"><i class='fas fa-check-square' style='font-size:20px'></i></span>
+          <input type = "hidden" form="frmCheckship{{orderitem.orderid}}" value="{{orderitem.orderid}}" id="orderid" name="orderid">  
+          <input type = "hidden" form="frmCheckship{{orderitem.orderid}}" value="deliverychecked" id="updateWhat" name="updateWhat">  
+          <button id='btn_checkshipping' style="background-color:transparent;border:0px" class="btn-secondary btn-group-sm">
+            <span class="text-warning"><i class='fas fa-exclamation-triangle' style='font-size:20px'></i>update</span>
+          </button>
+          onclick="doCheckship($(this).closest('form'),$(this))"
+          <form> {% endcomment %}
+            
+          
+          {% endif %}
+        </td>
+            
+      </tr>
+      
+      {% endfor %}  
+     
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+   /*
+      function doCheckship(objform,objbutton)
+      {  
+           $(objform).on('submit', function(e){
+                e.preventDefault();
+                //var formData = new FormData($(objform)[0]); 
+                orderid=$(objform).find('input[id="orderid"]').val()
+                updateWhat=$(objform).find('input[id="updateWhat"]').val()
+                
+                $.ajax({
+                  type: 'POST',
+                  url: "{% url 'updatecheckslip_ajax' %}",
+                  data: {
+                    'orderid': orderid,
+                    'updateWhat': updateWhat
+                  },
+                  async: false, 
+                  cache: false, 
+                  contentType: false, 
+                  processData: false,  
+                  dataType: 'json',
+                  success: function (response) {
+                       //var instance = JSON.parse(response["instance"]);
+                        
+                        console.log(response.statusupdate)
+                        $("#notifyupdate").css('display','inline')
+                        $("#notifyupdate").html(response.statusupdate)
+                        //$("#notifyupdate").html(`${instance}`)
+                        
+                        $(objform).find('span[id="shippingcheck"]').css('display','inline');
+                        $(objbutton).css('display','none');
+                    },
+                    error: function (response) {
+                        // alert the error if any error occured
+                        alert(response["responseJSON"]["error"]);
+                    }
+                })
+                
+    
+              })
+                
+      }
+      */
+      function doCheckpayment(objform,objbutton)
+      {  
+        $(objform).submit(function(e) {
+            e.preventDefault();
+                
+            orderid=$(objform).find('input[id="orderid"]').val()
+            updateWhat=$(objform).find('input[id="updateWhat"]').val()
+            csrfmiddlewaretoken = $(objform).find('input[name="csrfmiddlewaretoken"]').val() 
+                
+                $.ajax({
+                  type: 'POST',
+                  url: "{% url 'updatepayment_ajax' %}",
+                  data: {
+                    'orderid': orderid,
+                    'updateWhat': updateWhat,
+                    'csrfmiddlewaretoken':csrfmiddlewaretoken
+                  },  
+                    success: function (data) {
+                      //var instance = JSON.parse(response["instance"]);
+                        console.log(data.statusupdate)
+
+                        $("#notifyupdate").css('display','inline')
+                        $("#notifyupdate").html(data.statusupdate)
+                        $(objform).find('span[id="paymentcheck"]').css('display','inline');
+                        $(objbutton).css('display','none');
+                    },
+                    error: function (data) {
+                        // alert the error if any error occured
+                        alert(data["responseJSON"]["error"]);
+                    }
+                })
+                
+    
+              })
+                
+      }
+      
+  function doCheckslip(objform,objbutton)
+  {  
+        $(objform).submit(function(e) {
+            e.preventDefault();
+       
+            orderid=$(objform).find('input[id="orderid"]').val()
+            updateWhat=$(objform).find('input[id="updateWhat"]').val()
+            csrfmiddlewaretoken = $(objform).find('input[name="csrfmiddlewaretoken"]').val()
+            
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'updatecheckslip_ajax' %}",
+
+                data: {
+                  'orderid': orderid,
+                  'updateWhat': updateWhat,
+                  'csrfmiddlewaretoken':csrfmiddlewaretoken
+                },
+                /*data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false,
+                */
+                dataType: 'json',  
+                  success: function (data) {
+                      $("#notifyupdate").css('display','inline')
+                      $("#notifyupdate").html(data.statusupdate)
+                      console.log(data.statusupdate)
+                      $(objform).find('span[id="slipcheck"]').css('display','inline');
+                      $(objbutton).css('display','none');
+                      
+                  },
+                  error: function (data) {
+                      // alert the error if any error occured
+                      alert(data["responseJSON"]["error"]);
+                  }
+              });
+            
+
+          });
+            
+  }
+  </script>
+{% endblock javascript%}

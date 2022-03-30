@@ -1,0 +1,310 @@
+{% extends "pythonbook/layout.html" %}
+{% load static %}
+{% block title %}
+ADD PRODUCT
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container mt-2">
+  <div>
+        <form id="addproduct-form" action="">
+          {% comment %}  enctype="multipart/form-data"  {% endcomment %}
+          {% csrf_token %}
+         
+          <div class="row g-2 mb-1">
+            <div class="col">
+              
+              <div class="input-group mb-1">
+                <span class="input-group-text">ชื่อหนังสือ</span>
+                <input type="text" class="form-control" placeholder="book name" id="bookname" name="bookname">
+              </div>
+
+            </div>
+
+            <div class="col">
+              <div class="input-group mb-1">
+                <span class="input-group-text" >ชื่อผู้เขียน</span>
+                <input type="text" class="form-control" placeholder="author" id="author" name="author">
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2  mb-1">
+            <div class="col">
+              <div class="input-group mb-1">
+                <span class="input-group-text" >ราคา</span>
+                <input type="text" class="form-control" id="price" placeholder="Enter price" name="price" >
+              </div>
+            </div>
+            
+            <div class="col">
+              <div class="input-group mb-1">
+                <span class="input-group-text">จำนวน</span>
+                <input type="text" class="form-control" id="quantity" placeholder="Enter quantity" name="quantity">
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2  mb-1">
+            <div class="col">
+              <div class="input-group mb-1">
+                <span class="input-group-text" >หน่วย</span>
+                <select class="custom-select mr-sm-2" id="unit" name="unit">
+                  <option value="" selected>Choose...</option>
+                      <option value="ลัง">ลัง</option>
+                      <option value="เล่ม">เล่ม</option>
+                  </select>
+              </div>
+            </div>
+            
+            <div class="col">
+                <div class="input-group mb-1">
+                  <span class="input-group-text">มีในสต็อก</span>
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox"  id="instock" name="instock">
+                  </div>
+                 
+                </div>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-1">
+            <div class="col">
+              
+              <div class="input-group">
+                <span class="input-group-text">เนื้อหาย่อ</span>
+                <textarea class="form-control" aria-label="With textarea" id="description"  name="description"></textarea>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="input-group">
+                <span class="input-group-text">ไฟล์รูป</span>
+                <input type="file" class="form-control"  id="imageupload" name="imageupload">
+                <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Clear File</button>
+              </div>
+            </div>
+          </div>            
+          
+        
+        <div class="row g-2 mb-1">    
+            <div class="col">
+              <button class="btn-secondary btn-group-sm" onclick="addBook()">ADD</button>
+            </div>
+
+            <div class="col">
+            </div>
+
+            <div class="row g-2 mb-1">
+              <div class="col" id="notify">
+                
+                
+              </col>  
+            </div>  
+        </div>
+
+      </form>
+  </div>
+
+
+<!-- display after add   -->
+<h4>สินค้าทั้งหมดในร้าน Total Book(s) : {{totalrecord}}</h4>
+{% comment %} PAGING {% endcomment %}
+<div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+     
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' previousPage %}">Previous</a></li>
+      {% for i in totalpage %}
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' i %}">{{i}}</a></li>
+      {% endfor %}  
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' nextPage %}">Next</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="container mt-5">
+  <table class="table table-striped table-hover" id="tb_product" name="tb_product">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Author</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Unit</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in Books %}
+      <tr>
+        <th scope="row">{{book.id}}</th>
+        <td>{{book.bookname}}</td>
+        <td>{{book.author}}</td>
+        <td>{{book.price}}</td>
+        <td>{{book.quantity}}</td>
+        <td>{{book.unit}}</td>
+        
+        <td> 
+          <button class="btn-secondary btn-group-sm">EDIT</button>
+          <button class="btn-secondary btn-group-sm">DELETE</button>
+        </td>
+      </tr>
+      {% endfor %}  
+      
+    </tbody>
+  </table>
+</div>
+{% comment %} PAGING {% endcomment %}
+<div style="float: right;position: relative;">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+     
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' previousPage %}">Previous</a></li>
+      {% for i in totalpage %}
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' i %}">{{i}}</a></li>
+      {% endfor %}  
+      <li class="page-item"><a class="page-link" href="{% url 'addproduct-page' nextPage %}">Next</a></li>
+    </ul>
+  </nav>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+  <script>
+    function editBook()
+    {  
+        $("#addproduct-form").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($("#addproduct-form")[0]); 
+            
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addproduct-page' 1%}",
+                data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false, 
+                dataType: 'json',
+                success: function (response) {
+                    $("#addproduct-form").trigger('reset');
+                    $("#name").focus();
+                    
+                    $("#tb_product tbody").prepend(
+                        `<tr>
+                        <td>${response.id}</td>
+                        <td>${response.bookname}</td>
+                        <td>${response.author}</td>
+                        <td>${response.price}</td>
+                        <td>${response.quantity}</td>
+                        <td>${response.unit}</td>
+                        
+                        <td> 
+                            <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
+                            <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+                        </td>
+                        </tr>`
+                    )
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
+        })
+  }
+  
+
+    function updateBook()
+    {  
+        $("#addproduct-form").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData($("#addproduct-form")[0]); 
+            
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addproduct-page' 1%}",
+                data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false, 
+                dataType: 'json',
+                success: function (response) {
+                    $("#addproduct-form").trigger('reset');
+                    $("#name").focus();
+                    
+                    $("#tb_product tbody").prepend(
+                        `<tr>
+                        <td>${response.id}</td>
+                        <td>${response.bookname}</td>
+                        <td>${response.author}</td>
+                        <td>${response.price}</td>
+                        <td>${response.quantity}</td>
+                        <td>${response.unit}</td>
+                        
+                        <td> 
+                            <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
+                            <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+                        </td>
+                        </tr>`
+                    )
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
+        })
+  }
+
+    function addBook()
+    {  
+        $("#addproduct-form").on('submit', function(e){
+            e.preventDefault();
+            var formData = new FormData($("#addproduct-form")[0]); 
+            
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addproduct-page' 1%}",
+                data: formData,
+                async: false, 
+                cache: false, 
+                contentType: false, 
+                processData: false, 
+                dataType: 'json',
+                success: function (response) {
+                    $("#addproduct-form").trigger('reset');
+                    $("#name").focus();
+                    
+                    $("#tb_product tbody").prepend(
+                        `<tr>
+                        <td>${response.id}</td>
+                        <td>${response.bookname}</td>
+                        <td>${response.author}</td>
+                        <td>${response.price}</td>
+                        <td>${response.quantity}</td>
+                        <td>${response.unit}</td>
+                        
+                        <td> 
+                            <button type="submit" class="btn-secondary btn-group-sm">EDIT</button>
+                            <button type="submit" class="btn-secondary btn-group-sm">DELETE</button>
+                        </td>
+                        </tr>`
+                    )
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
+        })
+  }
+  </script>
+{% endblock javascript%}

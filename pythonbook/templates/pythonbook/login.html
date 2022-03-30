@@ -1,0 +1,45 @@
+{% extends "pythonbook/layout.html" %}
+{% block title %}
+Add product
+{% endblock %}
+
+{% block content %}
+<h2>โปรดใส่ข้อมูล เพื่อเข้าระบบ</h2>
+<div class="container mt-2">
+  <div>
+    
+    <form method="POST">
+        {% csrf_token %}
+
+      <div class="row g-2 mb-1">
+          <div class="col">
+            <div class="input-group mb-1">
+              <span class="input-group-text">Username</span>
+              <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+            </div>
+          </div>
+
+          <div class="col">
+              <div class="input-group mb-1">
+                <span class="input-group-text">Password</span>
+                <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+              </div>
+          </div>
+      </div>
+       
+      
+      <div class="row g-2 mb-1">
+        <div class="col">
+          <button type="submit" class="btn-secondary btn-group-sm">Submit</button>
+        </div>
+
+        <div class="col">
+           
+        </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+
+
